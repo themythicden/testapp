@@ -13,9 +13,9 @@ export default function CardGrid({ cards, userCards, setFilter, onAdd, onRemove 
     }
   });
 
+    console.log("NEW DATA: "+ data);
   return data;
     
-    console.log("NEW DATA: "+ data);
 }
   
   return (
