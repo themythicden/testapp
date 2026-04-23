@@ -58,4 +58,4 @@ function Card({ card, userData, setFilter, onAdd, onRemove }) {
 
 }
 
-export default React.memo(Card);
+export default Card;
