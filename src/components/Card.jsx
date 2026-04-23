@@ -14,6 +14,8 @@ function Card({ card, userData, setFilter, onAdd, onRemove }) {
 
   const saturation = stats.isMissing ? "grayscale opacity-60" : "";
 
+  console.log("%c"+card.id, "color:red: ", userData);
+
   return (
     <div className="bg-gray-700 p-2 rounded">
       <div className="text-center">
