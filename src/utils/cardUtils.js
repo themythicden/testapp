@@ -25,7 +25,8 @@ export function getCardStats(card, userCards = {} , setFilter) {
 
   variants.forEach(v => {
     const key = `${card.id}_${v}`;
-    if ((userCards[key]?.total || 0) > 0) owned++;
+    //if ((userCards[key]?.total || 0) > 0) owned++;
+    if ((userCards[`${card.id}_${v}`] || 0) > 0) owned++;
   });
 
   return {
