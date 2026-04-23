@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import CardGrid from "../components/CardGrid";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
-import { getCardStats} from "../utils/carUtils"l
+import { getCardStats} from "../utils/carUtils";
+import Filters from "../components/Filters";
 
 export default function CollectionPage() {
   const [searchParams] = useSearchParams();
@@ -224,21 +225,7 @@ const handleRemove = async (cardId, variant) => {
         {collectionName || "Collection"}
       </h2>
 
-      <div className="flex gap-2 p-4">
-        {["master", "standard", "parallel"].map(filter => (
-          <button
-            key={filter}
-            onClick={() => setSetFilter(filter)}
-            className={`px-3 py-1 rounded ${
-              setFilter === filter
-                ? "bg-blue-600 text-white"
-                : "bg-gray-700 text-gray-300"
-            }`}
-          >
-            {filter.toUpperCase()}
-          </button>
-        ))}
-      </div>
+      <Filters filter={filter} setFilter={setFilter} />
 
       <CardGrid
         cards={filteredCards}
