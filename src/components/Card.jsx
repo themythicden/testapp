@@ -2,7 +2,7 @@ import { getCardStats, getVariants } from "../utils/cardUtils";
 import VariantRow from "./VariantRow";
 
 function Card({ card, userData, setFilter, onAdd, onRemove }) {
-  const stats = getCardStats(card, userCards, setFilter);
+  const stats = getCardStats(card, userData, setFilter);
   const variants = getVariants(card, setFilter);
   const handleAdd = (variant) => onAdd(card.id, variant);
   const handleRemove = (variant) => onRemove(card.id, variant);
@@ -36,12 +36,11 @@ function Card({ card, userData, setFilter, onAdd, onRemove }) {
       <div className="bg-gray-800 mt-2 p-2 space-y-1">
         {variants.map(v => {
             const key = `${card.id}_${v}`;
-            const count = userCards[key]?.total ||0;
+            const count = userData[key]?.total ||0;
 
             return(
                 <VariantRow
                     key={v}
-                    cardId={card.id}
                     variant={v}
                     count={count}
                     onAdd={handleAdd}
