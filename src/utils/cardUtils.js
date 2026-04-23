@@ -18,15 +18,14 @@ export function getVariants(card, setFilter = "master") {
 }
 
 //export function getCardStats(card, userCards, setFilter) {
-export function getCardStats(card, userCards = {} , setFilter) {
+export function getCardStats(card, userCards = {}, setFilter) {
   const variants = getVariants(card, setFilter);
 
   let owned = 0;
 
   variants.forEach(v => {
     const key = `${card.id}_${v}`;
-    //if ((userCards[key]?.total || 0) > 0) owned++;
-    if ((userCards[`${card.id}_${v}`] || 0) > 0) owned++;
+    if ((userCards[key] || 0) > 0) owned++;
   });
 
   return {
