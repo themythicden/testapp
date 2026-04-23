@@ -239,7 +239,7 @@ const handleRemove = async (cardId, variant) => {
       </div>
 
       <CardGrid
-        cards={filterCards}
+        cards={filteredCards}
         userCards={userCards}
         setFilter={setFilter}
         onAdd={handleAdd}
