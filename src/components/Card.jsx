@@ -1,7 +1,7 @@
 import { getCardStats, getVariants } from "../utils/cardUtils";
 import VariantRow from "./VariantRow";
 
-export default function Card({ card, userCards, setFilter, onAdd, onRemove }) {
+function Card({ card, userCards, setFilter, onAdd, onRemove }) {
   const stats = getCardStats(card, userCards, setFilter);
   const variants = getVariants(card, setFilter);
 
@@ -54,5 +54,4 @@ export default function Card({ card, userCards, setFilter, onAdd, onRemove }) {
 
 }
 
-
-//console.log("userCards:", userCards);
+export default React.memo(Card);
