@@ -217,6 +217,7 @@ const handleRemove = async (cardId, variant) => {
   // UI
   // -----------------------------
   return (
+    console.log("Rendering CollectionPage")l
     <div>
       <h2 className="text-2xl p-4">
         {collectionName || "Collection"}
