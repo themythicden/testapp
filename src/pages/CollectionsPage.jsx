@@ -83,7 +83,7 @@ export default function CollectionsPage({ user }) {
 
 return (
   <div>
-    <h2>Collections Debug</h2>
+    <h2>My Collections</h2>
 
     {collections.length === 0 ? (
       <p>No collections found</p>
