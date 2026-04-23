@@ -22,13 +22,15 @@ export default function CollectionPage() {
 
   const activeUser = user; // clean alias
 
-  const visibleCards = collection ? getVisibleCards({
+  const visibleCards = collection 
+    ? getVisibleCards({
     cards,
     userCards,
     setFilter,
     statusFilter,
     collection
-  });
+  })
+  : [];
 
   // -----------------------------
   // AUTH
