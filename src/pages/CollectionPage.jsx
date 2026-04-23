@@ -38,8 +38,6 @@ export default function CollectionPage() {
     };
   }, []);
 
-
-
   const [collection, setCollection] = useState(null);
 
 useEffect(() => {
@@ -64,6 +62,21 @@ useEffect(() => {
   loadCollection();
 }, [collectionId]);
 
+
+// -------------------------
+// FILTER CARDS
+// ----------------------------
+const filteredCards = cards.filter(card => {
+  const stats = getCardStats(card, userCards, setFilter);
+
+  if (setFilter === "master") return true;
+  if (setFilter === "standard") return !stats.isMissing;
+  if (setFilter === "parallel") return stats.isPartial || stats.isComplete;
+
+  return true;
+});
+
+  
 // -----------------------------
 // LOAD CARDS (REAL DB)
 // -----------------------------
@@ -209,8 +222,24 @@ const handleRemove = async (cardId, variant) => {
         {collectionName || "Collection"}
       </h2>
 
+      <div className="flex gap-2 p-4">
+        {["master", "standard", "parallel"].map(filter => (
+          <button
+            key={filter}
+            onClick={() => setSetFilter(filter)}
+            className={`px-3 py-1 rounded ${
+              setFilter === filter
+                ? "bg-blue-600 text-white"
+                : "bg-gray-700 text-gray-300"
+            }`}
+          >
+            {filter.toUpperCase()}
+          </button>
+        ))}
+      </div>
+
       <CardGrid
-        cards={cards}
+        cards={filterCards}
         userCards={userCards}
         setFilter={setFilter}
         onAdd={handleAdd}
