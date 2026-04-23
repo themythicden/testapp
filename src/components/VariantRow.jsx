@@ -1,6 +1,4 @@
-import React from "react";
-
-function VariantRow({ cardId, variant, count, onAdd, onRemove }) {
+function VariantRow({ variant, count, onAdd, onRemove }) {
   return (
     <div className="flex justify-between items-center bg-gray-600 p-2 rounded">
       <span className="uppercase">{variant}</span>
