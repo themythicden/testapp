@@ -1,7 +1,7 @@
 import { getCardStats, getVariants } from "../utils/cardUtils";
 import VariantRow from "./VariantRow";
 
-function Card({ card, userCards, setFilter, onAdd, onRemove }) {
+function Card({ card, userData, setFilter, onAdd, onRemove }) {
   const stats = getCardStats(card, userCards, setFilter);
   const variants = getVariants(card, setFilter);
 
