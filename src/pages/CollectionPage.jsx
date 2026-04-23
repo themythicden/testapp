@@ -14,6 +14,7 @@ export default function CollectionPage() {
   const [cards, setCards] = useState([]);
   const [userCards, setUserCards] = useState({});
   const [setFilter, setSetFilter] = useState("master");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const activeUser = user; // clean alias
 
@@ -71,11 +72,22 @@ useEffect(() => {
 const filteredCards = cards.filter(card => {
   const stats = getCardStats(card, userCards, setFilter);
 
-  if (setFilter === "master") return true;
-  if (setFilter === "standard") return !stats.isMissing;
-  if (setFilter === "parallel") return stats.isPartial || stats.isComplete;
+  switch (statusFilter) {
+    case "owned":
+      return stats.isComplete;
 
-  return true;
+    case "needed":
+      return stats.isMissing;
+
+    case "duplicates":
+      return getVariants(card, setFilter).some(v => {
+        const key = `${card.id}_${v}`;
+        return (userCards[key]?.total || 0) > 1;
+      });
+
+    default:
+      return true;
+  }
 });
 
   
@@ -226,6 +238,8 @@ const handleRemove = async (cardId, variant) => {
       </h2>
 
       <Filters filter={setFilter} setFilter={setSetFilter} />
+
+      <StatusFilters statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
 
       <CardGrid
         cards={filteredCards}
