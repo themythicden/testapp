@@ -2,21 +2,7 @@ import Card from "./Card";
 
 export default function CardGrid({ cards, userCards, setFilter, onAdd, onRemove }) {
 
-  function buildUserData(cardId, userCards) {
-  const data = {};
 
-  Object.keys(userCards).forEach(key => {
-    const [id, variant] = key.split("_");
-
-    if (id === cardId) {
-      data[variant] = userCards[key]?.total || 0;
-    }
-  });
-
-    //console.log("NEW DATA: ",  data);
-  return data;
-    
-}
   
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
@@ -24,7 +10,7 @@ export default function CardGrid({ cards, userCards, setFilter, onAdd, onRemove 
         <Card
           key={card.id}
           card={card}
-          userData={buildUserData(card.id, userCards)}
+          userCards={userCards}
           setFilter={setFilter}
           onAdd={onAdd}
           onRemove={onRemove}
