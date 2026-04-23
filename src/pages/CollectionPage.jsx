@@ -7,7 +7,7 @@ import { getVariants} from "../utils/cardUtils";
 import Filters from "../components/Filters";
 import StatusFilters from "../components/StatusFilters";
 import { isSecretCard } from "../utils/setUtils";
-import { getVisibleCards } from "../utils/cardSelectors";
+import { getVisibleCards } from "../utils/cardSelectors.js";
 
 export default function CollectionPage() {
   const [searchParams] = useSearchParams();
