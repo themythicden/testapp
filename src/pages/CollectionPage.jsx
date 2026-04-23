@@ -22,6 +22,14 @@ export default function CollectionPage() {
 
   const activeUser = user; // clean alias
 
+  const visibleCards = getVisibleCards({
+    cards,
+    userCards,
+    setFilter,
+    statusFilter,
+    collection
+  });
+
   // -----------------------------
   // AUTH
   // -----------------------------
