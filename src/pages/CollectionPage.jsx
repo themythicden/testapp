@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import CardGrid from "../components/CardGrid";
 import { useSearchParams } from "react-router-dom";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 
 export default function CollectionPage() {
   const [searchParams] = useSearchParams();
