@@ -7,7 +7,7 @@ export default function CardGrid({ cards, userCards, setFilter, onAdd, onRemove 
         <Card
           key={card.id}
           card={card}
-          userCards={userCards}
+          userData={userCards[card.id] || {}}
           setFilter={setFilter}
           onAdd={onAdd}
           onRemove={onRemove}
