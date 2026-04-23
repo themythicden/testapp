@@ -4,6 +4,8 @@ import VariantRow from "./VariantRow";
 function Card({ card, userData, setFilter, onAdd, onRemove }) {
   const stats = getCardStats(card, userCards, setFilter);
   const variants = getVariants(card, setFilter);
+  const handleAdd = (variant) => onAdd(card.id, variant);
+  const handleRemove = (variant) => onRemove(card.id, variant);
 
   let statusText = <span className="text-red-400">Need</span>;
   if (stats.isComplete) statusText = <span className="text-green-400">Owned</span>;
@@ -42,8 +44,8 @@ function Card({ card, userData, setFilter, onAdd, onRemove }) {
                     cardId={card.id}
                     variant={v}
                     count={count}
-                    onAdd={onAdd}
-                    onRemove={onRemove}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
                 />
             );
         })}
