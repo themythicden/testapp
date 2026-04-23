@@ -119,18 +119,12 @@ useEffect(() => {
     console.log("USER CARDS RAW:", data);
 
     const map = {};
-
+    
     data.forEach(item => {
       const key = `${item.card_id}_${item.variant}`;
-
-      map[key] = {
-        total: Number(item.owned || 0),
-        users: {
-          [item.email]: Number(item.owned || 0)
-        }
-      };
+      map[key] = Number(item.owned || 0);
     });
-
+    
     setUserCards(map);
   }
 
@@ -144,36 +138,27 @@ const handleAdd = async (cardId, variant) => {
   if (!user) return;
 
   const key = `${cardId}_${variant}`;
-  const current = userCards[key]?.users[user.email] || 0;
+  const current = userCards[key] || 0;
   const newCount = current + 1;
 
-  // 🔁 Optimistic UI
+  // Optimistic update
   setUserCards(prev => ({
     ...prev,
-    [key]: {
-      total: newCount,
-      users: {
-        ...prev[key]?.users,
-        [user.email]: newCount
-      }
-    }
+    [key]: newCount
   }));
 
   const { error } = await supabase
     .from("user_cards")
-    .upsert(
-      {
-        email: user.email,
-        card_id: cardId,
-        variant,
-        owned: newCount
-      },
-      {
-        onConflict: "email,card_id,variant"
-      }
-    );
+    .upsert({
+      email: user.email,
+      card_id: cardId,
+      variant,
+      owned: newCount
+    }, {
+      onConflict: "email,card_id,variant"
+    });
 
-  if (error) console.error("Upsert error:", error);
+  if (error) console.error(error);
 };
 
 // -----------------------------
@@ -183,39 +168,29 @@ const handleRemove = async (cardId, variant) => {
   if (!user) return;
 
   const key = `${cardId}_${variant}`;
-  const current = userCards[key]?.users[user.email] || 0;
+  const current = userCards[key] || 0;
 
   if (current <= 0) return;
 
   const newCount = current - 1;
 
-  // 🔁 Optimistic UI
   setUserCards(prev => ({
     ...prev,
-    [key]: {
-      total: newCount,
-      users: {
-        ...prev[key]?.users,
-        [user.email]: newCount
-      }
-    }
+    [key]: newCount
   }));
 
   const { error } = await supabase
     .from("user_cards")
-    .upsert(
-      {
-        email: user.email,
-        card_id: cardId,
-        variant,
-        owned: newCount
-      },
-      {
-        onConflict: "email,card_id,variant"
-      }
-    );
+    .upsert({
+      email: user.email,
+      card_id: cardId,
+      variant,
+      owned: newCount
+    }, {
+      onConflict: "email,card_id,variant"
+    });
 
-  if (error) console.error("Upsert error:", error);
+  if (error) console.error(error);
 };
 
   // -----------------------------
