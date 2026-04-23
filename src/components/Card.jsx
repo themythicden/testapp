@@ -9,12 +9,19 @@ function Card({ card, userData = {}, setFilter, onAdd, onRemove }) {
   const handleAdd = (variant) => onAdd(card.id, variant);
   const handleRemove = (variant) => onRemove(card.id, variant);
 
+  
+  const saturation = stats.isMissing ? "grayscale opacity-60" : "";
+
   return (
     <div className="bg-gray-700 p-2 rounded">
-      <p className="text-xl font-bold bg-gray-800 p-2">
+      <p className="text-xl font-bold bg-gray-500 p-2">
         {card.name}
       </p>
-
+    <img
+        src={card.image_small || card.image_large}
+        alt={card.name}
+        className={`h-40 mx-auto mt-2 ${saturation}`}
+      />
       <div className="bg-gray-800 mt-2 p-2 space-y-1">
         {variants.map(v => {
           const count = userData[v] || 0;
