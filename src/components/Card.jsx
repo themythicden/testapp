@@ -1,3 +1,4 @@
+import React from "react";
 import { getCardStats, getVariants } from "../utils/cardUtils";
 import VariantRow from "./VariantRow";
 
