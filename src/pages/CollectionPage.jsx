@@ -225,7 +225,7 @@ const handleRemove = async (cardId, variant) => {
         {collectionName || "Collection"}
       </h2>
 
-      <Filters filter={filter} setFilter={setFilter} />
+      <Filters filter={setFilter} setFilter={setSetFilter} />
 
       <CardGrid
         cards={filteredCards}
