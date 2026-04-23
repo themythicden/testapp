@@ -24,7 +24,7 @@ function Card({ card, userData = {}, setFilter, onAdd, onRemove }) {
       />
       <div className="bg-gray-800 mt-2 p-2 space-y-1">
         {variants.map(v => {
-          const count = userData[v] || 0;
+          const count = userCards[`${card.id}_${variant}`] || 0;
 
           return (
             <VariantRow
