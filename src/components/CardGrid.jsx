@@ -24,7 +24,7 @@ export default function CardGrid({ cards, userCards, setFilter, onAdd, onRemove 
         <Card
           key={card.id}
           card={card}
-          userData={buildUserData(card.id, userCards}
+          userData={buildUserData(card.id, userCards},
           setFilter={setFilter}
           onAdd={onAdd}
           onRemove={onRemove}
