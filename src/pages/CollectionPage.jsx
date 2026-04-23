@@ -6,6 +6,8 @@ import { getCardStats} from "../utils/cardUtils";
 import { getVariants} from "../utils/cardUtils";
 import Filters from "../components/Filters";
 import StatusFilters from "../components/StatusFilters";
+import { isSecretCard } from "../utils/setUtils";
+import { getVisibleCards } from "../utils/cardSelectors";
 
 export default function CollectionPage() {
   const [searchParams] = useSearchParams();
@@ -71,8 +73,16 @@ useEffect(() => {
 // -------------------------
 // FILTER CARDS
 // ----------------------------
-const filteredCards = cards.filter(card => {
+/*const filteredCards = cards.filter(card => {
   const stats = getCardStats(card, userCards, setFilter);
+  const isSecret = isSecretCard(card, collection.rule);
+
+  // set-level filtering
+  if (setFilter === "standard") return !isSecret;
+  if (setFilter === "parallel") return !isSecret;
+  if (setFilter === "master") return true;
+
+  return true;
 
   switch (statusFilter) {
     case "owned":
@@ -90,6 +100,13 @@ const filteredCards = cards.filter(card => {
     default:
       return true;
   }
+});*/
+const filteredCards = getVisibleCards({
+  cards,
+  userCards,
+  collection,
+  setFilter,
+  statusFilter,
 });
 
   
