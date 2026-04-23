@@ -22,7 +22,7 @@ export default function CollectionPage() {
 
   const activeUser = user; // clean alias
 
-  const visibleCards = getVisibleCards({
+  const visibleCards = collection ? getVisibleCards({
     cards,
     userCards,
     setFilter,
@@ -109,13 +109,15 @@ useEffect(() => {
       return true;
   }
 });*/
-const filteredCards = getVisibleCards({
+
+  
+/*const filteredCards = getVisibleCards({
   cards,
   userCards,
   collection,
   setFilter,
   statusFilter,
-});
+});*/
 
   
 // -----------------------------
