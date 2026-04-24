@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import CardGrid from "../components/CardGrid";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
-//import { getCardStats} from "../utils/cardUtils";
+import { getCardStats} from "../utils/cardUtils";
 import { getVariants} from "../utils/cardUtils";
 import Filters from "../components/Filters";
 import StatusFilters from "../components/StatusFilters";
