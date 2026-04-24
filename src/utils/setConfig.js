@@ -36,6 +36,8 @@ export const SET_CONFIG = {
       uncommon: ["normal", "reverse", "pokeball", "masterball"],
       rare: ["holo", "reverse", "pokeball", "masterball"],
       trainer: ["normal", "reverse", "pokeball"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
 
       default: ["holo"]
     }
