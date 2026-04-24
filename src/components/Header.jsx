@@ -6,20 +6,13 @@ export default function Header({ user }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    await supabase.auth.signInWithPassword({
-      email: "test@test.com",
-      password: "password123"
-    });
-  };
-
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setOpen(false);
   };
 
   return (
-    <header className="flex justify-between items-center p-4 bg-gray-900 text-white">
+    <header className="flex justify-between items-center p-4 bg-gray-900 text-white z-50">
       <h1 className="cursor-pointer" onClick={() => navigate("/")}>
         🧢 My TCG App
       </h1>
