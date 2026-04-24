@@ -28,3 +28,21 @@ export function getVariants(card, setView = "master") {
 
   return variants.filter(v => allowed.includes(v));
 }
+
+
+export function getCardStats(card, userCards = {}, setFilter, collection) {
+  const variants = getVariants(card, setFilter, collection);
+
+  let owned = 0;
+
+  variants.forEach(v => {
+    const key = `${card.id}_${v}`;
+    if ((userCards[key] || 0) > 0) owned++;
+  });
+
+  return {
+    isComplete: owned === variants.length,
+    isPartial: owned > 0 && owned < variants.length,
+    isMissing: owned === 0
+  };
+}
