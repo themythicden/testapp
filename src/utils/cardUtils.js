@@ -11,11 +11,11 @@ export function getVariants(card, setView = "master") {
   const supertype = (card.supertype || "").toLowerCase();
   const number = card.number;
   
-  console.log("CARD: ", card);
+  console.log("CARD: ", card.number);
   let group = "default";
 
   if (supertype === "trainer") group = "trainer";
-  else if (supertype === "trainer" && (number > 131)) group = "fa_trainer";
+  else if (supertype === "trainer" && (number > base)) group = "fa_trainer";
   else if (rarity === "common") group = "common";
   else if (rarity === "uncommon") group = "uncommon";
   else if (rarity === "rare") group = "rare";
