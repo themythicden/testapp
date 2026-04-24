@@ -14,11 +14,11 @@ export function getVariants(card, setFilter = "master") {
 
   if (supertype === "trainer") {
     variantGroup = "trainer";
-  } else if (rarity === "common")) {
+  } else if (rarity === "common") {
     variantGroup = "common";
-  } else if (rarity === "uncommon")) {
+  } else if (rarity === "uncommon") {
     variantGroup = "uncommon";
-  } else if (rarity === "rare")) {
+  } else if (rarity === "rare") {
     variantGroup = "rare";
   }
 
