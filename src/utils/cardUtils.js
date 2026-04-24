@@ -1,20 +1,44 @@
-export function getVariants(card, setFilter = "master") {
-//export function getVariants(card, userCards = {}, setFilter) {
-    const rarity = (card.rarity || "").toLowerCase();
+import { SET_CONFIG } from "../config/setConfig";
 
+export function getVariants(card, setFilter = "master") {
+  const setCode = card.set_code;
+  const config = SET_CONFIG[setCode];
+
+  if (!config) return ["normal"]; // fallback
+
+  const rarity = (card.rarity || "").toLowerCase();
+  const supertype = (card.supertype || "").toLowerCase();
+
+  // determine variant group
+  let variantGroup = "default";
+
+  if (supertype === "trainer") {
+    variantGroup = "trainer";
+  } else if (rarity.includes("common")) {
+    variantGroup = "common";
+  } else if (rarity.includes("uncommon")) {
+    variantGroup = "uncommon";
+  } else if (rarity.includes("rare")) {
+    variantGroup = "rare";
+  }
+
+  const variants =
+    config.variants[variantGroup] ||
+    config.variants.default ||
+    ["normal"];
+
+  // -----------------------------
+  // FILTER BY SET TYPE
+  // -----------------------------
   if (setFilter === "standard") {
-    return rarity === "rare" ? ["holo"] : ["normal"];
+    return variants.filter(v => v === "normal" || v === "holo");
   }
 
   if (setFilter === "parallel") {
-    return rarity === "rare"
-      ? ["holo", "reverse"]
-      : ["normal", "reverse"];
+    return variants.filter(v => v !== "masterball"); // example rule
   }
 
-  return rarity === "rare"
-    ? ["holo", "reverse"]
-    : ["normal", "reverse"];
+  return variants; // master
 }
 
 //export function getCardStats(card, userCards, setFilter) {
