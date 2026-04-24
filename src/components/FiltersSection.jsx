@@ -18,6 +18,8 @@ export default function FiltersSection({
   setLegalOnly,
   searchQuery,
   setSearchQuery,
+  sortBy,
+  setSortBy
 }) {
   const [open, setOpen] = useState(true);
 
@@ -53,6 +55,22 @@ export default function FiltersSection({
         onChange={(e) => setSearchQuery(e.target.value)}
         className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
       />
+      {/* SORTING */}
+      <div className="flex gap-2">
+        {["number", "name", "owned"].map(option => (
+          <button
+            key={option}
+            onClick={() => setSortBy(option)}
+            className={`px-3 py-1 rounded ${
+              sortBy === option
+                ? "bg-blue-600 text-white"
+                : "bg-gray-700 text-gray-300"
+            }`}
+          >
+            {option.toUpperCase()}
+          </button>
+        ))}
+      </div>
       {/* HEADER */}
       <div
         onClick={() => setOpen(prev => !prev)}
