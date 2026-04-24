@@ -1,3 +1,6 @@
+import { getCardStats, getVariants } from "./cardUtils";
+import { isSecretCard } from "./setUtils";
+
 export function getVisibleCards({
   cards,
   userCards,
