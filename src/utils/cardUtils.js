@@ -1,60 +1,30 @@
 import { SET_CONFIG } from "./setConfig";
 
-export function getVariants(card, setFilter = "master") {
-  const setCode = card.set_code;
-  const config = SET_CONFIG[setCode];
-
-  if (!config) return ["normal"]; // fallback
+export function getVariants(card, setView = "master") {
+  const config = SET_CONFIG[card.set_code];
+  if (!config) return ["normal"];
 
   const rarity = (card.rarity || "").toLowerCase();
   const supertype = (card.supertype || "").toLowerCase();
 
-  // determine variant group
-  let variantGroup = "default";
+  let group = "default";
 
-  if (supertype === "trainer") {
-    variantGroup = "trainer";
-  } else if (rarity === "common") {
-    variantGroup = "common";
-  } else if (rarity === "uncommon") {
-    variantGroup = "uncommon";
-  } else if (rarity === "rare") {
-    variantGroup = "rare";
-  }
+  if (supertype === "trainer") group = "trainer";
+  else if (rarity.includes("common")) group = "common";
+  else if (rarity.includes("uncommon")) group = "uncommon";
+  else if (rarity.includes("rare")) group = "rare";
 
-  const variants =
-    config.variants[variantGroup] ||
+  let variants =
+    config.variants[group] ||
     config.variants.default ||
     ["normal"];
 
   // -----------------------------
-  // FILTER BY SET TYPE
+  // APPLY VIEW FILTER
   // -----------------------------
-  if (setFilter === "standard") {
-    return variants.filter(v => v === "normal" || v === "holo");
-  }
+  const allowed = config.views[setView];
 
-  if (setFilter === "parallel") {
-    return variants.filter(v => v !== "masterball"); // example rule
-  }
+  if (allowed === "all") return variants;
 
-  return variants; // master
-}
-
-//export function getCardStats(card, userCards, setFilter) {
-export function getCardStats(card, userCards = {}, setFilter) {
-  const variants = getVariants(card, setFilter);
-
-  let owned = 0;
-
-  variants.forEach(v => {
-    const key = `${card.id}_${v}`;
-    if ((userCards[key] || 0) > 0) owned++;
-  });
-
-  return {
-    isComplete: owned === variants.length,
-    isPartial: owned > 0 && owned < variants.length,
-    isMissing: owned === 0
-  };
+  return variants.filter(v => allowed.includes(v));
 }
