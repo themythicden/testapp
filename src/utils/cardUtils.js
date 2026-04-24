@@ -2,8 +2,9 @@ import { SET_CONFIG } from "./setConfig";
 
 export function getVariants(card, setView = "master") {
   const config = SET_CONFIG[card.set_code];
-  const base = SET_CONFIG;
-  console.log("SET_CONFIG: " , base);
+  const base = config;
+  //console.log("SET_CONFIG: " , base);
+  console.log("CONFIG: ", config);
   if (!config) return ["normal"];
 
   const rarity = (card.rarity || "").toLowerCase();
