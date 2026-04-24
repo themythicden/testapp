@@ -29,6 +29,7 @@ export default function CollectionPage() {
   const [supertypeFilter, setSupertypeFilter] = useState([]);
   const [legalOnly, setLegalOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("number");
 
   const activeUser = user; // clean alias
 
@@ -95,6 +96,7 @@ useEffect(() => {
         statusFilter,
         collection,
         searchQuery,
+        sortBy,
         typeFilter,
         supertypeFilter,
         legalOnly
@@ -261,7 +263,9 @@ const handleRemove = async (cardId, variant) => {
         legalOnly={legalOnly}
         setLegalOnly={setLegalOnly}
         searchQuery={searchQuery}              // ✅ ADD
-        setSearchQuery={setSearchQuery} 
+        setSearchQuery={setSearchQuery}
+        sortBy={sortBy}              // ✅ ADD
+        setSortBy={setSortBy} 
       />
 
       <CardGrid
