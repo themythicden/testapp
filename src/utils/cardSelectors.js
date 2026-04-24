@@ -4,24 +4,22 @@ import { isSecretCard } from "./setUtils";
 export function getVisibleCards({
   cards,
   userCards,
-  collection,
   setFilter,
   statusFilter,
+  collection
 }) {
+  if (!collection) return [];
+
   return cards.filter(card => {
     const stats = getCardStats(card, userCards, setFilter);
     const isSecret = isSecretCard(card, collection.rule);
 
-    // -------------------------
-    // 1. SET FILTER LOGIC
-    // -------------------------
-    if (setFilter === "standard" && isSecret) return false;
-    if (setFilter === "parallel" && isSecret) return false;
-    // master = show everything
+    // ❗ SECRET LOGIC
+    if (setFilter !== "master" && isSecret) return false;
 
-    // -------------------------
-    // 2. STATUS FILTER LOGIC
-    // -------------------------
+    // -----------------------------
+    // STATUS FILTER
+    // -----------------------------
     switch (statusFilter) {
       case "owned":
         return stats.isComplete;
@@ -32,7 +30,7 @@ export function getVisibleCards({
       case "duplicates":
         return getVariants(card, setFilter).some(v => {
           const key = `${card.id}_${v}`;
-          return (userCards[key]?.total || 0) > 1;
+          return (userCards[key] || 0) > 1;
         });
 
       default:
