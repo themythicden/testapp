@@ -10,9 +10,9 @@ export function getVariants(card, setView = "master") {
   let group = "default";
 
   if (supertype === "trainer") group = "trainer";
-  else if (rarity.includes("common")) group = "common";
-  else if (rarity.includes("uncommon")) group = "uncommon";
-  else if (rarity.includes("rare")) group = "rare";
+  else if (rarity === "common") group = "common";
+  else if (rarity === "uncommon") group = "uncommon";
+  else if (rarity === "rare") group = "rare";
 
   let variants =
     config.variants[group] ||
