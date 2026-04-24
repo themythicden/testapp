@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 export default function Header({ user }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const userEmail = user.email;
+  const userName = user.name;
+  const username = userName ? userEmail.split('@')[0] : "";
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -13,6 +16,7 @@ export default function Header({ user }) {
 
   return (
     <header className="flex justify-between items-center p-4 bg-gray-900 text-white z-50">
+      <p className="text-white">{myName}</p>
       <h1 className="cursor-pointer" onClick={() => navigate("/")}>
         🧢 My TCG App
       </h1>
