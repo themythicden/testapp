@@ -8,16 +8,45 @@ export function getVisibleCards({
   userCards,
   setFilter,
   statusFilter,
-  collection
+  collection,
+  typeFilter = [],
+  supertypeFilter = [],
+  legalOnly = false
 }) {
   if (!collection) return [];
 
   return cards.filter(card => {
-    const stats = getCardStats(card, userCards, setFilter, collection);
+    const stats = getCardStats(card, userCards, setFilter);
     const isSecret = isSecretCard(card, collection.rule);
 
-    // ❗ SECRET LOGIC
+    // -----------------------------
+    // SET FILTER
+    // -----------------------------
     if (setFilter !== "master" && isSecret) return false;
+
+    // -----------------------------
+    // TYPE FILTER (multi-select)
+    // -----------------------------
+    if (typeFilter.length > 0) {
+      const cardTypes = card.types || [];
+      const match = typeFilter.some(t => cardTypes.includes(t));
+      if (!match) return false;
+    }
+
+    // -----------------------------
+    // SUPERTYPE FILTER
+    // -----------------------------
+    if (supertypeFilter.length > 0) {
+      if (!supertypeFilter.includes(card.supertype)) return false;
+    }
+
+    // -----------------------------
+    // LEGAL FILTER
+    // -----------------------------
+    if (legalOnly) {
+      const mark = card.regulation_mark || "";
+      if (mark < "G") return false; // simple alphabetical compare
+    }
 
     // -----------------------------
     // STATUS FILTER
