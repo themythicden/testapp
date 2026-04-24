@@ -9,6 +9,7 @@ export function getVisibleCards({
   setFilter,
   statusFilter,
   collection,
+  searchQuery,
   typeFilter = [],
   supertypeFilter = [],
   legalOnly = false
