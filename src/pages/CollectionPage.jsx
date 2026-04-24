@@ -4,10 +4,15 @@ import { useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 //import { getCardStats} from "../utils/cardUtils";
 //import { getVariants} from "../utils/cardUtils";
+// FILTERS
 import Filters from "../components/Filters";
 import StatusFilters from "../components/StatusFilters";
+import TypeFilters from "../components/TypeFilters"
+import SupertypeFilters from "../components/SupertypeFilters"
+
 import { isSecretCard } from "../utils/setUtils";
 import { getVisibleCards } from "../utils/cardSelectors.js";
+
 
 export default function CollectionPage() {
   const [searchParams] = useSearchParams();
@@ -19,6 +24,9 @@ export default function CollectionPage() {
   const [userCards, setUserCards] = useState({});
   const [setFilter, setSetFilter] = useState("master");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState([]); // multi-select
+  const [supertypeFilter, setSupertypeFilter] = useState([]);
+  const [legalOnly, setLegalOnly] = useState(false);
 
   const activeUser = user; // clean alias
 
@@ -75,13 +83,16 @@ useEffect(() => {
   // KEEP THIS FILTER
   const visibleCards = collection 
     ? getVisibleCards({
-    cards,
-    userCards,
-    setFilter,
-    statusFilter,
-    collection
-  })
-  : [];
+        cards,
+        userCards,
+        setFilter,
+        statusFilter,
+        collection,
+        typeFilter,
+        supertypeFilter,
+        legalOnly
+      })
+    : [];
 // -------------------------
 // FILTER CARDS
 // ----------------------------
@@ -277,6 +288,20 @@ const handleRemove = async (cardId, variant) => {
       />
 
       <StatusFilters statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
+      <TypeFilters selected={typeFilter} onChange={setTypeFilter} />
+      
+      <SupertypeFilters selected={supertypeFilter} onChange={setSupertypeFilter} />
+      
+      <div className="p-4">
+        <button
+          onClick={() => setLegalOnly(prev => !prev)}
+          className={`px-3 py-1 rounded ${
+            legalOnly ? "bg-yellow-500" : "bg-gray-700"
+          }`}
+        >
+          Legal Only
+        </button>
+      </div>
 
       <CardGrid
         cards={visibleCards}
