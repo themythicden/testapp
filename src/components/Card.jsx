@@ -1,5 +1,5 @@
 import React from "react";
-import { getCardStats, getVariants } from "../utils/cardUtils";
+import { getVariants } from "../utils/cardUtils";
 import VariantRow from "./VariantRow";
 
 function Card({ card, userCards, setFilter, onAdd, onRemove }) {
