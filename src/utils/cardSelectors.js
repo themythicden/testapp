@@ -13,7 +13,7 @@ export function getVisibleCards({
   if (!collection) return [];
 
   return cards.filter(card => {
-    const stats = getCardStats(card, userCards, setFilter);
+    const stats = getCardStats(card, userCards, setFilter, collection);
     const isSecret = isSecretCard(card, collection.rule);
 
     // ❗ SECRET LOGIC
