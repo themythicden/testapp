@@ -14,9 +14,15 @@ export function getVariants(card, setView = "master") {
   console.log("CARD: ", card.number);
   let group = "default";
 
-  
-  if (supertype === "trainer" && (number > base)) group = "fa_trainer";
-  else if (supertype === "trainer") group = "trainer";
+  if (supertype === "trainer") {
+      if (rarity === "ace spec rare") {
+          group = "ace_spec";
+      } else if (number > base) {
+          group = "fa_trainer";
+      } else {
+          group = "trainer";
+      }
+  }
   else if (rarity === "common") group = "common";
   else if (rarity === "uncommon") group = "uncommon";
   else if (rarity === "rare") group = "rare";
