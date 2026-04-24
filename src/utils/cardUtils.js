@@ -31,7 +31,7 @@ export function getVariants(card, setView = "master") {
 
 
 export function getCardStats(card, userCards = {}, setFilter, collection) {
-  const variants = getVariants(card, setFilter, collection);
+  const variants = getVariants(card, setFilter);
 
   let owned = 0;
 
