@@ -1,12 +1,9 @@
-import { SETS } from "./setConfig";
-
-export function getSetInfo(setCode) {
-  return SETS[setCode] || null;
-}
+import { SET_CONFIG } from "../config/setConfig";
 
 export function isSecretCard(card, setCode) {
-  const set = getSetInfo(setCode);
-  if (!set) return false;
+  const config = SET_CONFIG[setCode];
+  if (!config) return false;
 
-  return Number(card.number) > set.base;
+  const number = parseInt(card.number, 10);
+  return number > config.standard;
 }
