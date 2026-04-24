@@ -1,4 +1,26 @@
 export const SET_CONFIG = {
+    sv10: {
+    name: "Destined Rivals",
+    standard: 159,
+    extra:31,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  
   sv9: {
     name: "Journey Together",
     standard: 159,
@@ -63,8 +85,7 @@ export const SET_CONFIG = {
       uncommon: ["normal", "reverse", "energy", "pokeball"],
       rare: ["holo", "reverse", "energy"],
       trainer: ["normal", "reverse", "pokeball"],
-
-      default: ["normal"]
+      default: ["holo"]
     }
   }
 };
