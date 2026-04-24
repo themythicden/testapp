@@ -15,7 +15,9 @@ export default function FiltersSection({
   supertypeFilter,
   setSupertypeFilter,
   legalOnly,
-  setLegalOnly
+  setLegalOnly,
+  searchQuery,
+  setSearchQuery,
 }) {
   const [open, setOpen] = useState(true);
 
@@ -43,7 +45,14 @@ export default function FiltersSection({
 
   return (
     <div className="sticky top-0 z-20 bg-gray-900 border-b border-gray-700">
-      
+      {/* SEARCH BAR */}
+      <input
+        type="text"
+        placeholder="Search name or #..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
+      />
       {/* HEADER */}
       <div
         onClick={() => setOpen(prev => !prev)}
