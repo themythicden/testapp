@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 export default function Header({ user }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const userEmail = user.email;
+  //const userEmail = user.email;
+  console.log("Usserrr: ", user);
   const userName = user.name;
   const username = userName ? userEmail.split('@')[0] : "";
 
