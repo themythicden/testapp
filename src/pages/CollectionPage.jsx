@@ -7,8 +7,9 @@ import { supabase } from "../lib/supabaseClient";
 // FILTERS
 import Filters from "../components/Filters";
 import StatusFilters from "../components/StatusFilters";
-import TypeFilters from "../components/TypeFilters"
-import SupertypeFilters from "../components/SupertypeFilters"
+import TypeFilters from "../components/TypeFilters";
+import SupertypeFilters from "../components/SupertypeFilters";
+import FiltersSection from "../components/FiltersSection";
 
 import { isSecretCard } from "../utils/setUtils";
 import { getVisibleCards } from "../utils/cardSelectors.js";
@@ -281,17 +282,19 @@ const handleRemove = async (cardId, variant) => {
         {collectionName || "Collection"}
       </h2>
 
-      <Filters
-        setCode={collection?.rule}
-        current={setFilter}
-        onChange={setSetFilter}
+      <FiltersSection
+        collection={collection}
+        setFilter={setFilter}
+        setSetFilter={setSetFilter}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        typeFilter={typeFilter}
+        setTypeFilter={setTypeFilter}
+        supertypeFilter={supertypeFilter}
+        setSupertypeFilter={setSupertypeFilter}
+        legalOnly={legalOnly}
+        setLegalOnly={setLegalOnly}
       />
-
-      <StatusFilters statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
-      <TypeFilters selected={typeFilter} onChange={setTypeFilter} />
-      
-      <SupertypeFilters selected={supertypeFilter} onChange={setSupertypeFilter} />
-      
       <div className="p-4">
         <button
           onClick={() => setLegalOnly(prev => !prev)}
