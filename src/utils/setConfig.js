@@ -2,6 +2,7 @@ export const SET_CONFIG = {
   sv9: {
     name: "Journey Together",
     standard: 159,
+    extra:31,
 
     views: {
       standard: ["normal", "holo"],
@@ -20,6 +21,7 @@ export const SET_CONFIG = {
   sv8pt5: {
     name: "Prismatic Evolutions",
     standard: 131,
+    extra: 49,
 
     views: {
       standard: ["normal", "holo"],
