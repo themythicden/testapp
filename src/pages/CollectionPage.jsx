@@ -270,7 +270,11 @@ const handleRemove = async (cardId, variant) => {
         {collectionName || "Collection"}
       </h2>
 
-      <Filters filter={setFilter} setFilter={setSetFilter} />
+      <Filters
+        setCode={collection?.rule}
+        current={setFilter}
+        onChange={setSetFilter}
+      />
 
       <StatusFilters statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
 
