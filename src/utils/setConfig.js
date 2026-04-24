@@ -14,6 +14,9 @@ export const SET_CONFIG = {
       common: ["normal", "reverse"],
       uncommon: ["normal", "reverse"],
       rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
       default: ["holo"]
     }
   },
