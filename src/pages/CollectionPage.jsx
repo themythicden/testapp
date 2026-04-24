@@ -260,6 +260,8 @@ const handleRemove = async (cardId, variant) => {
         setSupertypeFilter={setSupertypeFilter}
         legalOnly={legalOnly}
         setLegalOnly={setLegalOnly}
+        searchQuery={searchQuery}              // ✅ ADD
+        setSearchQuery={setSearchQuery} 
       />
 
       <CardGrid
