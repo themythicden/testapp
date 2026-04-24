@@ -7,11 +7,12 @@ export function getVariants(card, setView = "master") {
   //console.log("CONFIG: ", config.standard);
   if (!config) return ["normal"];
 
+  const st = card.supertype;
   const rarity = (card.rarity || "").toLowerCase();
   const supertype = (card.supertype || "").toLowerCase();
   const number = card.number;
   
-  //console.log("CARD: ", card.number);
+  console.log("CARD: ", number" "+st);
   let group = "default";
 
   if (supertype === "trainer") {
