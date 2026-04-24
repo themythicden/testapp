@@ -2,15 +2,16 @@ import { SET_CONFIG } from "./setConfig";
 
 export function getVariants(card, setView = "master") {
   const config = SET_CONFIG[card.set_code];
-  const base = config;
+  const base = config.standard;
   //console.log("SET_CONFIG: " , base);
-  console.log("CONFIG: ", config.standard);
+  //console.log("CONFIG: ", config.standard);
   if (!config) return ["normal"];
 
   const rarity = (card.rarity || "").toLowerCase();
   const supertype = (card.supertype || "").toLowerCase();
   const number = card.number;
-
+  
+  console.log("CARD: ", card);
   let group = "default";
 
   if (supertype === "trainer") group = "trainer";
