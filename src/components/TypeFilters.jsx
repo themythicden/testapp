@@ -21,19 +21,22 @@ export default function TypeFilters({ selected, onChange }) {
   };
 
   return (
-    <div className="flex flex-wrap gap-2 p-4">
-      {TYPES.map(type => (
-        <button
-          key={type}
-          onClick={() => toggle(name)}
-          className={`p-2 rounded-full border-2 ${
-            active ? "border-green-400 scale-100" : "border-gray-600 opacity-60"
-          }`}
-        >
-          <img src={icon} alt{name} className="w-6 h-6" />
-        </button>
+    <div className="flex flex-wrap gap-2">
+      {TYPES.map(({ name, icon }) => {
+        const active = selected.includes(name);
+
+        return (
+          <button
+            key={name}
+            onClick={() => toggle(name)}
+            className={`p-2 rounded-full border-2 ${
+              active ? "border-green-400 scale-110" : "border-gray-600 opacity-60"
+            }`}
+          >
+            <img src={icon} alt={name} className="w-6 h-6" />
+          </button>
         );
-      )}
+      })}
     </div>
   );
 }
