@@ -2,7 +2,7 @@ import { SET_CONFIG } from "./setConfig";
 
 export function getVariants(card, setView = "master") {
   const config = SET_CONFIG[card.set_code];
-  const base = SET_CONFFIG;
+  const base = SET_CONFIG;
   console.log("SET_CONFIG: " , base);
   if (!config) return ["normal"];
 
