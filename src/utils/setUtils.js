@@ -1,4 +1,4 @@
-import { SET_CONFIG } from "../config/setConfig";
+import { SET_CONFIG } from "./setConfig";
 
 export function isSecretCard(card, setCode) {
   const config = SET_CONFIG[setCode];
