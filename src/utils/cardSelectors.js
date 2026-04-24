@@ -19,6 +19,16 @@ export function getVisibleCards({
     const stats = getCardStats(card, userCards, setFilter);
     const isSecret = isSecretCard(card, collection.rule);
 
+    // SEARCH FILTER
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+    
+      const matchesName = card.name?.toLowerCase().includes(q);
+      const matchesNumber = String(card.number).includes(q);
+    
+      if (!matchesName && !matchesNumber) return false;
+    }
+
     // -----------------------------
     // SET FILTER
     // -----------------------------
