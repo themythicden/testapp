@@ -14,7 +14,7 @@ export const SET_CONFIG = {
       common: ["normal", "reverse"],
       uncommon: ["normal", "reverse"],
       rare: ["holo", "reverse"],
-      default: ["normal"]
+      default: ["holo"]
     }
   },
 
@@ -37,7 +37,7 @@ export const SET_CONFIG = {
       rare: ["holo", "reverse", "pokeball", "masterball"],
       trainer: ["normal", "reverse", "pokeball"],
 
-      default: ["normal"]
+      default: ["holo"]
     }
   },
 
