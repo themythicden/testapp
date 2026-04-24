@@ -1,10 +1,28 @@
-export const SETS = {
+export const SET_CONFIG = {
   sv9: {
-    base: 159,
-    full: 190,
+    name: "Journey Together",
+    standard: 159,
+    extra: 31,
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      default: ["normal"]
+    }
   },
-  sv8: {
-    base: 131,
-    full: 160,
-  },
+
+  sv8pt5: {
+    name: "Prismatic Evolutions",
+    standard: 131,
+    extra: 49,
+
+    variants: {
+      common: ["normal", "reverse", "pokeball", "masterball"],
+      uncommon: ["normal", "reverse", "pokeball", "masterball"],
+      rare: ["holo", "reverse", "pokeball"],
+      trainer: ["normal"],
+      default: ["normal"]
+    }
+  }
 };
