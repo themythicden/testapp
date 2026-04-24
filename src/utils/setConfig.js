@@ -25,6 +25,7 @@ export const SET_CONFIG = {
 
     views: {
       standard: ["normal", "holo"],
+      parallel: ["normal","holo","reverse"],
       pokeball: ["normal", "holo", "reverse", "pokeball"],
       masterball: ["normal", "holo", "reverse", "pokeball", "masterball"],
       master: "all"
