@@ -4,7 +4,7 @@ export function getVariants(card, setView = "master") {
   const config = SET_CONFIG[card.set_code];
   const base = config;
   //console.log("SET_CONFIG: " , base);
-  console.log("CONFIG: ", config);
+  console.log("CONFIG: ", config.standard);
   if (!config) return ["normal"];
 
   const rarity = (card.rarity || "").toLowerCase();
