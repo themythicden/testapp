@@ -11,7 +11,7 @@ export function getVariants(card, setView = "master") {
   const supertype = (card.supertype || "").toLowerCase();
   const number = card.number;
   
-  console.log("CARD: ", card.number);
+  //console.log("CARD: ", card.number);
   let group = "default";
 
   if (supertype === "trainer") {
