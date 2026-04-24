@@ -68,6 +68,28 @@ export const SET_CONFIG = {
     }
   },
 
+   sv8: {
+    name: "Surging Sparks",
+    standard: 159,
+    extra:31,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+
   me2pt5: {
     name: "Mega Evolutions",
 
