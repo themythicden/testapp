@@ -34,8 +34,8 @@ export const SET_CONFIG = {
     variants: {
       common: ["normal", "reverse", "pokeball", "masterball"],
       uncommon: ["normal", "reverse", "pokeball", "masterball"],
-      rare: ["holo", "reverse", "pokeball"],
-      trainer: ["normal"],
+      rare: ["holo", "reverse", "pokeball", "masterball"],
+      trainer: ["normal", "reverse", "pokeball"],
 
       default: ["normal"]
     }
