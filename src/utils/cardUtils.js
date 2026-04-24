@@ -19,14 +19,11 @@ export function getVariants(card, setView = "master") {
     config.variants.default ||
     ["normal"];
 
-  // -----------------------------
-  // APPLY VIEW FILTER
-  // -----------------------------
-  const allowed = config.views[setView];
+  const view = config.views?.[setView];
 
-  if (allowed === "all") return variants;
+  if (!view || view === "all") return variants;
 
-  return variants.filter(v => allowed.includes(v));
+  return variants.filter(v => view.includes(v));
 }
 
 
