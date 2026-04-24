@@ -42,7 +42,7 @@ export default function FiltersSection({
   };
 
   return (
-    <div className="sticky top-0 z-50 bg-gray-900 border-b border-gray-700">
+    <div className="sticky top-0 z-20 bg-gray-900 border-b border-gray-700">
       
       {/* HEADER */}
       <div
