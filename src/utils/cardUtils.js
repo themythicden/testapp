@@ -1,4 +1,4 @@
-import { SET_CONFIG } from "../setConfig";
+import { SET_CONFIG } from "./setConfig";
 
 export function getVariants(card, setFilter = "master") {
   const setCode = card.set_code;
