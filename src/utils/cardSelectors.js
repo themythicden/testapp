@@ -17,7 +17,8 @@ export function getVisibleCards({
 }) {
   if (!collection) return [];
 
-  return cards.filter(card => {
+  //return cards.filter(card => {
+  let result = cards.filter(card => {
     const stats = getCardStats(card, userCards, setFilter);
     const isSecret = isSecretCard(card, collection.rule);
 
@@ -80,4 +81,25 @@ export function getVisibleCards({
         return true;
     }
   });
+
+  // SORTING
+  result.sort((a, b) => {
+    if (sortBy === "name") {
+      return a.name.localeCompare(b.name);
+    }
+  
+    if (sortBy === "owned") {
+      const countA = getVariants(a, setFilter)
+        .reduce((sum, v) => sum + (userCards[`${a.id}_${v}`] || 0), 0);
+  
+      const countB = getVariants(b, setFilter)
+        .reduce((sum, v) => sum + (userCards[`${b.id}_${v}`] || 0), 0);
+  
+      return countB - countA; // highest first
+    }
+  
+    // DEFAULT: number
+    return Number(a.number) - Number(b.number);
+  });
+  return result;
 }
