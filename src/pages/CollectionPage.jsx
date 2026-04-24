@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import CardGrid from "../components/CardGrid";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
+
+import CardGrid from "../components/CardGrid";
 //import { getCardStats} from "../utils/cardUtils";
 //import { getVariants} from "../utils/cardUtils";
 // FILTERS
@@ -19,7 +20,6 @@ export default function CollectionPage() {
   const [searchParams] = useSearchParams();
   const collectionId = searchParams.get("id");
   const collectionName = searchParams.get("name");
-
   const [user, setUser] = useState(null);
   const [cards, setCards] = useState([]);
   const [userCards, setUserCards] = useState({});
@@ -81,6 +81,10 @@ useEffect(() => {
 }, [collectionId]);
 
 
+
+// -------------------------
+// FILTER CARDS
+// ----------------------------
   // KEEP THIS FILTER
   const visibleCards = collection 
     ? getVisibleCards({
@@ -94,46 +98,6 @@ useEffect(() => {
         legalOnly
       })
     : [];
-// -------------------------
-// FILTER CARDS
-// ----------------------------
-/*const filteredCards = cards.filter(card => {
-  const stats = getCardStats(card, userCards, setFilter);
-  const isSecret = isSecretCard(card, collection.rule);
-
-  // set-level filtering
-  if (setFilter === "standard") return !isSecret;
-  if (setFilter === "parallel") return !isSecret;
-  if (setFilter === "master") return true;
-
-  return true;
-
-  switch (statusFilter) {
-    case "owned":
-      return stats.isComplete;
-
-    case "needed":
-      return stats.isMissing;
-
-    case "duplicates":
-      return getVariants(card, setFilter).some(v => {
-        const key = `${card.id}_${v}`;
-        return (userCards[key]?.total || 0) > 1;
-      });
-
-    default:
-      return true;
-  }
-});*/
-
-  
-/*const filteredCards = getVisibleCards({
-  cards,
-  userCards,
-  collection,
-  setFilter,
-  statusFilter,
-});*/
 
   
 // -----------------------------
@@ -295,16 +259,6 @@ const handleRemove = async (cardId, variant) => {
         legalOnly={legalOnly}
         setLegalOnly={setLegalOnly}
       />
-      <div className="p-4">
-        <button
-          onClick={() => setLegalOnly(prev => !prev)}
-          className={`px-3 py-1 rounded ${
-            legalOnly ? "bg-yellow-500" : "bg-gray-700"
-          }`}
-        >
-          Legal Only
-        </button>
-      </div>
 
       <CardGrid
         cards={visibleCards}
