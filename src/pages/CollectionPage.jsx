@@ -28,6 +28,7 @@ export default function CollectionPage() {
   const [typeFilter, setTypeFilter] = useState([]); // multi-select
   const [supertypeFilter, setSupertypeFilter] = useState([]);
   const [legalOnly, setLegalOnly] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const activeUser = user; // clean alias
 
@@ -93,6 +94,7 @@ useEffect(() => {
         setFilter,
         statusFilter,
         collection,
+        searchQuery,
         typeFilter,
         supertypeFilter,
         legalOnly
