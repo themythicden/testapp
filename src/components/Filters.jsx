@@ -1,17 +1,25 @@
-export default function Filters({ filter, setFilter }) {
+import { SET_CONFIG } from "../utils/setConfig";
+
+export default function Filters({ setCode, current, onChange }) {
+  const config = SET_CONFIG[setCode];
+
+  if (!config) return null;
+
+  const views = Object.keys(config.views);
+
   return (
     <div className="flex gap-2 p-4">
-      {["master", "standard", "parallel"].map(f => (
+      {views.map(view => (
         <button
-          key={f}
-          onClick={() => setFilter(f)}
+          key={view}
+          onClick={() => onChange(view)}
           className={`px-3 py-1 rounded ${
-            filter === f
+            current === view
               ? "bg-blue-600 text-white"
               : "bg-gray-700 text-gray-300"
           }`}
         >
-          {f.toUpperCase()}
+          {view.toUpperCase()}
         </button>
       ))}
     </div>
