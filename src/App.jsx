@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "./lib//supabaseClient";
 import LoginPage from "./pages/LoginPage";
 import CollectionPage from "./pages/CollectionPage";
+import ISOPage from "./pages/ISOPage";
+
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -34,7 +36,7 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/collections" element={<CollectionsPage user={user} />} />
           <Route path="/collection" element={<CollectionPage user={user} />} />
-          
+          <Route path="/iso" element={<ISOPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
