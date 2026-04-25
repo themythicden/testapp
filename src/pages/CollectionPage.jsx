@@ -75,7 +75,7 @@ useEffect(() => {
       return;
     }
 
-    console.log("COLLECTION:", data);
+    //console.log("COLLECTION:", data);
     setCollection(data);
   }
 
@@ -111,7 +111,7 @@ useEffect(() => {
   async function loadCards() {
     if (!collection) return;
 
-    console.log("Applying rule:", collection.type, collection.rule);
+    //console.log("Applying rule:", collection.type, collection.rule);
 
     let query = supabase.from("cards").select("*");
 
@@ -144,7 +144,7 @@ useEffect(() => {
   async function loadUserCards() {
     if (!user) return;
 
-    console.log("Loading user cards for:", user.email);
+    //console.log("Loading user cards for:", user.email);
 
     const { data, error } = await supabase
       .from("user_cards")
@@ -156,7 +156,7 @@ useEffect(() => {
       return;
     }
 
-    console.log("USER CARDS RAW:", data);
+    //console.log("USER CARDS RAW:", data);
 
     const map = {};
     
