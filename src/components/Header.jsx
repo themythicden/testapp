@@ -47,6 +47,10 @@ export default function Header({ user }) {
                 My Collections
               </div>
 
+              <button onClick={() => navigate("/iso")}>
+                ISO
+              </button>
+
               <div
                 className="cursor-pointer mt-2"
                 onClick={handleLogout}
