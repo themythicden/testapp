@@ -80,6 +80,37 @@ export default function ISOPage() {
   };
 
   // -----------------------------
+  // FIND MATCHES
+  // -----------------------------
+  const findMatches = async () => {
+  const { data } = await supabase.from("user_cards").select("*");
+
+  const matches = [];
+
+  isoCards.forEach(iso => {
+    data.forEach(userCard => {
+      if (iso.card_id !== userCard.card_id) return;
+
+      if (
+        iso.variant === "any" ||
+        iso.variant === userCard.variant
+      ) {
+        if (userCard.owned > 0 && userCard.email !== user.email) {
+          matches.push({
+            card_id: iso.card_id,
+            owner: userCard.email,
+            variant: userCard.variant,
+            owned: userCard.owned
+          });
+        }
+      }
+    });
+  });
+
+  console.log("MATCHES:", matches);
+};
+
+  // -----------------------------
   // UI
   // -----------------------------
   if (!user) return <div className="p-4">Loading...</div>;
@@ -94,6 +125,13 @@ export default function ISOPage() {
           className="mb-2 bg-gray-700 px-2 py-1 rounded"
         >
           {showISO ? "Hide ISO" : "Show ISO"}
+        </button>
+
+        <button
+          onClick={findMatches}
+          className="bg-purple-600 px-3 py-1 rounded"
+        >
+          Find Matches
         </button>
 
         {showISO && (
