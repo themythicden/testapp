@@ -1,4 +1,49 @@
 export const SET_CONFIG = {
+
+    
+    me2pt5: {
+        name: "Ascended Heroes",
+        
+        standard: 217,
+        extra: 78,
+        
+        views: {
+          standard: ["normal", "holo"],
+          energy: ["normal", "holo", "reverse", "energy"],
+          pokeball: ["normal", "holo", "reverse", "energy", "pokeball"],
+          master: "all"
+        },
+        
+        variants: {
+          common: ["normal", "reverse", "energy", "pokeball"],
+          uncommon: ["normal", "reverse", "energy", "pokeball"],
+          rare: ["holo", "reverse", "energy"],
+          trainer: ["normal", "reverse", "pokeball"],
+          default: ["holo"]
+        }
+    },
+    
+    me2: {
+    name: "Phantasmal Flames",
+    standard: 94,
+    extra:36,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },    
     sv10: {
     name: "Destined Rivals",
     standard: 159,
@@ -88,26 +133,6 @@ export const SET_CONFIG = {
       ace_spec: ["holo"],
       default: ["holo"]
     }
-  },
-
-  me2pt5: {
-    name: "Mega Evolutions",
-
-    standard: 120,
-
-    views: {
-      standard: ["normal", "holo"],
-      energy: ["normal", "holo", "reverse", "energy"],
-      pokeball: ["normal", "holo", "reverse", "energy", "pokeball"],
-      master: "all"
-    },
-
-    variants: {
-      common: ["normal", "reverse", "energy", "pokeball"],
-      uncommon: ["normal", "reverse", "energy", "pokeball"],
-      rare: ["holo", "reverse", "energy"],
-      trainer: ["normal", "reverse", "pokeball"],
-      default: ["holo"]
-    }
   }
+
 };
