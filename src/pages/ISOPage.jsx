@@ -10,7 +10,6 @@ export default function ISOPage() {
   const [search, setSearch] = useState("");
   const [showISO, setShowISO] = useState(true);
   const [variantFilter, setVariantFilter] = useState(["any"]);
-  const [isoCards, setIsoCards] = useState({});
   
 
   // -----------------------------
