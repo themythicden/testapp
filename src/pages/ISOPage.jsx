@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { getVariants } from "../utils/cardUtils";
+import VariantRow from "../components/VariantRow"
 
 export default function ISOPage() {
   const [user, setUser] = useState(null);
@@ -7,6 +9,9 @@ export default function ISOPage() {
   const [cards, setCards] = useState([]);
   const [search, setSearch] = useState("");
   const [showISO, setShowISO] = useState(true);
+  const [variantFilter, setVariantFilter] = useState(["any"]);
+  const [isoCards, setIsoCards] = useState({});
+  
 
   // -----------------------------
   // AUTH
@@ -21,20 +26,105 @@ export default function ISOPage() {
   // LOAD ISO
   // -----------------------------
   useEffect(() => {
-    if (!user) return;
-
     async function loadISO() {
-      const { data } = await supabase
+      if (!user) return;
+  
+      const { data, error } = await supabase
         .from("iso_cards")
         .select("*")
         .eq("email", user.email);
-
-      setIsoCards(data || []);
+  
+      if (error) return console.error(error);
+  
+      const map = {};
+  
+      data.forEach(item => {
+        const key = `${item.card_id}_${item.variant}`;
+        map[key] = Number(item.quantity || 0);
+      });
+  
+      setIsoCards(map);
     }
-
+  
     loadISO();
   }, [user]);
 
+  // -----------------------------
+  // ISO ADD
+  // ----------------------------- 
+  const handleISOAdd = async (cardId, variant) => {
+  const key = `${cardId}_${variant}`;
+  const current = isoCards[key] || 0;
+  const newCount = current + 1;
+
+  // Optimistic UI
+  setIsoCards(prev => ({
+    ...prev,
+    [key]: newCount
+  }));
+
+  const { error } = await supabase
+    .from("iso_cards")
+    .upsert({
+      email: user.email,
+      card_id: cardId,
+      variant,
+      quantity: newCount
+    }, {
+      onConflict: "email,card_id,variant"
+    });
+
+  if (error) console.error(error);
+};
+
+   // -----------------------------
+  // ISO REMOVE
+  // -----------------------------
+  const handleISORemove = async (cardId, variant) => {
+  const key = `${cardId}_${variant}`;
+  const current = isoCards[key] || 0;
+
+  if (current <= 0) return;
+
+  const newCount = current - 1;
+
+  // Optimistic UI
+  setIsoCards(prev => {
+    const updated = { ...prev };
+
+    if (newCount === 0) {
+      delete updated[key];
+    } else {
+      updated[key] = newCount;
+    }
+
+    return updated;
+  });
+
+  if (newCount === 0) {
+    await supabase
+      .from("iso_cards")
+      .delete()
+      .match({
+        email: user.email,
+        card_id: cardId,
+        variant
+      });
+  } else {
+    await supabase
+      .from("iso_cards")
+      .upsert({
+        email: user.email,
+        card_id: cardId,
+        variant,
+        quantity: newCount
+      }, {
+        onConflict: "email,card_id,variant"
+      });
+  }
+};
+  
+  
   // -----------------------------
   // SEARCH ALL CARDS
   // -----------------------------
@@ -112,10 +202,27 @@ export default function ISOPage() {
   console.log("MATCHES:", matches);
 };
 
+
+  // FUNCTIONS
+  const handleAdd = async (card) => {
+  const variants = selectedVariants[card.id] || ["any"];
+
+  for (const variant of variants) {
+    await supabase.from("iso_cards").insert({
+      email: user.email,
+      card_id: card.id,
+      variant,
+      quantity: 1
+    });
+  }
+};
+
   // -----------------------------
   // UI
   // -----------------------------
   if (!user) return <div className="p-4">Loading...</div>;
+
+  
 
   return (
     <div className="p-4 space-y-4">
@@ -165,22 +272,26 @@ export default function ISOPage() {
             <img src={card.image_small} className="w-8 h-8"/>
             <span className="text-white">{card.name} #{card.number} [{card.set_name}]</span>
 
-            <div className="flex gap-2">
-              <button
-                onClick={() => addISO(card, "any")}
-                className="bg-blue-600 px-2 py-1 rounded"
-              >
-                ANY
-              </button>
-
-              <button
-                onClick={() => addISO(card, "normal")}
-                className="bg-green-600 px-2 py-1 rounded"
-              >
-                NORMAL
-              </button>
-            </div>
+            <button onClick={() => handleAdd(card)}>
+              Add
+            </button>
           </div>
+      
+          {variants.map(v => {
+            const key = `${card.id}_${v}`;
+            const count = isoCards[key] || 0;
+          
+            return (
+              <VariantRow
+                key={v}
+                variant={v}
+                count={count}
+                onAdd={() => handleISOAdd(card.id, v)}
+                onRemove={() => handleISORemove(card.id, v)}
+              />
+            );
+          })}
+          
         ))}
       </div>
 
