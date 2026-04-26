@@ -2,9 +2,20 @@ import React from "react";
 import { getCardStats, getVariants } from "../utils/cardUtils";
 import VariantRow from "./VariantRow";
 
-function Card({ card, userCards, setFilter, onAdd, onRemove }) {
-  const variants = getVariants(card, setFilter);
+function Card({ card, userCards, setFilter, statusFilter, onAdd, onRemove }) {
+  //const variants = getVariants(card, setFilter);
+  // ------------ UPGRADED FILTER -------------
+  const allVariants = getVariants(card, setFilter);
 
+  const variants =
+    statusFilter === "needed"
+      ? allVariants.filter(v => {
+          const key = `${card.id}_${v}`;
+          return (userCards[key] || 0) === 0;
+        })
+      : allVariants;
+  //---------------------------------------------
+  
   const stats = getCardStats(card, userCards, setFilter);
 
   const handleAdd = (variant) => onAdd(card.id, variant);
