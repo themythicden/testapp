@@ -5,7 +5,7 @@ import VariantRow from "../components/VariantRow"
 
 export default function ISOPage() {
   const [user, setUser] = useState(null);
-  const [isoCards, setIsoCards] = useState([]);
+  const [isoCards, setIsoCards] = useState({});
   const [cards, setCards] = useState([]);
   const [search, setSearch] = useState("");
   const [showISO, setShowISO] = useState(true);
@@ -42,7 +42,7 @@ export default function ISOPage() {
         map[key] = Number(item.quantity || 0);
       });
   
-      setIsoCards(map);
+      set(map);
     }
   
     loadISO();
@@ -53,11 +53,11 @@ export default function ISOPage() {
   // ----------------------------- 
   const handleISOAdd = async (cardId, variant) => {
   const key = `${cardId}_${variant}`;
-  const current = isoCards[key] || 0;
+  const current = [key] || 0;
   const newCount = current + 1;
 
   // Optimistic UI
-  setIsoCards(prev => ({
+  set(prev => ({
     ...prev,
     [key]: newCount
   }));
@@ -81,14 +81,14 @@ export default function ISOPage() {
   // -----------------------------
   const handleISORemove = async (cardId, variant) => {
   const key = `${cardId}_${variant}`;
-  const current = isoCards[key] || 0;
+  const current = [key] || 0;
 
   if (current <= 0) return;
 
   const newCount = current - 1;
 
   // Optimistic UI
-  setIsoCards(prev => {
+  set(prev => {
     const updated = { ...prev };
 
     if (newCount === 0) {
@@ -163,7 +163,7 @@ export default function ISOPage() {
     });
 
     if (!error) {
-      setIsoCards(prev => [
+      set(prev => [
         ...prev,
         { card_id: card.id, variant, quantity: Number(qty) }
       ]);
@@ -178,7 +178,7 @@ export default function ISOPage() {
 
   const matches = [];
 
-  isoCards.forEach(iso => {
+  .forEach(iso => {
     data.forEach(userCard => {
       if (iso.card_id !== userCard.card_id) return;
 
@@ -244,7 +244,7 @@ return (
      
       {showISO && (
         <div className="space-y-2">
-          {isoCards.map((item, i) => (
+          {Object.entries(isoCards).map((item, i) => (
             <div key={i} className="flex justify-between bg-gray-700 p-2 rounded text-white">
               <span>{item.card_id}</span>
               <span>{item.variant}</span>
@@ -267,6 +267,7 @@ return (
     {/* RESULTS */}
     <div className="space-y-2">
       {cards.map((card) => (
+      const variants = getVariants(card, "master"); 
         // --- FIX: Added Fragment to wrap siblings ---
         <React.Fragment key={card.id}>
           <div className="flex justify-between bg-gray-700 p-2 rounded">
@@ -293,7 +294,6 @@ return (
         </React.Fragment>
       ))}
     </div>
-     `${console.log("ISO STATE:", isoCards)}`
   </div>
 );
 
