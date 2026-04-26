@@ -11,7 +11,6 @@ export default function ISOConditionSelector({ selected, onChange }) {
       : [...selected.filter(c => c !== "any"), condition];
 
     if (next.length === 0) next = ["any"];
-
     onChange(next);
   };
 
