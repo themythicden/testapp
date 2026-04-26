@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { getVariants } from "../utils/cardUtils";
 import VariantRow from "../components/VariantRow";
+import ISOVariantSelector from "../components/ISOVariantSelector";
+import ISOConditionSelector from "../components/ISOConditionSelector";
 
 export default function ISOPage() {
   const [user, setUser] = useState(null);
@@ -202,12 +204,13 @@ Object.entries(isoCards).forEach(([key, quantity]) => {
         {showISO && (
           <div className="space-y-2">
             {Object.entries(isoCards).map(([key, qty]) => {
-              const [cardId, variant] = key.split("_");
+              const [cardId, variant, conndition] = key.split("_");
 
               return (
                 <div key={key} className="flex justify-between bg-gray-700 p-2 rounded text-white">
                   <span>{cardId}</span>
                   <span>{variant}</span>
+                  <span>{condition}</span>
                   <span>x{qty}</span>
                 </div>
               );
