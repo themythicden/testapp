@@ -178,25 +178,27 @@ export default function ISOPage() {
 
   const matches = [];
 
-  .forEach(iso => {
-    data.forEach(userCard => {
-      if (iso.card_id !== userCard.card_id) return;
+Object.entries(isoCards).forEach(([key, quantity]) => {
+  const [cardId, variant] = key.split("_");
 
-      if (
-        iso.variant === "any" ||
-        iso.variant === userCard.variant
-      ) {
-        if (userCard.owned > 0 && userCard.email !== user.email) {
-          matches.push({
-            card_id: iso.card_id,
-            owner: userCard.email,
-            variant: userCard.variant,
-            owned: userCard.owned
-          });
-        }
+  data.forEach(userCard => {
+    if (cardId !== userCard.card_id) return;
+
+    if (
+      variant === "any" ||
+      variant === userCard.variant
+    ) {
+      if (userCard.owned > 0 && userCard.email !== user.email) {
+        matches.push({
+          card_id: cardId,
+          owner: userCard.email,
+          variant: userCard.variant,
+          owned: userCard.owned
+        });
       }
-    });
+    }
   });
+});
 
   console.log("MATCHES:", matches);
 };
