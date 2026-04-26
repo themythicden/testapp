@@ -293,7 +293,7 @@ return (
         </React.Fragment>
       ))}
     </div>
-     `{console.log("ISO STATE:", isoCards)}`
+     `${console.log("ISO STATE:", isoCards)}`
   </div>
 );
 
