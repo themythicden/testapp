@@ -45,7 +45,9 @@ export default function ISOPage() {
       const { data } = await supabase
         .from("cards")
         .select("*")
-        .or(`name.ilike.%${search}%,number.ilike.%${search}%`)
+        //.or(`name.ilike.%${search}%,number.ilike.%${search}%`)
+        .or(`name.ilike.%${search}%`)
+        //.ilike("number", `%$(search)%`)
         .limit(50);
 
       setCards(data || []);
