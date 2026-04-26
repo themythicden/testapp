@@ -49,71 +49,66 @@ export default function ISOPage() {
   // -----------------------------
   // ISO ADD
   // -----------------------------
-  const handleISOAdd = async (cardId, variant) => {
-    const key = `${cardId}_${variant}`;
-    const current = isoCards[key] || 0; // ✅ FIXED
-    const newCount = current + 1;
+const handleISOAdd = async (cardId, variant, condition) => {
+  const key = `${cardId}_${variant}_${condition}`;
+  const current = isoCards[key] || 0;
+  const newCount = current + 1;
 
-    setIsoCards(prev => ({
-      ...prev,
-      [key]: newCount
-    }));
+  setIsoCards(prev => ({
+    ...prev,
+    [key]: newCount
+  }));
 
-    await supabase.from("iso_cards").upsert({
-      email: user.email,
-      card_id: cardId,
-      variant,
-      quantity: newCount
-    }, {
-      onConflict: "email,card_id,variant"
-    });
-  };
+  await supabase.from("iso_cards").upsert({
+    email: user.email,
+    card_id: cardId,
+    variant,
+    condition,
+    quantity: newCount
+  }, {
+    onConflict: "email,card_id,variant,condition"
+  });
+};
 
   // -----------------------------
   // ISO REMOVE
   // -----------------------------
-  const handleISORemove = async (cardId, variant) => {
-    const key = `${cardId}_${variant}`;
-    const current = isoCards[key] || 0; // ✅ FIXED
+const handleISORemove = async (cardId, variant, condition) => {
+  const key = `${cardId}_${variant}_${condition}`;
+  const current = isoCards[key] || 0;
 
-    if (current <= 0) return;
+  if (current <= 0) return;
 
-    const newCount = current - 1;
+  const newCount = current - 1;
 
-    setIsoCards(prev => {
-      const updated = { ...prev };
+  setIsoCards(prev => {
+    const updated = { ...prev };
 
-      if (newCount === 0) {
-        delete updated[key];
-      } else {
-        updated[key] = newCount;
-      }
+    if (newCount === 0) delete updated[key];
+    else updated[key] = newCount;
 
-      return updated;
+    return updated;
+  });
+
+  if (newCount === 0) {
+    await supabase.from("iso_cards").delete().match({
+      email: user.email,
+      card_id: cardId,
+      variant,
+      condition
     });
-
-    if (newCount === 0) {
-      await supabase
-        .from("iso_cards")
-        .delete()
-        .match({
-          email: user.email,
-          card_id: cardId,
-          variant
-        });
-    } else {
-      await supabase
-        .from("iso_cards")
-        .upsert({
-          email: user.email,
-          card_id: cardId,
-          variant,
-          quantity: newCount
-        }, {
-          onConflict: "email,card_id,variant"
-        });
-    }
-  };
+  } else {
+    await supabase.from("iso_cards").upsert({
+      email: user.email,
+      card_id: cardId,
+      variant,
+      condition,
+      quantity: newCount
+    }, {
+      onConflict: "email,card_id,variant,condition"
+    });
+  }
+};
 
   // -----------------------------
   // SEARCH
@@ -146,27 +141,34 @@ export default function ISOPage() {
 
     const matches = [];
 
-    Object.entries(isoCards).forEach(([key, quantity]) => {
-      const [cardId, variant] = key.split("_");
+Object.entries(isoCards).forEach(([key, quantity]) => {
+  const [cardId, variant, condition] = key.split("_");
 
-      data.forEach(userCard => {
-        if (cardId !== userCard.card_id) return;
+  data.forEach(userCard => {
+    if (cardId !== userCard.card_id) return;
 
-        if (
-          variant === "any" ||
-          variant === userCard.variant
-        ) {
-          if (userCard.owned > 0 && userCard.email !== user.email) {
-            matches.push({
-              card_id: cardId,
-              owner: userCard.email,
-              variant: userCard.variant,
-              owned: userCard.owned
-            });
-          }
-        }
+    const variantMatch =
+      variant === "any" || variant === userCard.variant;
+
+    const conditionMatch =
+      condition === "any" || condition === userCard.condition;
+
+    if (
+      variantMatch &&
+      conditionMatch &&
+      userCard.owned > 0 &&
+      userCard.email !== user.email
+    ) {
+      matches.push({
+        card_id: cardId,
+        owner: userCard.email,
+        variant: userCard.variant,
+        condition: userCard.condition,
+        owned: userCard.owned
       });
-    });
+    }
+  });
+});
 
     console.log("MATCHES:", matches);
   };
