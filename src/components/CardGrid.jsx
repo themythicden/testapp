@@ -1,6 +1,6 @@
 import Card from "./Card";
 
-export default function CardGrid({ cards, userCards, setFilter, onAdd, onRemove }) {
+export default function CardGrid({ cards, userCards, setFilter, statusFilter, onAdd, onRemove }) {
 
 
   
