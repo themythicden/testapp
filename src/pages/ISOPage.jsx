@@ -162,7 +162,7 @@ export default function ISOPage() {
       <div className="space-y-2">
         {cards.map(card => (
           <div key={card.id} className="flex justify-between bg-gray-700 p-2 rounded">
-            <span>{card.name} #{card.number}</span>
+            <span>{card.name} #{card.number} [{console.log('ccc', card)}]</span>
 
             <div className="flex gap-2">
               <button
