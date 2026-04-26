@@ -69,7 +69,7 @@ export function getVisibleCards({
         return stats.isComplete;
 
       case "needed":
-        return stats.isMissing;
+        return !stats.isComplete;
 
       case "duplicates":
         return getVariants(card, setFilter).some(v => {
