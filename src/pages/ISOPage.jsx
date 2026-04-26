@@ -9,7 +9,8 @@ export default function ISOPage() {
   const [cards, setCards] = useState([]);
   const [search, setSearch] = useState("");
   const [showISO, setShowISO] = useState(true);
-  const CONDITIONS = ["any", "nm", "lp", "mp", "hp"];
+  const [selectedVariants, setSelectedVariants] = useState({});
+  const [selectedConditions, setSelectedConditions] = useState({});
 
   // -----------------------------
   // AUTH
@@ -227,39 +228,86 @@ Object.entries(isoCards).forEach(([key, quantity]) => {
       {/* RESULTS */}
       <div className="space-y-4">
         {cards.map((card) => {
-          const variants = getVariants(card, "master"); // ✅ FIXED LOCATION
+{cards.map((card) => {
+  const variants = getVariants(card, "master");
 
-          return (
-            <div key={card.id} className="bg-gray-800 p-2 rounded">
+  return (
+    <div key={card.id} className="bg-gray-800 p-2 rounded space-y-2">
 
-              <div className="flex justify-between items-center">
-                <img src={card.image_small} className="w-8 h-8" alt={card.name}/>
-                <span className="text-white">
-                  {card.name} #{card.number} [{card.set_name}]
-                </span>
-              </div>
+      {/* CARD HEADER */}
+      <div className="flex justify-between items-center">
+        <img src={card.image_small} className="w-8 h-8" alt={card.name}/>
+        <span className="text-white text-sm">
+          {card.name} #{card.number}
+        </span>
+      </div>
 
-              {/* VARIANTS */}
-              <div className="mt-2 space-y-1">
-                {variants.map((v) => {
-                  const key = `${card.id}_${v}`;
-                  const count = isoCards[key] || 0;
+      {/* VARIANT SELECTOR */}
+      <ISOVariantSelector
+        card={card}
+        selected={selectedVariants[card.id] || ["any"]}
+        onChange={(vals) =>
+          setSelectedVariants(prev => ({
+            ...prev,
+            [card.id]: vals
+          }))
+        }
+      />
 
-                  return (
-                    <VariantRow
-                      key={v}
-                      variant={v}
-                      count={count}
-                      onAdd={() => handleISOAdd(card.id, v)}
-                      onRemove={() => handleISORemove(card.id, v)}
-                    />
-                  );
-                })}
-              </div>
+      {/* CONDITION SELECTOR */}
+      <ISOConditionSelector
+        selected={selectedConditions[card.id] || ["any"]}
+        onChange={(vals) =>
+          setSelectedConditions(prev => ({
+            ...prev,
+            [card.id]: vals
+          }))
+        }
+      />
 
-            </div>
-          );
-        })}
+      {/* ADD BUTTON */}
+      <button
+        onClick={async () => {
+          const variants = selectedVariants[card.id] || ["any"];
+          const conditions = selectedConditions[card.id] || ["any"];
+
+          for (const v of variants) {
+            for (const c of conditions) {
+              await supabase.from("iso_cards").upsert({
+                email: user.email,
+                card_id: card.id,
+                variant: v,
+                condition: c,
+                quantity: 1
+              }, {
+                onConflict: "email,card_id,variant,condition"
+              });
+            }
+          }
+        }}
+        className="bg-blue-600 text-white px-2 py-1 rounded text-sm"
+      >
+        Add to ISO
+      </button>
+
+      {/* VARIANT COUNTERS */}
+      {variants.map(v => {
+        const key = `${card.id}_${v}`;
+        const count = isoCards[key] || 0;
+
+        return (
+          <VariantRow
+            key={v}
+            variant={v}
+            count={count}
+            onAdd={() => handleISOAdd(card.id, v)}
+            onRemove={() => handleISORemove(card.id, v)}
+          />
+        );
+      })}
+    </div>
+  );
+})}
       </div>
     </div>
   );
