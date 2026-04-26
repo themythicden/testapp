@@ -9,6 +9,7 @@ export default function ISOPage() {
   const [cards, setCards] = useState([]);
   const [search, setSearch] = useState("");
   const [showISO, setShowISO] = useState(true);
+  const CONDITIONS = ["any", "nm", "lp", "mp", "hp"];
 
   // -----------------------------
   // AUTH
