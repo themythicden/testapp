@@ -224,63 +224,62 @@ export default function ISOPage() {
 
   
 
-  return (
-    <div className="p-4 space-y-4">
+return (
+  <div className="p-4 space-y-4">
+    {/* ISO LIST */}
+    <div className="bg-gray-800 p-3 rounded">
+      <button
+        onClick={() => setShowISO(!showISO)}
+        className="mb-2 bg-gray-700 px-2 py-1 rounded text-white"
+      >
+        {showISO ? "Hide ISO" : "Show ISO"}
+      </button>
 
-      {/* ISO LIST */}
-      <div className="bg-gray-800 p-3 rounded">
-        <button
-          onClick={() => setShowISO(!showISO)}
-          className="mb-2 bg-gray-700 px-2 py-1 rounded"
-        >
-          {showISO ? "Hide ISO" : "Show ISO"}
-        </button>
+      <button
+        onClick={findMatches}
+        className="ml-2 bg-purple-600 px-3 py-1 rounded text-white"
+      >
+        Find Matches
+      </button>
 
-        <button
-          onClick={findMatches}
-          className="bg-purple-600 px-3 py-1 rounded"
-        >
-          Find Matches
-        </button>
+      {showISO && (
+        <div className="space-y-2">
+          {isoCards.map((item, i) => (
+            <div key={i} className="flex justify-between bg-gray-700 p-2 rounded text-white">
+              <span>{item.card_id}</span>
+              <span>{item.variant}</span>
+              <span>x{item.quantity}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
 
-        {showISO && (
-          <div className="space-y-2">
-            {isoCards.map((item, i) => (
-              <div key={i} className="flex justify-between bg-gray-700 p-2 rounded">
-                <span>{item.card_id}</span>
-                <span>{item.variant}</span>
-                <span>x{item.quantity}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+    {/* SEARCH */}
+    <input
+      type="text"
+      placeholder="Search cards..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
+    />
 
-      {/* SEARCH */}
-      <input
-        type="text"
-        placeholder="Search cards..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
-      />
-
-      {/* RESULTS */}
-      <div className="space-y-2">
-        {cards.map(card => (
-          <div key={card.id} className="flex justify-between bg-gray-700 p-2 rounded">
-            <img src={card.image_small} className="w-8 h-8"/>
+    {/* RESULTS */}
+    <div className="space-y-2">
+      {cards.map((card) => (
+        // --- FIX: Added Fragment to wrap siblings ---
+        <React.Fragment key={card.id}>
+          <div className="flex justify-between bg-gray-700 p-2 rounded">
+            <img src={card.image_small} className="w-8 h-8" alt={card.name}/>
             <span className="text-white">{card.name} #{card.number} [{card.set_name}]</span>
-
-            <button onClick={() => handleAdd(card)}>
+            <button onClick={() => handleAdd(card)} className="text-white bg-blue-600 px-2 rounded">
               Add
             </button>
           </div>
-      
-          {variants.map(v => {
+
+          {variants.map((v) => {
             const key = `${card.id}_${v}`;
             const count = isoCards[key] || 0;
-          
             return (
               <VariantRow
                 key={v}
@@ -291,10 +290,10 @@ export default function ISOPage() {
               />
             );
           })}
-          
-        ))}
-      </div>
-
+        </React.Fragment>
+      ))}
     </div>
-  );
+  </div>
+);
+
 }
