@@ -241,7 +241,7 @@ return (
       >
         Find Matches
       </button>
-      {console.log("ISO STATE:", isoCards);}
+     
       {showISO && (
         <div className="space-y-2">
           {isoCards.map((item, i) => (
