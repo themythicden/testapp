@@ -272,6 +272,7 @@ const handleRemove = async (cardId, variant) => {
         cards={visibleCards}
         userCards={userCards}
         setFilter={setFilter}
+        statusFilter={statusFilter}
         onAdd={handleAdd}
         onRemove={handleRemove}
       />
