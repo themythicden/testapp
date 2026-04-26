@@ -12,6 +12,7 @@ export default function CardGrid({ cards, userCards, setFilter, onAdd, onRemove 
           card={card}
           userCards={userCards}
           setFilter={setFilter}
+          statusFilter={statusFilter}
           onAdd={onAdd}
           onRemove={onRemove}
         />
