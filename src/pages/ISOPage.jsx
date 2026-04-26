@@ -223,6 +223,8 @@ Object.entries(isoCards).forEach(([key, quantity]) => {
   // -----------------------------
   if (!user) return <div className="p-4">Loading...</div>;
 
+  const variants = getVariants(card, "master"); 
+
   
 
 return (
@@ -269,7 +271,7 @@ return (
     {/* RESULTS */}
     <div className="space-y-2">
       {cards.map((card) => (
-      const variants = getVariants(card, "master"); 
+      
         // --- FIX: Added Fragment to wrap siblings ---
         <React.Fragment key={card.id}>
           <div className="flex justify-between bg-gray-700 p-2 rounded">
