@@ -79,6 +79,8 @@ useEffect(() => {
       return;
     }
 
+    
+    console.log("COLLECTION ID: ", collectionId);
     console.log("COLLECTION USERS: ", collectionUsers);
 
     setCollectionUsers(data || []);
@@ -234,9 +236,9 @@ useEffect(() => {
       .select("*")
       .in("email", emails);
 
-console.log("COLLAB QUERY EMAILS:", emails);
+/*console.log("COLLAB QUERY EMAILS:", emails);
 console.log("ALL USER CARDS RAW:", data);
-console.log("ALL USER CARDS ERROR:", error);
+console.log("ALL USER CARDS ERROR:", error);*/
 
     if (error) {
       console.error("Error loading all user cards:", error);
