@@ -89,7 +89,7 @@ export default function FiltersSection({
           )}
         </div>
 
-        <span>{open ? "▲" : "▼"}</span>
+        <span className="text-white">{open ? "▲" : "▼"}</span>
       </div>
 
       {/* CONTENT */}
@@ -98,15 +98,12 @@ export default function FiltersSection({
 
           {/* CLEAR BUTTON */}
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-400">
-              Active Filters: {activeCount}
-            </span>
 
             <button
               onClick={clearFilters}
-              className="text-sm px-3 py-1 bg-red-600 rounded"
+              className="text-sm text-white px-3 py-1 bg-red-600 rounded"
             >
-              Clear All
+              Clear Filters
             </button>
           </div>
 
@@ -136,14 +133,16 @@ export default function FiltersSection({
           />
 
           {/* LEGAL */}
-          <button
-            onClick={() => setLegalOnly(prev => !prev)}
-            className={`px-3 py-1 rounded ${
-              legalOnly ? "bg-yellow-500 text-black" : "bg-gray-700"
-            }`}
-          >
-            Legal Only
-          </button>
+          <div className="w-full bg-cyan-700">
+            <button
+              onClick={() => setLegalOnly(prev => !prev)}
+              className={`px-3 py-1 rounded ${
+                legalOnly ? "bg-yellow-500 text-white" : "bg-gray-600"
+              }`}
+            >
+              Legal Only
+            </button>
+          </div>
 
         </div>
       )}
