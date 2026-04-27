@@ -178,7 +178,7 @@ useEffect(() => {
       return;
     }
 
-    console.log("CARDS:", data);
+    //console.log("CARDS:", data);
     setCards(data);
   }
 
@@ -232,6 +232,10 @@ useEffect(() => {
       .select("*")
       .in("email", emails);
 
+console.log("COLLAB QUERY EMAILS:", emails);
+console.log("ALL USER CARDS RAW:", data);
+console.log("ALL USER CARDS ERROR:", error);
+
     if (error) {
       console.error("Error loading all user cards:", error);
       return;
@@ -243,7 +247,7 @@ useEffect(() => {
       const key = `${item.email}_${item.card_id}_${item.variant}`;
       map[key] = Number(item.owned || 0);
     });
-    console.log("ALL USER CARDS RAW:", data);
+    //console.log("ALL USER CARDS RAW:", data);
 
     setAllUserCards(map);
   }
