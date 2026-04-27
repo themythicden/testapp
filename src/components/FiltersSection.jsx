@@ -95,7 +95,7 @@ export default function FiltersSection({
 
       {/* CONTENT */}
       {open && (
-        <div className="p-3 space-y-4">
+        <div className="space-y-1">
 
           {/* CLEAR BUTTON */}
           <div className="flex justify-between items-center">
