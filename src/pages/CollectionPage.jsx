@@ -243,6 +243,7 @@ useEffect(() => {
       const key = `${item.email}_${item.card_id}_${item.variant}`;
       map[key] = Number(item.owned || 0);
     });
+    console.log("ALL USER CARDS RAW:", data);
 
     setAllUserCards(map);
   }
