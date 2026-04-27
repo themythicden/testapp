@@ -2,7 +2,7 @@ export default function StatusFilters({ statusFilter, setStatusFilter }) {
   const filters = ["all", "owned", "needed", "duplicates"];
 
   return (
-    <div className="flex gap-2 p-4">
+    <div className="flex gap-2 p-4 bg-pink-600">
       {filters.map(f => (
         <button
           key={f}
