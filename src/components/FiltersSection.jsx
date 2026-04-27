@@ -47,32 +47,33 @@ export default function FiltersSection({
 
   return (
     <div className="sticky top-0 z-20 bg-gray-900 border-b border-gray-700">
-      {/* SEARCH BAR */}
-      <input
-        type="text"
-        placeholder="Search name or #..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
-      />
-      
-      {/* SORTING */}
-      <div className="flex gap-2">
-        {["number", "name", "owned"].map(option => (
-          <button
-            key={option}
-            onClick={() => setSortBy(option)}
-            className={`px-3 py-1 rounded ${
-              sortBy === option
-                ? "bg-blue-600 text-white"
-                : "bg-gray-700 text-gray-300"
-            }`}
-          >
-            {option.toUpperCase()}
-          </button>
-        ))}
+      <div id='searchbar' className='w-full flex'>
+        {/* SEARCH BAR */}
+        <input
+          type="text"
+          placeholder="Search name or #..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
+        />
+        
+        {/* SORTING */}
+        <div className="flex gap-2">
+          {["number", "name", "owned"].map(option => (
+            <button
+              key={option}
+              onClick={() => setSortBy(option)}
+              className={`px-3 py-1 rounded ${
+                sortBy === option
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-700 text-gray-300"
+              }`}
+            >
+              {option.toUpperCase()}
+            </button>
+          ))}
+        </div>
       </div>
-      
       {/* HEADER */}
       <div
         onClick={() => setOpen(prev => !prev)}
