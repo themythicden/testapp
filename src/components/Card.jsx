@@ -2,7 +2,8 @@ import React from "react";
 import { getCardStats, getVariants } from "../utils/cardUtils";
 import VariantRow from "./VariantRow";
 
-function Card({ card, userCards, setFilter, statusFilter, onAdd, onRemove }) {
+function Card({ card, userCards, allUserCards, collectionUsers, setFilter, onAdd, onRemove })
+{
   //const variants = getVariants(card, setFilter);
   // ------------ UPGRADED FILTER -------------
   const allVariants = getVariants(card, setFilter);
@@ -63,6 +64,24 @@ function Card({ card, userCards, setFilter, statusFilter, onAdd, onRemove }) {
             />
           );
         })}
+
+        <div className="mt-2 text-xs space-y-1">
+        {collectionUsers.map(user => {
+          const total = getVariants(card, setFilter).reduce((sum, v) => {
+            const key = `${user.email}_${card.id}_${v}`;
+            return sum + (allUserCards[key] || 0);
+          }, 0);
+      
+          if (total === 0) return null;
+      
+          return (
+            <div key={user.email} className="flex justify-between text-gray-300">
+              <span>{user.email === userCards.email ? "You" : user.email}</span>
+              <span>{total}</span>
+            </div>
+          );
+        })}
+      </div>
       </div>
     </div>
   );
