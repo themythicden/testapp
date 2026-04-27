@@ -40,7 +40,7 @@ function Card({
   return (
     <div className="bg-gray-700 p-2 rounded">
       <div className="text-center">
-        <p className="text-xl font-bold bg-gray-800 p-2">
+        <p className="text-lg font-bold bg-gray-800 p-2 text-white">
           {card.name}
         </p>
 
