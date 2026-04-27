@@ -55,6 +55,7 @@ export default function FiltersSection({
         onChange={(e) => setSearchQuery(e.target.value)}
         className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
       />
+      
       {/* SORTING */}
       <div className="flex gap-2">
         {["number", "name", "owned"].map(option => (
@@ -71,12 +72,13 @@ export default function FiltersSection({
           </button>
         ))}
       </div>
+      
       {/* HEADER */}
       <div
         onClick={() => setOpen(prev => !prev)}
         className="cursor-pointer p-3 flex justify-between items-center bg-gray-800"
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 text-white">
           <span className="font-bold">Filters</span>
 
           {/* ACTIVE COUNT BADGE */}
