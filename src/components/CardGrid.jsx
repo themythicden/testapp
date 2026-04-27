@@ -1,9 +1,16 @@
 import Card from "./Card";
 
-export default function CardGrid({ cards, userCards, setFilter, statusFilter, onAdd, onRemove }) {
-
-
-  
+export default function CardGrid({
+  cards,
+  userCards,
+  allUserCards,
+  collectionUsers,
+  currentUserEmail,
+  setFilter,
+  statusFilter,
+  onAdd,
+  onRemove
+}) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
       {cards.map(card => (
@@ -11,6 +18,9 @@ export default function CardGrid({ cards, userCards, setFilter, statusFilter, on
           key={card.id}
           card={card}
           userCards={userCards}
+          allUserCards={allUserCards}
+          collectionUsers={collectionUsers}
+          currentUserEmail={currentUserEmail}
           setFilter={setFilter}
           statusFilter={statusFilter}
           onAdd={onAdd}
@@ -20,4 +30,3 @@ export default function CardGrid({ cards, userCards, setFilter, statusFilter, on
     </div>
   );
 }
-
