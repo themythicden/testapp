@@ -10,12 +10,12 @@ export default function SupertypeFilters({ selected, onChange }) {
   };
 
   return (
-    <div className="flex gap-2 p-4 bg-pink-600 w-full">
+    <div className="flex gap-2 bg-pink-600 w-full">
       {SUPERTYPES.map(type => (
         <button
           key={type}
           onClick={() => toggle(type)}
-          className={`px-3 py-1 rounded ${
+          className={`px-3 py-1 rounded text-white ${
             selected.includes(type)
               ? "bg-purple-600"
               : "bg-gray-700"
