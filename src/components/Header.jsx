@@ -47,7 +47,7 @@ export default function Header({ user }) {
                 My Collections
               </div>
 
-              <button onClick={() => navigate("/iso")}>
+              <button onClick={() => navigate("/")}>
                 ISO
               </button>
 
