@@ -357,6 +357,7 @@ const handleRemove = async (cardId, variant) => {
         statusFilter={statusFilter}
         onAdd={handleAdd}
         onRemove={handleRemove}
+        currentUserEmail={user.email}
       />
     </div>
   );
