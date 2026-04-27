@@ -5,6 +5,8 @@ import VariantRow from "../components/VariantRow";
 import ISOVariantSelector from "../components/ISOVariantSelector";
 import ISOConditionSelector from "../components/ISOConditionSelector";
 
+const CONDITIONS = ["any", "nm", "lp", "mp", "hp"];
+
 export default function ISOPage() {
   const [user, setUser] = useState(null);
   const [isoCards, setIsoCards] = useState({});
@@ -229,89 +231,74 @@ Object.entries(isoCards).forEach(([key, quantity]) => {
       />
 
       {/* RESULTS */}
-      <div className="space-y-4">
-        {cards.map((card) => {
-          const variants = getVariants(card, "master");
+<div className="space-y-4">
+  {cards.map((card) => {
+    const variants = ["any", ...getVariants(card, "master")];
 
-          return (
-            <div key={card.id} className="bg-gray-800 p-2 rounded space-y-2">
+    return (
+      <div key={card.id} className="bg-gray-800 p-2 rounded space-y-2">
 
-              {/* CARD HEADER */}
-              <div className="flex justify-between items-center">
-                <img src={card.image_small} className="w-8 h-8" alt={card.name}/>
-                <span className="text-white text-sm">
-                  {card.name} #{card.number}
-                </span>
+        {/* CARD HEADER */}
+        <div className="flex items-center gap-2">
+          <img src={card.image_small} className="w-8 h-8" alt={card.name}/>
+          <span className="text-white text-sm">
+            {card.name} #{card.number}
+          </span>
+        </div>
+
+        {/* VARIANT x CONDITION GRID */}
+        <div className="space-y-2">
+          {variants.map((variant) => (
+            <div key={variant} className="space-y-1">
+
+              <div className="text-xs text-gray-400">
+                {variant.toUpperCase()}
               </div>
 
-              {/* VARIANT SELECTOR */}
-              <ISOVariantSelector
-                card={card}
-                selected={selectedVariants[card.id] || ["any"]}
-                onChange={(vals) =>
-                  setSelectedVariants(prev => ({
-                    ...prev,
-                    [card.id]: vals
-                  }))
-                }
-              />
+              <div className="flex flex-wrap gap-2">
+                {CONDITIONS.map((condition) => {
+                  const key = `${card.id}_${variant}_${condition}`;
+                  const count = isoCards[key] || 0;
 
-              {/* CONDITION SELECTOR */}
-              <ISOConditionSelector
-                selected={selectedConditions[card.id] || ["any"]}
-                onChange={(vals) =>
-                  setSelectedConditions(prev => ({
-                    ...prev,
-                    [card.id]: vals
-                  }))
-                }
-              />
+                  return (
+                    <div
+                      key={condition}
+                      className="flex items-center gap-1 bg-gray-700 px-2 py-1 rounded"
+                    >
+                      <span className="text-xs text-white">
+                        {condition.toUpperCase()}
+                      </span>
 
-              {/* ADD BUTTON */}
-              <button
-                onClick={async () => {
-                  const selectedV = selectedVariants[card.id] || ["any"];
-                  const selectedC = selectedConditions[card.id] || ["any"];
+                      <button
+                        onClick={() => handleISORemove(card.id, variant, condition)}
+                        className="bg-red-600 px-1 rounded text-white"
+                      >
+                        -
+                      </button>
 
-                  for (const v of selectedV) {
-                    for (const c of selectedC) {
-                      await supabase.from("iso_cards").upsert({
-                        email: user.email,
-                        card_id: card.id,
-                        variant: v,
-                        condition: c,
-                        quantity: 1
-                      }, {
-                        onConflict: "email,card_id,variant,condition"
-                      });
-                    }
-                  }
-                }}
-                className="bg-blue-600 text-white px-2 py-1 rounded text-sm"
-              >
-                Add to ISO
-              </button>
+                      <span className="text-white text-xs w-4 text-center">
+                        {count}
+                      </span>
 
-              {/* VARIANT COUNTERS */}
-              {variants.map(v => {
-                const key = `${card.id}_${v}_any`; // 👈 default condition for now
-                const count = isoCards[key] || 0;
-
-                return (
-                  <VariantRow
-                    key={v}
-                    variant={v}
-                    count={count}
-                    onAdd={() => handleISOAdd(card.id, v, "any")}
-                    onRemove={() => handleISORemove(card.id, v, "any")}
-                  />
-                );
-              })}
+                      <button
+                        onClick={() => handleISOAdd(card.id, variant, condition)}
+                        className="bg-green-600 px-1 rounded text-white"
+                      >
+                        +
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
 
             </div>
-          );
-        })}
+          ))}
+        </div>
+
       </div>
+    );
+  })}
+</div>
     </div>
   );
 
