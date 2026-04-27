@@ -2,7 +2,7 @@ import React from "react";
 import { getCardStats, getVariants } from "../utils/cardUtils";
 import VariantRow from "./VariantRow";
 
-function Card({ card, userCards, allUserCards, collectionUsers, setFilter, onAdd, onRemove })
+function Card({ card, userCards, allUserCards, collectionUsers, setFilter, onAdd, onRemove, currentUserEmail  })
 {
   //const variants = getVariants(card, setFilter);
   // ------------ UPGRADED FILTER -------------
@@ -76,7 +76,7 @@ function Card({ card, userCards, allUserCards, collectionUsers, setFilter, onAdd
       
           return (
             <div key={user.email} className="flex justify-between text-gray-300">
-              <span>{user.email === userCards.email ? "You" : user.email}</span>
+              <span>{user.email === currentUserEmail ? "You" : user.email}</span>
               <span>{total}</span>
             </div>
           );
