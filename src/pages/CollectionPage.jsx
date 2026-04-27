@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 
 import CardGrid from "../components/CardGrid";
+import InviteUser from "../components/InviteUser";
 //import { getCardStats} from "../utils/cardUtils";
 //import { getVariants} from "../utils/cardUtils";
 // FILTERS
@@ -64,7 +65,7 @@ useEffect(() => {
   async function loadCollection() {
     if (!collectionId) return;
 
-    const { data, error } = await supabase
+    /*const { data, error } = await supabase
       .from("collections")
       .select("*")
       .eq("id", collectionId)
@@ -72,6 +73,27 @@ useEffect(() => {
 
     if (error) {
       console.error("Error loading collection:", error);
+      return;
+    }*/
+
+    const { data, error } = await supabase
+      .from("collections")
+      .select("*")
+      .eq("id", collectionId)
+      .single();
+    
+    if (!data) return;
+    
+    // check access
+    const { data: access } = await supabase
+      .from("user_collections")
+      .select("*")
+      .eq("collection_id", collectionId)
+      .eq("email", user.email)
+      .maybeSingle();
+    
+    if (!access && data.owner_email !== user.email) {
+      console.error("No access to this collection");
       return;
     }
 
@@ -267,6 +289,10 @@ const handleRemove = async (cardId, variant) => {
         sortBy={sortBy}              // ✅ ADD
         setSortBy={setSortBy} 
       />
+
+      {collection && (
+        <InviteUser collectionId={collection.id} />
+      )}
 
       <CardGrid
         cards={visibleCards}
