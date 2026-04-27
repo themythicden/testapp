@@ -22,6 +22,7 @@ export default function CollectionPage() {
   const collectionId = searchParams.get("id");
   const collectionName = searchParams.get("name");
   const [user, setUser] = useState(null);
+  const [collectionUsers, setCollectionUsers] = useState([]);
   const [cards, setCards] = useState([]);
   const [userCards, setUserCards] = useState({});
   const [setFilter, setSetFilter] = useState("master");
@@ -61,6 +62,30 @@ export default function CollectionPage() {
 
   const [collection, setCollection] = useState(null);
 
+
+// LOAD COLLECTION USERS
+useEffect(() => {
+  async function loadCollectionUsers() {
+    if (!collectionId) return;
+
+    const { data, error } = await supabase
+      .from("user_collections")
+      .select("*")
+      .eq("collection_id", collectionId);
+
+    if (error) {
+      console.error("Error loading users:", error);
+      return;
+    }
+
+    setCollectionUsers(data || []);
+  }
+
+  loadCollectionUsers();
+}, [collectionId]);
+
+  
+// LOAD COLLECTION
 useEffect(() => {
   async function loadCollection() {
     if (!collectionId || !user) return;
@@ -162,7 +187,7 @@ useEffect(() => {
 // -----------------------------
 // LOAD USER OWNERSHIP
 // -----------------------------
-useEffect(() => {
+/*useEffect(() => {
   async function loadUserCards() {
     if (!user) return;
 
@@ -191,7 +216,36 @@ useEffect(() => {
   }
 
   loadUserCards();
-}, [user]);
+}, [user]);*/
+
+useEffect(() => {
+  async function loadAllUserCards() {
+    if (!collectionUsers.length) return;
+
+    const emails = collectionUsers.map(u => u.email);
+
+    const { data, error } = await supabase
+      .from("user_cards")
+      .select("*")
+      .in("email", emails);
+
+    if (error) {
+      console.error("Error loading all user cards:", error);
+      return;
+    }
+
+    const map = {};
+
+    data.forEach(item => {
+      const key = `${item.email}_${item.card_id}_${item.variant}`;
+      map[key] = Number(item.owned || 0);
+    });
+
+    setAllUserCards(map);
+  }
+
+  loadAllUserCards();
+}, [collectionUsers]);
 
 // -----------------------------
 // ADD CARD
@@ -297,6 +351,8 @@ const handleRemove = async (cardId, variant) => {
       <CardGrid
         cards={visibleCards}
         userCards={userCards}
+        allUserCards={allUserCards}
+        collectionUsers={collectionUsers}
         setFilter={setFilter}
         statusFilter={statusFilter}
         onAdd={handleAdd}
