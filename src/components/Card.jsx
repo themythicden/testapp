@@ -2,7 +2,7 @@ import React from "react";
 import { getCardStats, getVariants } from "../utils/cardUtils";
 import VariantRow from "./VariantRow";
 
-function Card({ card, userCards, allUserCards, collectionUsers, setFilter,   statusFilteR, onAdd, onRemove, currentUserEmail  })
+function Card({ card, userCards, allUserCards, collectionUsers, setFilter, statusFilter, onAdd, onRemove, currentUserEmail  })
 {
   //const variants = getVariants(card, setFilter);
   // ------------ UPGRADED FILTER -------------
