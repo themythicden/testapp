@@ -79,6 +79,8 @@ useEffect(() => {
       return;
     }
 
+    console.log("COLLECTION USERS: ", collectionUsers);
+
     setCollectionUsers(data || []);
   }
 
