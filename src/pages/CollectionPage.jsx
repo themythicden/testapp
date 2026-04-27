@@ -25,6 +25,7 @@ export default function CollectionPage() {
   const [collectionUsers, setCollectionUsers] = useState([]);
   const [cards, setCards] = useState([]);
   const [userCards, setUserCards] = useState({});
+  const [allUserCards, setAllUserCards] = useState([]);
   const [setFilter, setSetFilter] = useState("master");
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState([]); // multi-select
