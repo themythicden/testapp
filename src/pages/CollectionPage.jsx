@@ -82,6 +82,8 @@ useEffect(() => {
     
     console.log("COLLECTION ID: ", collectionId);
     console.log("COLLECTION USERS: ", collectionUsers);
+    
+    console.log("DATA RAW: ", data);
 
     setCollectionUsers(data || []);
   }
