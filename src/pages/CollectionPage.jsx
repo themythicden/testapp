@@ -188,7 +188,7 @@ useEffect(() => {
 // -----------------------------
 // LOAD USER OWNERSHIP
 // -----------------------------
-/*useEffect(() => {
+useEffect(() => {
   async function loadUserCards() {
     if (!user) return;
 
@@ -217,7 +217,9 @@ useEffect(() => {
   }
 
   loadUserCards();
-}, [user]);*/
+}, [user]);
+
+  // THE ALL USERS
 
 useEffect(() => {
   async function loadAllUserCards() {
