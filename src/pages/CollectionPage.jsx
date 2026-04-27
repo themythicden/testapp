@@ -63,7 +63,7 @@ export default function CollectionPage() {
 
 useEffect(() => {
   async function loadCollection() {
-    if (!collectionId) return;
+    if (!collectionId || !user) return;
 
     /*const { data, error } = await supabase
       .from("collections")
@@ -102,7 +102,7 @@ useEffect(() => {
   }
 
   loadCollection();
-}, [collectionId]);
+}, [collectionId, user]);
 
 
 
