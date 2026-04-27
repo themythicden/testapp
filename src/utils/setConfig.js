@@ -46,7 +46,7 @@ export const SET_CONFIG = {
   },    
     sv10: {
     name: "Destined Rivals",
-    standard: 159,
+    standard: 182,
     extra:31,
 
     views: {
