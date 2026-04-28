@@ -84,6 +84,7 @@ console.log("ALL:", allUserCards);
                 <div className="mt-2 text-xs space-y-1">
                   {collectionUsers.map(user => {
                     const key = `${user.email}_${card.id}_${v}`;
+                  console.log("CHECK KEY:", key, allUserCards[key]);
                     const count = allUserCards[key] || 0;
 
                     if (count === 0) return null;
