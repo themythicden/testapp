@@ -63,6 +63,9 @@ console.log("ALL:", allUserCards);
 
       <div className="bg-gray-800 mt-2 p-2 space-y-3">
         {variants.map(v => {
+
+      console.log("VARIANT:", v);
+console.log("CARD ID:", card.id);
           const myKey = `${card.id}_${v}`;
           const myCount = userCards[myKey] || 0;
 
