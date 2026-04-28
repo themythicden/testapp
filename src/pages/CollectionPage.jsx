@@ -377,6 +377,7 @@ const handleRemove = async (cardId, variant) => {
         onAdd={handleAdd}
         onRemove={handleRemove}
         currentUserEmail={user.email}
+        isCollab={collection?.is_collab}
       />
     </div>
   );
