@@ -9,7 +9,8 @@ export default function CardGrid({
   setFilter,
   statusFilter,
   onAdd,
-  onRemove
+  onRemove,
+  isCollab
 }) { // The opening brace must come immediately after the arguments
   
   console.log("CARDGRID USERS:", collectionUsers);
@@ -29,6 +30,7 @@ export default function CardGrid({
           statusFilter={statusFilter}
           onAdd={onAdd}
           onRemove={onRemove}
+          isCollab={isCollab}
         />
       ))}
     </div>
