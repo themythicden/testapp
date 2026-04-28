@@ -80,10 +80,10 @@ useEffect(() => {
     }
 
     
-    console.log("COLLECTION ID: ", collectionId);
+   /* console.log("COLLECTION ID: ", collectionId);
     console.log("COLLECTION USERS: ", collectionUsers);
     
-    console.log("DATA RAW: ", data);
+    console.log("DATA RAW: ", data);*/
 
     setCollectionUsers(data || []);
   }
@@ -233,15 +233,15 @@ useEffect(() => {
 
     const emails = collectionUsers.map(u => u.email);
 
-    console.log("COLLECTION USERS:", collectionUsers);
-    console.log("EMAILS TO LOAD:", emails);
+    /*console.log("COLLECTION USERS:", collectionUsers);
+    console.log("EMAILS TO LOAD:", emails);*/
 
     const { data, error } = await supabase
       .from("user_cards")
       .select("*")
       .in("email", emails);
     
-      console.log("USER_CARDS RAW:", data);
+      //console.log("USER_CARDS RAW:", data);
 /*console.log("COLLAB QUERY EMAILS:", emails);
 console.log("ALL USER CARDS RAW:", data);
 console.log("ALL USER CARDS ERROR:", error);*/
@@ -258,7 +258,7 @@ console.log("ALL USER CARDS ERROR:", error);*/
       map[key] = Number(item.owned || 0);
     });
     
-    console.log("ALL USER CARD MAP:", map);
+    //console.log("ALL USER CARD MAP:", map);
 
     setAllUserCards(map);
   }
