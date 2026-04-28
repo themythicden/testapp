@@ -13,8 +13,8 @@ export default function CardGrid({
   isCollab
 }) { // The opening brace must come immediately after the arguments
   
-  console.log("CARDGRID USERS:", collectionUsers);
-  console.log("CARDGRID ALLUSERCARDS:", allUserCards);
+  //console.log("CARDGRID USERS:", collectionUsers);
+  //console.log("CARDGRID ALLUSERCARDS:", allUserCards);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
