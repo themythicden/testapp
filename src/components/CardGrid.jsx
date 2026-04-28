@@ -10,7 +10,12 @@ export default function CardGrid({
   statusFilter,
   onAdd,
   onRemove
-}) {
+}) 
+
+console.log("CARDGRID USERS:", collectionUsers);
+console.log("CARDGRID ALLUSERCARDS:", allUserCards);
+
+{
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
       {cards.map(card => (
