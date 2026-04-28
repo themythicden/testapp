@@ -14,6 +14,10 @@ function Card({
   currentUserEmail,
   isCollab
 }) {
+
+  console.log("CARD:", card.name);
+console.log("USERS:", collectionUsers);
+console.log("ALL:", allUserCards);
   const allVariants = getVariants(card, setFilter);
 
   const variants =
