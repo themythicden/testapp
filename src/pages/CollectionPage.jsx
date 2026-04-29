@@ -64,6 +64,7 @@ export default function CollectionPage() {
   const [collection, setCollection] = useState(null);
 
 
+
 // LOAD COLLECTION USERS
 useEffect(() => {
   async function loadCollectionUsers() {
@@ -90,6 +91,13 @@ useEffect(() => {
 
   loadCollectionUsers();
 }, [collectionId]);
+
+  
+  const myRole = collectionUsers.find(
+ u => u.email === user.email
+)?.role;
+
+  console.log("MY ROLE", myRole);
 
   
 // LOAD COLLECTION
