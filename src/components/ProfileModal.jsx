@@ -69,7 +69,7 @@ export default function ProfileModal({ open, onClose, user }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center p-4">
+    <div id="profileModal" className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center p-4 z-48">
       <div className="bg-zinc-900 text-white w-full max-w-md rounded-2xl p-5 space-y-4">
 
         {/* Header */}
