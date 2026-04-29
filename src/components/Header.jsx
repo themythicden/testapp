@@ -6,7 +6,7 @@ import ProfileModal from "../components/ProfileModal";
 export default function Header({ user }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const [showProfile, setShowProfile] = useState(true);
+  const [showProfile, setShowProfile] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false); 
   //const userEmail = user.email;
   //console.log("Usserrr: ", user.user_metadata.email);
@@ -47,6 +47,7 @@ export default function Header({ user }) {
                   
                   console.log("OPEN PROFILE CLICKED");
                   setShowProfile(true);
+                  setProfileOpen(true);
                   console.log("SHOW PROFILE", showProfile);
                   setOpen(false);
                 }}
