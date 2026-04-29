@@ -371,8 +371,8 @@ const handleRemove = async (cardId, variant) => {
         setSortBy={setSortBy} 
       />
 
-      {collection && (
-        <InviteUser collectionId={collection.id} />
+      {collection && myRole === "owner" && (
+        <InviteUser collectionId={collection.id} myRole={myRole}/>
       )}
 
       <CardGrid
@@ -386,6 +386,7 @@ const handleRemove = async (cardId, variant) => {
         onRemove={handleRemove}
         currentUserEmail={user.email}
         isCollab={collection?.is_collab}
+        myRole={myRole}
       />
     </div>
   );
