@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useNavigate } from "react-router-dom";
+import ProfileModal from "../components/ProfileModal";
 
 export default function Header({ user }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const [showProfile, setShowProfile] = useState(false);
   //const userEmail = user.email;
   //console.log("Usserrr: ", user.user_metadata.email);
   //const userName = user.name;
@@ -40,6 +42,15 @@ export default function Header({ user }) {
               <div
                 className="cursor-pointer"
                 onClick={() => {
+                  setShowProfile(true);
+                  setOpen(false);
+                }}
+              >
+                Profile
+              </div>
+              <div
+                className="cursor-pointer"
+                onClick={() => {
                   navigate("/collections");
                   setOpen(false);
                 }}
@@ -60,6 +71,13 @@ export default function Header({ user }) {
             </div>
           )}
         </div>
+      )}
+      {showProfile && (
+        <ProfileModal
+          open={profileOpen}
+          onClose={() => setProfileOpen(false)}
+          user={user}
+        />
       )}
     </header>
   );
