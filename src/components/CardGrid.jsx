@@ -10,7 +10,8 @@ export default function CardGrid({
   statusFilter,
   onAdd,
   onRemove,
-  isCollab
+  isCollab,
+  myRole
 }) { // The opening brace must come immediately after the arguments
   
   //console.log("CARDGRID USERS:", collectionUsers);
