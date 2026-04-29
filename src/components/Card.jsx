@@ -43,18 +43,20 @@ console.log("ALL:", allUserCards);
   const saturation = stats.isMissing ? "grayscale opacity-60" : "";
 
   return (
-    <div className="bg-gray-700 p-2 rounded">
+    <div id="cardContainer" className="bg-gray-700 rounded">
       <div className="text-center">
-        <p className="text-lg font-bold bg-gray-800 p-2 text-white">
+        <p className="text-md font-bold bg-gray-800 p-2 text-white">
           {card.name}
         </p>
-
-        <p className="text-sm font-bold bg-black p-1">
-          #{card.number}
-        </p>
+        <div className="w-full">
+          <p className="text-sm text-white font-bold bg-black p-1">
+            #{card.number}
+          </p>
+          <div className="mt-2 text-center w-full">{statusText}</div>
+        </div>
       </div>
 
-      <div className="mt-2 text-center">{statusText}</div>
+      
 
       <img
         src={card.image_small || card.image_large}
