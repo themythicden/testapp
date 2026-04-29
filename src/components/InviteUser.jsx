@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { inviteUserToCollection } from "../utils/collabUtils";
 
-export default function InviteUser({ collectionId }) {
+export default function InviteUser({ collectionId, myRole }) {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("viewer");
 
