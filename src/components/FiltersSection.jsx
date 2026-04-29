@@ -21,7 +21,7 @@ export default function FiltersSection({
   sortBy,
   setSortBy
 }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   // ✅ ACTIVE FILTER COUNT
   const activeCount = useMemo(() => {
@@ -76,7 +76,7 @@ export default function FiltersSection({
       </div>
       {/* HEADER */}
       <div
-        onClick={() => setOpen(prev => !prev)}
+        onClick={() => (prev => !prev)}
         className="cursor-pointer p-3 flex justify-between items-center bg-gray-800"
       >
         <div className="flex items-center gap-2 text-white">
