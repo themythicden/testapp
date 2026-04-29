@@ -44,6 +44,8 @@ export default function Header({ user }) {
               <div
                 className="cursor-pointer"
                 onClick={() => {
+                  console.log("SHOW PROFILE", showProfile);
+                  console.log("OPEN PROFILE CLICKED");
                   setShowProfile(true);
                   setOpen(false);
                 }}
