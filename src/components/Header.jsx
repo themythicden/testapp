@@ -7,6 +7,7 @@ export default function Header({ user }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false); 
   //const userEmail = user.email;
   //console.log("Usserrr: ", user.user_metadata.email);
   //const userName = user.name;
