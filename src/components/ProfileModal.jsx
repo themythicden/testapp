@@ -43,7 +43,7 @@ export default function ProfileModal({ open, onClose, user }) {
   async function handleSave() {
     setSaving(true);
 
-    await supabase.from("users").upsert({
+    await supabase.from("profiles").upsert({
       email: user.email,
       preferred_name: preferredName.trim(),
       province,
