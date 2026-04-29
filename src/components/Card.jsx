@@ -48,8 +48,8 @@ console.log("ALL:", allUserCards);
         <p className="text-md font-bold bg-gray-800 p-2 text-white">
           {card.name}
         </p>
-        <div className="w-full">
-          <p className="text-sm text-white font-bold bg-black p-1">
+        <div className="w-full flex">
+          <p className="text-sm text-white font-bold bg-black p-2 w-full">
             #{card.number}
           </p>
           <div className="mt-2 text-center w-full">{statusText}</div>
