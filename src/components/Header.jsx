@@ -11,6 +11,7 @@ export default function Header({ user }) {
   //console.log("Usserrr: ", user.user_metadata.email);
   //const userName = user.name;
   //const username = userName ? userEmail.split('@')[0] : "";
+  //
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
