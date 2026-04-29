@@ -97,7 +97,7 @@ useEffect(() => {
  u => u.email === user.email
 )?.role;
 
-  console.log("MY ROLE", myRole);
+  console.log("MY ROLE 1", myRole);
 
   
 // LOAD COLLECTION
