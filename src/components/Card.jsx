@@ -94,17 +94,15 @@ console.log("CARD ID:", card.id);*/
                     if (count === 0) return null;
 
                     return (
-                      <div
-                        key={user.email}
-                        className="flex justify-between text-gray-300"
-                      >
-                        <span>
-                          {user.email === currentUserEmail
-                            ? "You"
-                            : user.email}
-                        </span>
-                        <span>{count}</span>
-                      </div>
+<div key={user.email} className="flex justify-between text-gray-300">
+  <span>
+    {user.email === currentUserEmail
+      ? "You"
+      : user.name || user.email.split('@')[0]}
+  </span>
+  <span>{count}</span>
+</div>
+
                     );
                   })}
 
