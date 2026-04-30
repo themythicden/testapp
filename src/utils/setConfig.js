@@ -43,7 +43,28 @@ export const SET_CONFIG = {
       ace_spec: ["holo"],
       default: ["holo"]
     }
-  },    
+  },
+     me1: {
+    name: "Mega Evolution",
+    standard: 132,
+    extra: 56,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
     sv10: {
     name: "Destined Rivals",
     standard: 182,
