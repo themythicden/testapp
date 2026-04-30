@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ProfileModal from "../components/ProfileModal";
 
 export default function Header({ user }) {
-  //const [popen, setPopen] = useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false); 
