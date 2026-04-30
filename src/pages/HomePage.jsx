@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage(user) {
+    const navigate = useNavigate();
   return (
     <div className="p-4">
         {user ? (
