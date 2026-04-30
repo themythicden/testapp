@@ -76,7 +76,8 @@ export default function FiltersSection({
       </div>
       {/* HEADER */}
       <div
-        onClick={() => (prev => !prev)}
+        onClick={console.log("CLICK FILTER DIV", open); 
+          () => (prev => !prev)}
         className="cursor-pointer p-3 flex justify-between items-center bg-gray-800"
       >
         <div className="flex items-center gap-2 text-white">
