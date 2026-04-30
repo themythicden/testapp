@@ -23,7 +23,7 @@ export default function Header({ user }) {
     <header className="flex justify-between items-center p-4 bg-gray-900 text-white z-50">
       <p className="text-white"></p>
       <h1 className="cursor-pointer" onClick={() => navigate("/")}>
-        🧢 My TCG App
+        TradeMatcher v2
       </h1>
 
       {!user ? (
@@ -40,9 +40,9 @@ export default function Header({ user }) {
           </div>
 
           {open && (
-            <div className="absolute right-0 mt-2 bg-white text-black p-2 shadow">
+            <div className="absolute right-0 mt-4 bg-white text-black p-2 shadow w-[100px] text-center">
               <div
-                className="cursor-pointer"
+                className="cursor-pointer p-2"
                 onClick={() => {
                   
                   console.log("OPEN PROFILE CLICKED");
@@ -55,21 +55,23 @@ export default function Header({ user }) {
                 Profile
               </div>
               <div
-                className="cursor-pointer"
+                className="cursor-pointer p-2"
                 onClick={() => {
                   navigate("/collections");
                   setOpen(false);
                 }}
               >
-                My Collections
+                Collections
               </div>
 
-              <button onClick={() => navigate("/")}>
+              <div
+                className="cursor-pointer p-2"
+                onClick={() => navigate("#")}>
                 ISO
-              </button>
+              </div>
 
               <div
-                className="cursor-pointer mt-2"
+                className="cursor-pointer mt-2 p-2 bg-red-600 text-white"
                 onClick={handleLogout}
               >
                 Logout
