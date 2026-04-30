@@ -1,6 +1,26 @@
 export const SET_CONFIG = {
 
-    
+    me3: {
+    name: "Perfect Order",
+    standard: 88,
+    extra: 36,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
     me2pt5: {
         name: "Ascended Heroes",
         
