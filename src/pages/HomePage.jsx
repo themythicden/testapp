@@ -6,7 +6,7 @@ export default function HomePage(user) {
         Collections
         </button>
       ) : (
-      
+      <p>Signup / Login to get started.</p>
       )};
     </div>
   );
