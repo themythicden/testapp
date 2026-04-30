@@ -1,3 +1,6 @@
+
+import { useNavigate } from "react-router-dom";
+
 export default function HomePage(user) {
   return (
     <div className="p-4">
