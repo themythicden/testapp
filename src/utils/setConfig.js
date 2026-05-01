@@ -29,16 +29,17 @@ export const SET_CONFIG = {
         
         views: {
           standard: ["normal", "holo"],
-          energy: ["normal", "holo", "reverse", "energy"],
-          pokeball: ["normal", "holo", "reverse", "energy", "pokeball"],
+          reverse: ["normal", "holo", "reverse"],
+          pokeball: ["normal", "holo", "reverse", "pokeball"],
           master: "all"
         },
         
         variants: {
-          common: ["normal", "reverse", "energy", "pokeball"],
-          uncommon: ["normal", "reverse", "energy", "pokeball"],
-          rare: ["holo", "reverse", "energy"],
-          trainer: ["normal", "reverse", "pokeball"],
+          common: ["normal", "reverse", "pokeball"],
+          uncommon: ["normal", "reverse", "pokeball"],
+          rare: ["holo", "reverse", "pokeball"],
+          trainer: ["normal", "reverse"],
+          fa_trainer: ["holo"],
           default: ["holo"]
         }
     },
