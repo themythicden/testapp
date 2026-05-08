@@ -68,8 +68,7 @@ console.log("ALL:", allUserCards);
       <div className="bg-gray-800 mt-2 p-2 space-y-3">
         {variants.map(v => {
 
-      const testKey = `${card.id}_${v}`;
-
+/*const testKey = `${card.id}_${v}`;
 
 console.log({
   cardNmae: card.name,
@@ -78,7 +77,7 @@ console.log({
   lookup: testKey,
   exists: userCards.hasOwnProperty(testKey),
   value: userCards[testKey]
-});
+});*/
 
 /*console.log("UI CARD:");
 console.log("card.id:", card.id);
@@ -88,7 +87,21 @@ console.log("value:", userCards[testKey]);*/
       /*console.log("VARIANT:", v);
 console.log("CARD ID:", card.id);*/
           const myKey = `${card.id}_${v}`;
+      
+          console.log("myKey:", myKey);
           const myCount = userCards[myKey] || 0;
+
+      if (
+        card.id === "sv10-5" ||
+        card.id === "sv10-6" ||
+        card.id === "sv10-7"
+      ) {
+        console.log("========== UI KEY ==========");
+        console.log("CARD ID:", JSON.stringify(card.id));
+        console.log("VARIANT:", JSON.stringify(v));
+        console.log("UI KEY:", JSON.stringify(myKey));
+        console.log("LOOKUP:", userCards[myKey]);
+      }
 
           const total = collectionUsers.reduce((sum, user) => {
             const key = `${user.email}_${card.id}_${v}`;
