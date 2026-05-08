@@ -264,7 +264,7 @@ console.log("ALL USER CARDS ERROR:", error);*/
 
     data.forEach(item => {
       const key = `${item.email}_${item.card_id}_${item.variant}`;
-      console.log("Item 267: ", key);
+      //console.log("Item 267: ", key);
       console.log("DB ROW:");
   console.log("card_id:", item.card_id);
   console.log("variant:", item.variant);
