@@ -224,6 +224,7 @@ useEffect(() => {
     
     data.forEach(item => {
       const key = `${item.card_id}_${item.variant}`;
+      console.log("Item 227: ", key);
       map[key] = Number(item.owned || 0);
     });
     
@@ -263,6 +264,11 @@ console.log("ALL USER CARDS ERROR:", error);*/
 
     data.forEach(item => {
       const key = `${item.email}_${item.card_id}_${item.variant}`;
+      console.log("Item 267: ", key);
+      console.log("DB ROW:");
+  console.log("card_id:", item.card_id);
+  console.log("variant:", item.variant);
+  console.log("key:", key);
       map[key] = Number(item.owned || 0);
     });
     
@@ -281,6 +287,7 @@ const handleAdd = async (cardId, variant) => {
   if (!user) return;
 
   const key = `${cardId}_${variant}`;
+  console.log("Item 286: ", key);
   const current = userCards[key] || 0;
   const newCount = current + 1;
 
@@ -311,6 +318,7 @@ const handleRemove = async (cardId, variant) => {
   if (!user) return;
 
   const key = `${cardId}_${variant}`;
+  console.log("Item 316: ", key);
   const current = userCards[key] || 0;
 
   if (current <= 0) return;
