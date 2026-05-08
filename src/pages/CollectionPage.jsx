@@ -218,20 +218,41 @@ useEffect(() => {
       return;
     }
 
-    //console.log("USER CARDS RAW:", data);
+    /*const map = {};
+    
+    data.forEach(item => {
+      const key = `${item.card_id}_${item.variant}`;    
+      map[key] = Number(item.owned || 0);
+    });
+    
+    setUserCards(map);*/
 
     const map = {};
-    
+
     data.forEach(item => {
       const key = `${item.card_id}_${item.variant}`;
     
-      console.log("DB ROW:", item);
-      console.log("MAP KEY CREATED:", key);
+      // ONLY LOG BROKEN CARDS
+      if (
+        item.card_id === "sv10-5" ||
+        item.card_id === "sv10-6" ||
+        item.card_id === "sv10-7"
+      ) {
+        console.log("========== DB ROW ==========");
+        console.log(item);
+    
+        console.log("RAW CARD ID:", JSON.stringify(item.card_id));
+        console.log("RAW VARIANT:", JSON.stringify(item.variant));
+    
+        console.log("GENERATED DB KEY:", JSON.stringify(key));
+      }
     
       map[key] = Number(item.owned || 0);
     });
     
-    setUserCards(map);
+    setUserCards(map);//
+
+    
   }
 
   loadUserCards();
@@ -268,11 +289,11 @@ console.log("ALL USER CARDS ERROR:", error);*/
     data.forEach(item => {
       const key = `${item.email}_${item.card_id}_${item.variant}`;
       //console.log("Item 267: ", key);
-      console.log("DB ROW:");
+      /*console.log("DB ROW:");
   console.log("card_id:", item.card_id);
   console.log("variant:", item.variant);
   console.log("key:", key);
-      map[key] = Number(item.owned || 0);
+      map[key] = Number(item.owned || 0);*/
     });
     
     //console.log("ALL USER CARD MAP:", map);
