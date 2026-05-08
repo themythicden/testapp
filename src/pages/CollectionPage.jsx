@@ -97,7 +97,7 @@ useEffect(() => {
  u => u.email === user.email
 )?.role;
 
-  console.log("MY ROLE 1", myRole);
+  //console.log("MY ROLE 1", myRole);
 
   
 // LOAD COLLECTION
@@ -287,7 +287,7 @@ const handleAdd = async (cardId, variant) => {
   if (!user) return;
 
   const key = `${cardId}_${variant}`;
-  console.log("Item 286: ", key);
+  //console.log("Item 286: ", key);
   const current = userCards[key] || 0;
   const newCount = current + 1;
 
@@ -318,7 +318,7 @@ const handleRemove = async (cardId, variant) => {
   if (!user) return;
 
   const key = `${cardId}_${variant}`;
-  console.log("Item 316: ", key);
+ // console.log("Item 316: ", key);
   const current = userCards[key] || 0;
 
   if (current <= 0) return;
