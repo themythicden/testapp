@@ -72,11 +72,12 @@ console.log("ALL:", allUserCards);
 
 
 console.log({
+  cardNmae: card.name,
   cardId: card.id,
   variant: v,
-  testkey,
-  exists: userCards.hasOwnProperty(testkey),
-  value: userCards[lookup]
+  lookup: testKey,
+  exists: userCards.hasOwnProperty(testKey),
+  value: userCards[testKey]
 });
 
 /*console.log("UI CARD:");
