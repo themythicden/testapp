@@ -74,7 +74,7 @@ console.log("ALL:", allUserCards);
 console.log({
   cardId: card.id,
   variant: v,
-  lookup,
+  testkey,
   exists: userCards.hasOwnProperty(testkey),
   value: userCards[lookup]
 });
