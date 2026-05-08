@@ -79,12 +79,8 @@ useEffect(() => {
       console.error("Error loading users:", error);
       return;
     }
-
     
-   /* console.log("COLLECTION ID: ", collectionId);
     console.log("COLLECTION USERS: ", collectionUsers);
-    
-    console.log("DATA RAW: ", data);*/
 
     setCollectionUsers(data || []);
   }
@@ -94,8 +90,8 @@ useEffect(() => {
 
   
   const myRole = collectionUsers.find(
- u => u.email === user.email
-)?.role;
+   u => u.email === user.email
+  )?.role;
 
   //console.log("MY ROLE 1", myRole);
 
@@ -104,17 +100,6 @@ useEffect(() => {
 useEffect(() => {
   async function loadCollection() {
     if (!collectionId || !user) return;
-
-    /*const { data, error } = await supabase
-      .from("collections")
-      .select("*")
-      .eq("id", collectionId)
-      .single();
-
-    if (error) {
-      console.error("Error loading collection:", error);
-      return;
-    }*/
 
     const { data, error } = await supabase
       .from("collections")
@@ -192,7 +177,7 @@ useEffect(() => {
       return;
     }
 
-    //console.log("CARDS:", data);
+    console.log("CARDS:", data);
     setCards(data);
   }
 
