@@ -213,6 +213,20 @@ useEffect(() => {
       .select("*")
       .eq("email", user.email);
 
+    console.log("========= FULL USER_CARDS DATA =========");
+
+    console.log(data);
+
+    const broken = data.filter(
+  x =>
+    x.card_id === "sv10-5" ||
+    x.card_id === "sv10-6" ||
+    x.card_id === "sv10-7"
+);
+
+console.log("========= BROKEN CARD ROWS =========");
+console.log(broken);
+
     if (error) {
       console.error("Error loading user_cards:", error);
       return;
