@@ -25,7 +25,8 @@ export default function CollectionPage() {
   const [collectionUsers, setCollectionUsers] = useState([]);
   const [cards, setCards] = useState([]);
   const [userCards, setUserCards] = useState({});
-  const [allUserCards, setAllUserCards] = useState([]);
+  const [allUserCards, setAllUserCards] = useState({});
+  //const [allUserCards, setAllUserCards] = useState([]);
   const [setFilter, setSetFilter] = useState("master");
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState([]); // multi-select
@@ -293,11 +294,10 @@ console.log("ALL USER CARDS ERROR:", error);*/
       /*console.log("DB ROW:");
   console.log("card_id:", item.card_id);
   console.log("variant:", item.variant);
-  console.log("key:", key);
-      map[key] = Number(item.owned || 0);*/
+  console.log("key:", key);*/
+      map[key] = Number(item.owned || 0);
     });
-    
-    //console.log("ALL USER CARD MAP:", map);
+
 
     setAllUserCards(map);
   }
@@ -398,9 +398,9 @@ const handleRemove = async (cardId, variant) => {
         setSupertypeFilter={setSupertypeFilter}
         legalOnly={legalOnly}
         setLegalOnly={setLegalOnly}
-        searchQuery={searchQuery}              // ✅ ADD
+        searchQuery={searchQuery}             
         setSearchQuery={setSearchQuery}
-        sortBy={sortBy}              // ✅ ADD
+        sortBy={sortBy}              
         setSortBy={setSortBy} 
       />
 
