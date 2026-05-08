@@ -224,7 +224,7 @@ useEffect(() => {
     
     data.forEach(item => {
       const key = `${item.card_id}_${item.variant}`;
-      console.log("Item 227: ", key);
+      //console.log("Item 227: ", key);
       map[key] = Number(item.owned || 0);
     });
     
