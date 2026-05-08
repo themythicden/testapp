@@ -81,7 +81,7 @@ useEffect(() => {
       return;
     }
     
-    console.log("COLLECTION USERS: ", collectionUsers);
+    console.log("COLLECTION USERS: ", data);
 
     setCollectionUsers(data || []);
   }
@@ -91,7 +91,7 @@ useEffect(() => {
 
   
   const myRole = collectionUsers.find(
-   u => u.email === user.email
+    u => u.email === user?.email
   )?.role;
 
   //console.log("MY ROLE 1", myRole);
@@ -190,15 +190,15 @@ useEffect(() => {
 // -----------------------------
 useEffect(() => {
   async function loadUserCards() {
-    if (!user) return;
+if (!user || cards.length === 0) return;
 
-    //console.log("Loading user cards for:", user.email);
+const cardIds = cards.map(card => card.id);
 
-    const { data, error } = await supabase
-      .from("user_cards")
-      .select("*")
-      .eq("email", user.email)
-      .range(0, 5000);
+const { data, error } = await supabase
+  .from("user_cards")
+  .select("*")
+  .eq("email", user.email)
+  .in("card_id", cardIds);
 
     console.log("========= FULL USER_CARDS DATA =========");
 
@@ -257,13 +257,13 @@ console.log(broken);
   }
 
   loadUserCards();
-}, [user]);
+}, [user, cards]);
 
   // THE ALL USERS
 
 useEffect(() => {
   async function loadAllUserCards() {
-    if (!collectionUsers.length) return;
+   if (!collectionUsers.length || cards.length === 0) return;
 
     const emails = collectionUsers.map(u => u.email);
 
@@ -287,18 +287,13 @@ console.log("ALL USER CARDS ERROR:", error);*/
     }
 
     const map = {};
-
+    
     data.forEach(item => {
       const key = `${item.email}_${item.card_id}_${item.variant}`;
-      //console.log("Item 267: ", key);
-      /*console.log("DB ROW:");
-  console.log("card_id:", item.card_id);
-  console.log("variant:", item.variant);
-  console.log("key:", key);*/
+    
       map[key] = Number(item.owned || 0);
     });
-
-
+    
     setAllUserCards(map);
   }
 
