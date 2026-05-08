@@ -211,7 +211,8 @@ useEffect(() => {
     const { data, error } = await supabase
       .from("user_cards")
       .select("*")
-      .eq("email", user.email);
+      .eq("email", user.email)
+      .range(0, 5000);
 
     console.log("========= FULL USER_CARDS DATA =========");
 
@@ -286,7 +287,8 @@ useEffect(() => {
     const { data, error } = await supabase
       .from("user_cards")
       .select("*")
-      .in("email", emails);
+      .in("email", emails)
+      .range(0, 10000);
     
       //console.log("USER_CARDS RAW:", data);
 /*console.log("COLLAB QUERY EMAILS:", emails);
