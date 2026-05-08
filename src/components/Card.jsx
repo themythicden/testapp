@@ -88,7 +88,7 @@ console.log("value:", userCards[testKey]);*/
 console.log("CARD ID:", card.id);*/
           const myKey = `${card.id}_${v}`;
       
-          console.log("myKey:", myKey);
+          //console.log("myKey:", myKey);
           const myCount = userCards[myKey] || 0;
 
       if (
