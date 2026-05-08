@@ -67,6 +67,13 @@ console.log("ALL:", allUserCards);
       <div className="bg-gray-800 mt-2 p-2 space-y-3">
         {variants.map(v => {
 
+      const testKey = `${card.id}_${v}`;
+
+console.log("UI CARD:");
+console.log("card.id:", card.id);
+console.log("variant:", v);
+console.log("lookup:", testKey);
+console.log("value:", userCards[testKey]);
       /*console.log("VARIANT:", v);
 console.log("CARD ID:", card.id);*/
           const myKey = `${card.id}_${v}`;
