@@ -41,15 +41,7 @@ console.log("ALL:", allUserCards);
     statusText = <span className="text-yellow-400">Partial</span>;
 
   const saturation = stats.isMissing ? "grayscale opacity-60" : "";
-  const lookup = `${card.id}_${v}`;
 
-console.log({
-  cardId: card.id,
-  variant: v,
-  lookup,
-  exists: userCards.hasOwnProperty(lookup),
-  value: userCards[lookup]
-});
 
   return (
     <div id="cardContainer" className="bg-gray-700 rounded">
@@ -77,6 +69,15 @@ console.log({
         {variants.map(v => {
 
       const testKey = `${card.id}_${v}`;
+
+
+console.log({
+  cardId: card.id,
+  variant: v,
+  lookup,
+  exists: userCards.hasOwnProperty(testkey),
+  value: userCards[lookup]
+});
 
 /*console.log("UI CARD:");
 console.log("card.id:", card.id);
