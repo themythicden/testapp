@@ -1,11 +1,12 @@
-//import { getVariants } from "./cardUtils";
-//import { isSecretCard } from "./setUtils";
 import { getCardStats, getVariants } from "./cardUtils";
 import { isSecretCard } from "./setUtils";
 
 export function getVisibleCards({
   cards,
   userCards,
+  allUserCards = {},
+  collectionUsers = [],
+  isCollab = false,
   setFilter,
   statusFilter,
   collection,
@@ -17,64 +18,62 @@ export function getVisibleCards({
 }) {
   if (!collection) return [];
 
-  //return cards.filter(card => {
+  const getOwnedCount = (cardId, variant) => {
+    if (!isCollab) {
+      return userCards[`${cardId}_${variant}`] || 0;
+    }
+
+    return collectionUsers.reduce((total, collectionUser) => {
+      const key = `${collectionUser.email}_${cardId}_${variant}`;
+      return total + (allUserCards[key] || 0);
+    }, 0);
+  };
+
+  const isCardComplete = card => {
+    return getVariants(card, setFilter).every(variant => {
+      return getOwnedCount(card.id, variant) > 0;
+    });
+  };
+
   let result = cards.filter(card => {
-    const stats = getCardStats(card, userCards, setFilter);
     const isSecret = isSecretCard(card, collection.rule);
 
-    // SEARCH FILTER
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-    
+
       const matchesName = card.name?.toLowerCase().includes(q);
       const matchesNumber = String(card.number).includes(q);
-    
+
       if (!matchesName && !matchesNumber) return false;
     }
 
-    // -----------------------------
-    // SET FILTER
-    // -----------------------------
     if (setFilter !== "master" && isSecret) return false;
 
-    // -----------------------------
-    // TYPE FILTER (multi-select)
-    // -----------------------------
     if (typeFilter.length > 0) {
       const cardTypes = card.types || [];
       const match = typeFilter.some(t => cardTypes.includes(t));
       if (!match) return false;
     }
 
-    // -----------------------------
-    // SUPERTYPE FILTER
-    // -----------------------------
     if (supertypeFilter.length > 0) {
       if (!supertypeFilter.includes(card.supertype)) return false;
     }
 
-    // -----------------------------
-    // LEGAL FILTER
-    // -----------------------------
     if (legalOnly) {
       const mark = card.regulation_mark || "";
-      if (mark < "G") return false; // simple alphabetical compare
+      if (mark < "G") return false;
     }
 
-    // -----------------------------
-    // STATUS FILTER
-    // -----------------------------
     switch (statusFilter) {
       case "owned":
-        return stats.isComplete;
+        return isCardComplete(card);
 
       case "needed":
-        return !stats.isComplete;
+        return !isCardComplete(card);
 
       case "duplicates":
         return getVariants(card, setFilter).some(v => {
-          const key = `${card.id}_${v}`;
-          return (userCards[key] || 0) > 1;
+          return getOwnedCount(card.id, v) > 1;
         });
 
       default:
@@ -82,24 +81,25 @@ export function getVisibleCards({
     }
   });
 
-  // SORTING
   result.sort((a, b) => {
     if (sortBy === "name") {
       return a.name.localeCompare(b.name);
     }
-  
+
     if (sortBy === "owned") {
-      const countA = getVariants(a, setFilter)
-        .reduce((sum, v) => sum + (userCards[`${a.id}_${v}`] || 0), 0);
-  
-      const countB = getVariants(b, setFilter)
-        .reduce((sum, v) => sum + (userCards[`${b.id}_${v}`] || 0), 0);
-  
-      return countB - countA; // highest first
+      const countA = getVariants(a, setFilter).reduce((sum, v) => {
+        return sum + getOwnedCount(a.id, v);
+      }, 0);
+
+      const countB = getVariants(b, setFilter).reduce((sum, v) => {
+        return sum + getOwnedCount(b.id, v);
+      }, 0);
+
+      return countB - countA;
     }
-  
-    // DEFAULT: number
+
     return Number(a.number) - Number(b.number);
   });
+
   return result;
 }
