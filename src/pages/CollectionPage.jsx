@@ -4,40 +4,35 @@ import { supabase } from "../lib/supabaseClient";
 
 import CardGrid from "../components/CardGrid";
 import InviteUser from "../components/InviteUser";
-//import { getCardStats} from "../utils/cardUtils";
-//import { getVariants} from "../utils/cardUtils";
-// FILTERS
-import Filters from "../components/Filters";
-import StatusFilters from "../components/StatusFilters";
-import TypeFilters from "../components/TypeFilters";
-import SupertypeFilters from "../components/SupertypeFilters";
+
 import FiltersSection from "../components/FiltersSection";
 
-import { isSecretCard } from "../utils/setUtils";
 import { getVisibleCards } from "../utils/cardSelectors.js";
-
 
 export default function CollectionPage() {
   const [searchParams] = useSearchParams();
   const collectionId = searchParams.get("id");
   const collectionName = searchParams.get("name");
+
   const [user, setUser] = useState(null);
+  const [collection, setCollection] = useState(null);
   const [collectionUsers, setCollectionUsers] = useState([]);
+
   const [cards, setCards] = useState([]);
   const [userCards, setUserCards] = useState({});
   const [allUserCards, setAllUserCards] = useState({});
-  //const [allUserCards, setAllUserCards] = useState([]);
+
   const [setFilter, setSetFilter] = useState("master");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState([]); // multi-select
+  const [typeFilter, setTypeFilter] = useState([]);
   const [supertypeFilter, setSupertypeFilter] = useState([]);
   const [legalOnly, setLegalOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("number");
 
-  const activeUser = user; // clean alias
-
-
+  const myRole = collectionUsers.find(
+    u => u.email === user?.email
+  )?.role;
 
   // -----------------------------
   // AUTH
@@ -50,7 +45,6 @@ export default function CollectionPage() {
 
     loadUser();
 
-    // optional: live auth updates
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user || null);
@@ -62,81 +56,185 @@ export default function CollectionPage() {
     };
   }, []);
 
-  const [collection, setCollection] = useState(null);
+  // -----------------------------
+  // LOAD COLLECTION USERS
+  // -----------------------------
+  useEffect(() => {
+    async function loadCollectionUsers() {
+      if (!collectionId) return;
 
+      const { data, error } = await supabase
+        .from("user_collections")
+        .select("*")
+        .eq("collection_id", collectionId);
 
+      if (error) {
+        console.error("Error loading collection users:", error);
+        return;
+      }
 
-// LOAD COLLECTION USERS
-useEffect(() => {
-  async function loadCollectionUsers() {
-    if (!collectionId) return;
-
-    const { data, error } = await supabase
-      .from("user_collections")
-      .select("*")
-      .eq("collection_id", collectionId);
-
-    if (error) {
-      console.error("Error loading users:", error);
-      return;
-    }
-    
-    console.log("COLLECTION USERS: ", data);
-
-    setCollectionUsers(data || []);
-  }
-
-  loadCollectionUsers();
-}, [collectionId]);
-
-  
-  const myRole = collectionUsers.find(
-    u => u.email === user?.email
-  )?.role;
-
-  //console.log("MY ROLE 1", myRole);
-
-  
-// LOAD COLLECTION
-useEffect(() => {
-  async function loadCollection() {
-    if (!collectionId || !user) return;
-
-    const { data, error } = await supabase
-      .from("collections")
-      .select("*")
-      .eq("id", collectionId)
-      .single();
-    
-    if (!data) return;
-    
-    // check access
-    const { data: access } = await supabase
-      .from("user_collections")
-      .select("*")
-      .eq("collection_id", collectionId)
-      .eq("email", user.email)
-      .maybeSingle();
-    
-    if (!access && data.owner_email !== user.email) {
-      console.error("No access to this collection");
-      return;
+      console.log("COLLECTION USERS:", data);
+      setCollectionUsers(data || []);
     }
 
-    //console.log("COLLECTION:", data);
-    setCollection(data);
-  }
+    loadCollectionUsers();
+  }, [collectionId]);
 
-  loadCollection();
-}, [collectionId, user]);
+  // -----------------------------
+  // LOAD COLLECTION
+  // -----------------------------
+  useEffect(() => {
+    async function loadCollection() {
+      if (!collectionId || !user) return;
 
+      const { data, error } = await supabase
+        .from("collections")
+        .select("*")
+        .eq("id", collectionId)
+        .single();
 
+      if (error) {
+        console.error("Error loading collection:", error);
+        return;
+      }
 
-// -------------------------
-// FILTER CARDS
-// ----------------------------
-  // KEEP THIS FILTER
-  const visibleCards = collection 
+      if (!data) return;
+
+      const { data: access, error: accessError } = await supabase
+        .from("user_collections")
+        .select("*")
+        .eq("collection_id", collectionId)
+        .eq("email", user.email)
+        .maybeSingle();
+
+      if (accessError) {
+        console.error("Error checking collection access:", accessError);
+        return;
+      }
+
+      if (!access && data.owner_email !== user.email) {
+        console.error("No access to this collection");
+        return;
+      }
+
+      setCollection(data);
+    }
+
+    loadCollection();
+  }, [collectionId, user]);
+
+  // -----------------------------
+  // LOAD CARDS
+  // -----------------------------
+  useEffect(() => {
+    async function loadCards() {
+      if (!collection) return;
+
+      let query = supabase.from("cards").select("*");
+
+      if (collection.type === "set_code") {
+        query = query.eq("set_code", collection.rule);
+      }
+
+      if (collection.type === "pokemon") {
+        query = query.ilike("name", `%${collection.rule}%`);
+      }
+
+      const { data, error } = await query.order("number", {
+        ascending: true
+      });
+
+      if (error) {
+        console.error("Error loading cards:", error);
+        return;
+      }
+
+      console.log("CARDS:", data);
+      setCards(data || []);
+    }
+
+    loadCards();
+  }, [collection]);
+
+  // -----------------------------
+  // LOAD CURRENT USER OWNERSHIP
+  // -----------------------------
+  useEffect(() => {
+    async function loadUserCards() {
+      if (!user || cards.length === 0) return;
+
+      const cardIds = cards.map(card => card.id);
+
+      const { data, error } = await supabase
+        .from("user_cards")
+        .select("*")
+        .eq("email", user.email)
+        .in("card_id", cardIds);
+
+      if (error) {
+        console.error("Error loading user_cards:", error);
+        return;
+      }
+
+      console.log("CURRENT USER_CARDS:", data);
+
+      const map = {};
+
+      (data || []).forEach(item => {
+        const key = `${item.card_id}_${item.variant}`;
+        map[key] = Number(item.owned || 0);
+      });
+
+      setUserCards(map);
+    }
+
+    loadUserCards();
+  }, [user, cards]);
+
+  // -----------------------------
+  // LOAD ALL COLLECTION USER OWNERSHIP
+  // IMPORTANT:
+  // This must depend on BOTH collectionUsers and cards.
+  // Otherwise it can run too early and never load other users' captured cards.
+  // -----------------------------
+  useEffect(() => {
+    async function loadAllUserCards() {
+      if (!collectionUsers.length || cards.length === 0) return;
+
+      const emails = collectionUsers.map(u => u.email);
+      const cardIds = cards.map(card => card.id);
+
+      const { data, error } = await supabase
+        .from("user_cards")
+        .select("*")
+        .in("email", emails)
+        .in("card_id", cardIds)
+        .range(0, 10000);
+
+      if (error) {
+        console.error("Error loading all user cards:", error);
+        return;
+      }
+
+      console.log("ALL USER_CARDS:", data);
+
+      const map = {};
+
+      (data || []).forEach(item => {
+        const key = `${item.email}_${item.card_id}_${item.variant}`;
+        map[key] = Number(item.owned || 0);
+      });
+
+      setAllUserCards(map);
+    }
+
+    loadAllUserCards();
+  }, [collectionUsers, cards]);
+
+  // -----------------------------
+  // FILTER CARDS
+  // -----------------------------
+  const visibleCards = collection
     ? getVisibleCards({
         cards,
         userCards,
@@ -151,218 +249,110 @@ useEffect(() => {
       })
     : [];
 
-  
-// -----------------------------
-// LOAD CARDS (REAL DB)
-// -----------------------------
-useEffect(() => {
-  async function loadCards() {
-    if (!collection) return;
+  // -----------------------------
+  // ADD CARD
+  // -----------------------------
+  const handleAdd = async (cardId, variant) => {
+    if (!user) return;
 
-    //console.log("Applying rule:", collection.type, collection.rule);
+    const key = `${cardId}_${variant}`;
+    const allUsersKey = `${user.email}_${cardId}_${variant}`;
 
-    let query = supabase.from("cards").select("*");
+    const current = userCards[key] || 0;
+    const newCount = current + 1;
 
-    if (collection.type === "set_code") {
-      query = query.eq("set_code", collection.rule);
-    }
+    setUserCards(prev => ({
+      ...prev,
+      [key]: newCount
+    }));
 
-    if (collection.type === "pokemon") {
-      query = query.ilike("name", `%${collection.rule}%`);
-    }
+    setAllUserCards(prev => ({
+      ...prev,
+      [allUsersKey]: newCount
+    }));
 
-    const { data, error } = await query.order("number",{ascending : true});
-
-    if (error) {
-      console.error("Error loading cards:", error);
-      return;
-    }
-
-    console.log("CARDS:", data);
-    setCards(data);
-  }
-
-  loadCards();
-}, [collection]);
-
-// -----------------------------
-// LOAD USER OWNERSHIP
-// -----------------------------
-useEffect(() => {
-  async function loadUserCards() {
-if (!user || cards.length === 0) return;
-
-const cardIds = cards.map(card => card.id);
-
-const { data, error } = await supabase
-  .from("user_cards")
-  .select("*")
-  .eq("email", user.email)
-  .in("card_id", cardIds);
-
-    console.log("========= FULL USER_CARDS DATA =========");
-
-    console.log(data);
-
-    const broken = data.filter(
-  x =>
-    x.card_id === "sv10-5" ||
-    x.card_id === "sv10-6" ||
-    x.card_id === "sv10-7"
-);
-
-console.log("========= BROKEN CARD ROWS =========");
-console.log(broken);
-
-    if (error) {
-      console.error("Error loading user_cards:", error);
-      return;
-    }
-
-    /*const map = {};
-    
-    data.forEach(item => {
-      const key = `${item.card_id}_${item.variant}`;    
-      map[key] = Number(item.owned || 0);
-    });
-    
-    setUserCards(map);*/
-
-    const map = {};
-
-    data.forEach(item => {
-      const key = `${item.card_id}_${item.variant}`;
-    
-      // ONLY LOG BROKEN CARDS
-      if (
-        item.card_id === "sv10-5" ||
-        item.card_id === "sv10-6" ||
-        item.card_id === "sv10-7"
-      ) {
-        console.log("========== DB ROW ==========");
-        console.log(item);
-    
-        console.log("RAW CARD ID:", JSON.stringify(item.card_id));
-        console.log("RAW VARIANT:", JSON.stringify(item.variant));
-    
-        console.log("GENERATED DB KEY:", JSON.stringify(key));
-      }
-    
-      map[key] = Number(item.owned || 0);
-    });
-    
-    setUserCards(map);//
-
-    
-  }
-
-  loadUserCards();
-}, [user, cards]);
-
-  // THE ALL USERS
-
-useEffect(() => {
-  async function loadAllUserCards() {
-   if (!collectionUsers.length || cards.length === 0) return;
-
-    const emails = collectionUsers.map(u => u.email);
-
-    /*console.log("COLLECTION USERS:", collectionUsers);
-    console.log("EMAILS TO LOAD:", emails);*/
-
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("user_cards")
-      .select("*")
-      .in("email", emails)
-      .range(0, 10000);
-    
-      //console.log("USER_CARDS RAW:", data);
-/*console.log("COLLAB QUERY EMAILS:", emails);
-console.log("ALL USER CARDS RAW:", data);
-console.log("ALL USER CARDS ERROR:", error);*/
+      .upsert(
+        {
+          email: user.email,
+          card_id: cardId,
+          variant,
+          owned: newCount
+        },
+        {
+          onConflict: "email,card_id,variant"
+        }
+      );
 
     if (error) {
-      console.error("Error loading all user cards:", error);
-      return;
+      console.error("Error adding card:", error);
+
+      setUserCards(prev => ({
+        ...prev,
+        [key]: current
+      }));
+
+      setAllUserCards(prev => ({
+        ...prev,
+        [allUsersKey]: current
+      }));
     }
+  };
 
-    const map = {};
-    
-    data.forEach(item => {
-      const key = `${item.email}_${item.card_id}_${item.variant}`;
-    
-      map[key] = Number(item.owned || 0);
-    });
-    
-    setAllUserCards(map);
-  }
+  // -----------------------------
+  // REMOVE CARD
+  // -----------------------------
+  const handleRemove = async (cardId, variant) => {
+    if (!user) return;
 
-  loadAllUserCards();
-}, [collectionUsers]);
+    const key = `${cardId}_${variant}`;
+    const allUsersKey = `${user.email}_${cardId}_${variant}`;
 
-// -----------------------------
-// ADD CARD
-// -----------------------------
-const handleAdd = async (cardId, variant) => {
-  if (!user) return;
+    const current = userCards[key] || 0;
 
-  const key = `${cardId}_${variant}`;
-  //console.log("Item 286: ", key);
-  const current = userCards[key] || 0;
-  const newCount = current + 1;
+    if (current <= 0) return;
 
-  // Optimistic update
-  setUserCards(prev => ({
-    ...prev,
-    [key]: newCount
-  }));
+    const newCount = current - 1;
 
-  const { error } = await supabase
-    .from("user_cards")
-    .upsert({
-      email: user.email,
-      card_id: cardId,
-      variant,
-      owned: newCount
-    }, {
-      onConflict: "email,card_id,variant"
-    });
+    setUserCards(prev => ({
+      ...prev,
+      [key]: newCount
+    }));
 
-  if (error) console.error(error);
-};
+    setAllUserCards(prev => ({
+      ...prev,
+      [allUsersKey]: newCount
+    }));
 
-// -----------------------------
-// REMOVE CARD
-// -----------------------------
-const handleRemove = async (cardId, variant) => {
-  if (!user) return;
+    const { error } = await supabase
+      .from("user_cards")
+      .upsert(
+        {
+          email: user.email,
+          card_id: cardId,
+          variant,
+          owned: newCount
+        },
+        {
+          onConflict: "email,card_id,variant"
+        }
+      );
 
-  const key = `${cardId}_${variant}`;
- // console.log("Item 316: ", key);
-  const current = userCards[key] || 0;
+    if (error) {
+      console.error("Error removing card:", error);
 
-  if (current <= 0) return;
+      setUserCards(prev => ({
+        ...prev,
+        [key]: current
+      }));
 
-  const newCount = current - 1;
-
-  setUserCards(prev => ({
-    ...prev,
-    [key]: newCount
-  }));
-
-  const { error } = await supabase
-    .from("user_cards")
-    .upsert({
-      email: user.email,
-      card_id: cardId,
-      variant,
-      owned: newCount
-    }, {
-      onConflict: "email,card_id,variant"
-    });
-
-  if (error) console.error(error);
-};
+      setAllUserCards(prev => ({
+        ...prev,
+        [allUsersKey]: current
+      }));
+    }
+  };
 
   // -----------------------------
   // LOADING GUARD
@@ -375,7 +365,6 @@ const handleRemove = async (cardId, variant) => {
   // UI
   // -----------------------------
   return (
-    
     <div>
       <h2 className="text-2xl p-4">
         {collectionName || "Collection"}
@@ -393,14 +382,14 @@ const handleRemove = async (cardId, variant) => {
         setSupertypeFilter={setSupertypeFilter}
         legalOnly={legalOnly}
         setLegalOnly={setLegalOnly}
-        searchQuery={searchQuery}             
+        searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        sortBy={sortBy}              
-        setSortBy={setSortBy} 
+        sortBy={sortBy}
+        setSortBy={setSortBy}
       />
 
       {collection && myRole === "owner" && (
-        <InviteUser collectionId={collection.id} myRole={myRole}/>
+        <InviteUser collectionId={collection.id} myRole={myRole} />
       )}
 
       <CardGrid
@@ -419,4 +408,3 @@ const handleRemove = async (cardId, variant) => {
     </div>
   );
 }
-
