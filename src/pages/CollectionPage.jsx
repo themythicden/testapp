@@ -4,7 +4,6 @@ import { supabase } from "../lib/supabaseClient";
 
 import CardGrid from "../components/CardGrid";
 import InviteUser from "../components/InviteUser";
-
 import FiltersSection from "../components/FiltersSection";
 
 import { getVisibleCards } from "../utils/cardSelectors.js";
@@ -34,9 +33,6 @@ export default function CollectionPage() {
     u => u.email === user?.email
   )?.role;
 
-  // -----------------------------
-  // AUTH
-  // -----------------------------
   useEffect(() => {
     async function loadUser() {
       const { data } = await supabase.auth.getUser();
@@ -56,9 +52,6 @@ export default function CollectionPage() {
     };
   }, []);
 
-  // -----------------------------
-  // LOAD COLLECTION USERS
-  // -----------------------------
   useEffect(() => {
     async function loadCollectionUsers() {
       if (!collectionId) return;
@@ -73,16 +66,12 @@ export default function CollectionPage() {
         return;
       }
 
-      console.log("COLLECTION USERS:", data);
       setCollectionUsers(data || []);
     }
 
     loadCollectionUsers();
   }, [collectionId]);
 
-  // -----------------------------
-  // LOAD COLLECTION
-  // -----------------------------
   useEffect(() => {
     async function loadCollection() {
       if (!collectionId || !user) return;
@@ -100,17 +89,12 @@ export default function CollectionPage() {
 
       if (!data) return;
 
-      const { data: access, error: accessError } = await supabase
+      const { data: access } = await supabase
         .from("user_collections")
         .select("*")
         .eq("collection_id", collectionId)
         .eq("email", user.email)
         .maybeSingle();
-
-      if (accessError) {
-        console.error("Error checking collection access:", accessError);
-        return;
-      }
 
       if (!access && data.owner_email !== user.email) {
         console.error("No access to this collection");
@@ -123,9 +107,6 @@ export default function CollectionPage() {
     loadCollection();
   }, [collectionId, user]);
 
-  // -----------------------------
-  // LOAD CARDS
-  // -----------------------------
   useEffect(() => {
     async function loadCards() {
       if (!collection) return;
@@ -149,16 +130,12 @@ export default function CollectionPage() {
         return;
       }
 
-      console.log("CARDS:", data);
       setCards(data || []);
     }
 
     loadCards();
   }, [collection]);
 
-  // -----------------------------
-  // LOAD CURRENT USER OWNERSHIP
-  // -----------------------------
   useEffect(() => {
     async function loadUserCards() {
       if (!user || cards.length === 0) return;
@@ -172,11 +149,9 @@ export default function CollectionPage() {
         .in("card_id", cardIds);
 
       if (error) {
-        console.error("Error loading user_cards:", error);
+        console.error("Error loading current user cards:", error);
         return;
       }
-
-      console.log("CURRENT USER_CARDS:", data);
 
       const map = {};
 
@@ -191,12 +166,6 @@ export default function CollectionPage() {
     loadUserCards();
   }, [user, cards]);
 
-  // -----------------------------
-  // LOAD ALL COLLECTION USER OWNERSHIP
-  // IMPORTANT:
-  // This must depend on BOTH collectionUsers and cards.
-  // Otherwise it can run too early and never load other users' captured cards.
-  // -----------------------------
   useEffect(() => {
     async function loadAllUserCards() {
       if (!collectionUsers.length || cards.length === 0) return;
@@ -216,8 +185,6 @@ export default function CollectionPage() {
         return;
       }
 
-      console.log("ALL USER_CARDS:", data);
-
       const map = {};
 
       (data || []).forEach(item => {
@@ -231,13 +198,26 @@ export default function CollectionPage() {
     loadAllUserCards();
   }, [collectionUsers, cards]);
 
-  // -----------------------------
-  // FILTER CARDS
-  // -----------------------------
+  const isCardOwnedInCollection = (cardId, variant) => {
+    if (!collection?.is_collab) {
+      return (userCards[`${cardId}_${variant}`] || 0) > 0;
+    }
+
+    return collectionUsers.some(collectionUser => {
+      const key = `${collectionUser.email}_${cardId}_${variant}`;
+      return (allUserCards[key] || 0) > 0;
+    });
+  };
+
   const visibleCards = collection
     ? getVisibleCards({
         cards,
         userCards,
+        allUserCards,
+        collectionUsers,
+        currentUserEmail: user?.email,
+        isCollab: collection?.is_collab,
+        isCardOwnedInCollection,
         setFilter,
         statusFilter,
         collection,
@@ -249,9 +229,6 @@ export default function CollectionPage() {
       })
     : [];
 
-  // -----------------------------
-  // ADD CARD
-  // -----------------------------
   const handleAdd = async (cardId, variant) => {
     if (!user) return;
 
@@ -287,22 +264,9 @@ export default function CollectionPage() {
 
     if (error) {
       console.error("Error adding card:", error);
-
-      setUserCards(prev => ({
-        ...prev,
-        [key]: current
-      }));
-
-      setAllUserCards(prev => ({
-        ...prev,
-        [allUsersKey]: current
-      }));
     }
   };
 
-  // -----------------------------
-  // REMOVE CARD
-  // -----------------------------
   const handleRemove = async (cardId, variant) => {
     if (!user) return;
 
@@ -310,7 +274,6 @@ export default function CollectionPage() {
     const allUsersKey = `${user.email}_${cardId}_${variant}`;
 
     const current = userCards[key] || 0;
-
     if (current <= 0) return;
 
     const newCount = current - 1;
@@ -341,29 +304,13 @@ export default function CollectionPage() {
 
     if (error) {
       console.error("Error removing card:", error);
-
-      setUserCards(prev => ({
-        ...prev,
-        [key]: current
-      }));
-
-      setAllUserCards(prev => ({
-        ...prev,
-        [allUsersKey]: current
-      }));
     }
   };
 
-  // -----------------------------
-  // LOADING GUARD
-  // -----------------------------
   if (!user) {
     return <div className="p-4">Loading user...</div>;
   }
 
-  // -----------------------------
-  // UI
-  // -----------------------------
   return (
     <div>
       <h2 className="text-2xl p-4">
@@ -404,6 +351,7 @@ export default function CollectionPage() {
         currentUserEmail={user.email}
         isCollab={collection?.is_collab}
         myRole={myRole}
+        isCardOwnedInCollection={isCardOwnedInCollection}
       />
     </div>
   );
