@@ -14,34 +14,45 @@ function Card({
   currentUserEmail,
   isCollab
 }) {
-
-  /*console.log("CARD:", card.name);
-console.log("USERS:", collectionUsers);
-console.log("ALL:", allUserCards);
-  console.log("isCollab:", isCollab);*/
   const allVariants = getVariants(card, setFilter);
+
+  const getTotalOwnedForVariant = variant => {
+    if (!isCollab) {
+      return userCards[`${card.id}_${variant}`] || 0;
+    }
+
+    return collectionUsers.reduce((sum, user) => {
+      const key = `${user.email}_${card.id}_${variant}`;
+      return sum + (allUserCards[key] || 0);
+    }, 0);
+  };
+
+  const getMyOwnedForVariant = variant => {
+    const key = `${card.id}_${variant}`;
+    return userCards[key] || 0;
+  };
 
   const variants =
     statusFilter === "needed"
-      ? allVariants.filter(v => {
-          const key = `${card.id}_${v}`;
-          return (userCards[key] || 0) === 0;
-        })
+      ? allVariants.filter(v => getTotalOwnedForVariant(v) === 0)
       : allVariants;
 
-  const stats = getCardStats(card, userCards, setFilter);
+  const stats = getCardStats(card, userCards, setFilter, {
+    getOwnedCount: getTotalOwnedForVariant
+  });
 
-  const handleAdd = (variant) => onAdd(card.id, variant);
-  const handleRemove = (variant) => onRemove(card.id, variant);
+  const handleAdd = variant => onAdd(card.id, variant);
+  const handleRemove = variant => onRemove(card.id, variant);
 
   let statusText = <span className="text-red-400">Need</span>;
-  if (stats.isComplete)
+
+  if (stats.isComplete) {
     statusText = <span className="text-green-400">Owned</span>;
-  else if (stats.isPartial)
+  } else if (stats.isPartial) {
     statusText = <span className="text-yellow-400">Partial</span>;
+  }
 
   const saturation = stats.isMissing ? "grayscale opacity-60" : "";
-
 
   return (
     <div id="cardContainer" className="bg-gray-700 rounded">
@@ -49,15 +60,17 @@ console.log("ALL:", allUserCards);
         <p className="text-md font-bold bg-gray-800 p-2 text-white">
           {card.name}
         </p>
+
         <div className="w-full flex">
           <p className="text-sm text-white font-bold bg-black p-2 w-full">
             #{card.number}
           </p>
-          <div className="mt-2 text-center w-full">{statusText}</div>
+
+          <div className="mt-2 text-center w-full">
+            {statusText}
+          </div>
         </div>
       </div>
-
-      
 
       <img
         src={card.image_small || card.image_large}
@@ -67,46 +80,8 @@ console.log("ALL:", allUserCards);
 
       <div className="bg-gray-800 mt-2 p-2 space-y-3">
         {variants.map(v => {
-
-/*const testKey = `${card.id}_${v}`;
-
-console.log({
-  cardNmae: card.name,
-  cardId: card.id,
-  variant: v,
-  lookup: testKey,
-  exists: userCards.hasOwnProperty(testKey),
-  value: userCards[testKey]
-});*/
-
-/*console.log("UI CARD:");
-console.log("card.id:", card.id);
-console.log("variant:", v);
-console.log("lookup:", testKey);
-console.log("value:", userCards[testKey]);*/
-      /*console.log("VARIANT:", v);
-console.log("CARD ID:", card.id);*/
-          const myKey = `${card.id}_${v}`;
-      
-          //console.log("myKey:", myKey);
-          const myCount = userCards[myKey] || 0;
-
-      if (
-        card.id === "sv10-5" ||
-        card.id === "sv10-6" ||
-        card.id === "sv10-7"
-      ) {
-        console.log("========== UI KEY ==========");
-        console.log("CARD ID:", JSON.stringify(card.id));
-        console.log("VARIANT:", JSON.stringify(v));
-        console.log("UI KEY:", JSON.stringify(myKey));
-        console.log("LOOKUP:", userCards[myKey]);
-      }
-
-          const total = collectionUsers.reduce((sum, user) => {
-            const key = `${user.email}_${card.id}_${v}`;
-            return sum + (allUserCards[key] || 0);
-          }, 0);
+          const myCount = getMyOwnedForVariant(v);
+          const total = getTotalOwnedForVariant(v);
 
           return (
             <div key={v} className="border border-gray-700 rounded p-2">
@@ -121,21 +96,22 @@ console.log("CARD ID:", card.id);*/
                 <div className="mt-2 text-xs space-y-1">
                   {collectionUsers.map(user => {
                     const key = `${user.email}_${card.id}_${v}`;
-                  //console.log("CHECK KEY:", key, allUserCards[key]);
                     const count = allUserCards[key] || 0;
 
                     if (count === 0) return null;
 
                     return (
-<div key={user.email} className="flex justify-between text-gray-300">
-  <span>
-    {user.email === currentUserEmail
-      ? "You"
-      : user.name || user.email.split('@')[0]}
-  </span>
-  <span>{count}</span>
-</div>
-
+                      <div
+                        key={user.email}
+                        className="flex justify-between text-gray-300"
+                      >
+                        <span>
+                          {user.email === currentUserEmail
+                            ? "You"
+                            : user.name || user.email.split("@")[0]}
+                        </span>
+                        <span>{count}</span>
+                      </div>
                     );
                   })}
 
