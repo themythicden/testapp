@@ -36,6 +36,10 @@ export default function CollectionPage() {
   useEffect(() => {
     async function loadUser() {
       const { data } = await supabase.auth.getUser();
+
+      console.log("======== AUTH USER ========");
+      console.log(data.user);
+
       setUser(data.user || null);
     }
 
@@ -43,6 +47,10 @@ export default function CollectionPage() {
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
+        console.log("======== AUTH STATE CHANGE ========");
+        console.log("EVENT:", _event);
+        console.log("SESSION USER:", session?.user);
+
         setUser(session?.user || null);
       }
     );
@@ -56,10 +64,16 @@ export default function CollectionPage() {
     async function loadCollectionUsers() {
       if (!collectionId) return;
 
+      console.log("======== LOAD COLLECTION USERS ========");
+      console.log("COLLECTION ID:", collectionId);
+
       const { data, error } = await supabase
         .from("user_collections")
         .select("*")
         .eq("collection_id", collectionId);
+
+      console.log("COLLECTION USERS DATA:", data);
+      console.log("COLLECTION USERS ERROR:", error);
 
       if (error) {
         console.error("Error loading collection users:", error);
@@ -76,11 +90,19 @@ export default function CollectionPage() {
     async function loadCollection() {
       if (!collectionId || !user) return;
 
+      console.log("======== LOAD COLLECTION ========");
+      console.log("COLLECTION ID:", collectionId);
+      console.log("LOGGED IN EMAIL:", user.email);
+
       const { data, error } = await supabase
         .from("collections")
         .select("*")
         .eq("id", collectionId)
         .single();
+
+      console.log("COLLECTION DATA:", data);
+      console.log("COLLECTION ERROR:", error);
+      console.log("COLLECTION IS_COLLAB:", data?.is_collab);
 
       if (error) {
         console.error("Error loading collection:", error);
@@ -89,12 +111,15 @@ export default function CollectionPage() {
 
       if (!data) return;
 
-      const { data: access } = await supabase
+      const { data: access, error: accessError } = await supabase
         .from("user_collections")
         .select("*")
         .eq("collection_id", collectionId)
         .eq("email", user.email)
         .maybeSingle();
+
+      console.log("ACCESS ROW:", access);
+      console.log("ACCESS ERROR:", accessError);
 
       if (!access && data.owner_email !== user.email) {
         console.error("No access to this collection");
@@ -111,6 +136,9 @@ export default function CollectionPage() {
     async function loadCards() {
       if (!collection) return;
 
+      console.log("======== LOAD CARDS ========");
+      console.log("COLLECTION:", collection);
+
       let query = supabase.from("cards").select("*");
 
       if (collection.type === "set_code") {
@@ -124,6 +152,10 @@ export default function CollectionPage() {
       const { data, error } = await query.order("number", {
         ascending: true
       });
+
+      console.log("CARDS DATA COUNT:", data?.length);
+      console.log("FIRST 5 CARDS:", data?.slice(0, 5));
+      console.log("CARDS ERROR:", error);
 
       if (error) {
         console.error("Error loading cards:", error);
@@ -140,13 +172,22 @@ export default function CollectionPage() {
     async function loadUserCards() {
       if (!user || cards.length === 0) return;
 
+      console.log("======== LOAD CURRENT USER CARDS ========");
+      console.log("LOGGED IN EMAIL:", user.email);
+
       const cardIds = cards.map(card => card.id);
+
+      console.log("CARD IDS COUNT:", cardIds.length);
+      console.log("FIRST 10 CARD IDS:", cardIds.slice(0, 10));
 
       const { data, error } = await supabase
         .from("user_cards")
         .select("*")
         .eq("email", user.email)
         .in("card_id", cardIds);
+
+      console.log("CURRENT USER_CARDS DATA:", data);
+      console.log("CURRENT USER_CARDS ERROR:", error);
 
       if (error) {
         console.error("Error loading current user cards:", error);
@@ -157,8 +198,13 @@ export default function CollectionPage() {
 
       (data || []).forEach(item => {
         const key = `${item.card_id}_${item.variant}`;
+
+        console.log("CURRENT USER CARD KEY:", key, "OWNED:", item.owned);
+
         map[key] = Number(item.owned || 0);
       });
+
+      console.log("CURRENT USER_CARDS MAP:", map);
 
       setUserCards(map);
     }
@@ -168,10 +214,24 @@ export default function CollectionPage() {
 
   useEffect(() => {
     async function loadAllUserCards() {
-      if (!collectionUsers.length || cards.length === 0) return;
+      if (!collectionUsers.length || cards.length === 0) {
+        console.log("======== SKIPPING LOAD ALL USER CARDS ========");
+        console.log("collectionUsers.length:", collectionUsers.length);
+        console.log("cards.length:", cards.length);
+        return;
+      }
+
+      console.log("======== LOAD ALL USER CARDS ========");
+      console.log("LOGGED IN USER:", user?.email);
+      console.log("COLLECTION IS_COLLAB:", collection?.is_collab);
+      console.log("COLLECTION USERS:", collectionUsers);
 
       const emails = collectionUsers.map(u => u.email);
       const cardIds = cards.map(card => card.id);
+
+      console.log("EMAILS USED FOR ALL USER CARDS:", emails);
+      console.log("CARD IDS COUNT:", cardIds.length);
+      console.log("FIRST 10 CARD IDS:", cardIds.slice(0, 10));
 
       const { data, error } = await supabase
         .from("user_cards")
@@ -179,6 +239,9 @@ export default function CollectionPage() {
         .in("email", emails)
         .in("card_id", cardIds)
         .range(0, 10000);
+
+      console.log("ALL USER_CARDS RAW DATA:", data);
+      console.log("ALL USER_CARDS ERROR:", error);
 
       if (error) {
         console.error("Error loading all user cards:", error);
@@ -189,25 +252,20 @@ export default function CollectionPage() {
 
       (data || []).forEach(item => {
         const key = `${item.email}_${item.card_id}_${item.variant}`;
+
+        console.log("ALL USER CARD GENERATED KEY:", key, "OWNED:", item.owned);
+
         map[key] = Number(item.owned || 0);
       });
+
+      console.log("ALL USER_CARDS MAP:", map);
+      console.log("ALL USER_CARDS MAP KEYS:", Object.keys(map));
 
       setAllUserCards(map);
     }
 
     loadAllUserCards();
-  }, [collectionUsers, cards]);
-
-  const isCardOwnedInCollection = (cardId, variant) => {
-    if (!collection?.is_collab) {
-      return (userCards[`${cardId}_${variant}`] || 0) > 0;
-    }
-
-    return collectionUsers.some(collectionUser => {
-      const key = `${collectionUser.email}_${cardId}_${variant}`;
-      return (allUserCards[key] || 0) > 0;
-    });
-  };
+  }, [collectionUsers, cards, user, collection]);
 
   const visibleCards = collection
     ? getVisibleCards({
@@ -215,9 +273,7 @@ export default function CollectionPage() {
         userCards,
         allUserCards,
         collectionUsers,
-        currentUserEmail: user?.email,
         isCollab: collection?.is_collab,
-        isCardOwnedInCollection,
         setFilter,
         statusFilter,
         collection,
@@ -232,11 +288,21 @@ export default function CollectionPage() {
   const handleAdd = async (cardId, variant) => {
     if (!user) return;
 
+    console.log("======== HANDLE ADD ========");
+    console.log("USER:", user.email);
+    console.log("CARD ID:", cardId);
+    console.log("VARIANT:", variant);
+
     const key = `${cardId}_${variant}`;
     const allUsersKey = `${user.email}_${cardId}_${variant}`;
 
     const current = userCards[key] || 0;
     const newCount = current + 1;
+
+    console.log("CURRENT KEY:", key);
+    console.log("ALL USERS KEY:", allUsersKey);
+    console.log("CURRENT COUNT:", current);
+    console.log("NEW COUNT:", newCount);
 
     setUserCards(prev => ({
       ...prev,
@@ -261,6 +327,8 @@ export default function CollectionPage() {
           onConflict: "email,card_id,variant"
         }
       );
+
+    console.log("ADD ERROR:", error);
 
     if (error) {
       console.error("Error adding card:", error);
@@ -270,13 +338,24 @@ export default function CollectionPage() {
   const handleRemove = async (cardId, variant) => {
     if (!user) return;
 
+    console.log("======== HANDLE REMOVE ========");
+    console.log("USER:", user.email);
+    console.log("CARD ID:", cardId);
+    console.log("VARIANT:", variant);
+
     const key = `${cardId}_${variant}`;
     const allUsersKey = `${user.email}_${cardId}_${variant}`;
 
     const current = userCards[key] || 0;
+
     if (current <= 0) return;
 
     const newCount = current - 1;
+
+    console.log("CURRENT KEY:", key);
+    console.log("ALL USERS KEY:", allUsersKey);
+    console.log("CURRENT COUNT:", current);
+    console.log("NEW COUNT:", newCount);
 
     setUserCards(prev => ({
       ...prev,
@@ -302,10 +381,23 @@ export default function CollectionPage() {
         }
       );
 
+    console.log("REMOVE ERROR:", error);
+
     if (error) {
       console.error("Error removing card:", error);
     }
   };
+
+  console.log("======== RENDER STATE ========");
+  console.log("USER:", user?.email);
+  console.log("COLLECTION:", collection);
+  console.log("COLLECTION IS_COLLAB:", collection?.is_collab);
+  console.log("COLLECTION USERS:", collectionUsers);
+  console.log("MY ROLE:", myRole);
+  console.log("CARDS COUNT:", cards.length);
+  console.log("USER_CARDS:", userCards);
+  console.log("ALL_USER_CARDS:", allUserCards);
+  console.log("VISIBLE CARDS COUNT:", visibleCards.length);
 
   if (!user) {
     return <div className="p-4">Loading user...</div>;
@@ -351,7 +443,6 @@ export default function CollectionPage() {
         currentUserEmail={user.email}
         isCollab={collection?.is_collab}
         myRole={myRole}
-        isCardOwnedInCollection={isCardOwnedInCollection}
       />
     </div>
   );
