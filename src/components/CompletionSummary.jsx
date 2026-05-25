@@ -24,11 +24,11 @@ export default function CompletionSummary({
   });
 
   return (
-    <div className="mx-4 mb-4 bg-gray-800 border border-gray-700 rounded-lg p-4 text-white">
+    <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 text-white">
       <div className="flex justify-between items-center mb-2">
         <div>
           <h3 className="font-bold text-lg">{completion.title}</h3>
-          <p className="text-sm text-gray-400">
+          <p className="text-md text-gray-400">
             {completion.owned} / {completion.total} collected
           </p>
         </div>
