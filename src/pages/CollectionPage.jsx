@@ -7,6 +7,7 @@ import CardGrid from "../components/CardGrid";
 import CompletionSummary from "../components/CompletionSummary";
 import InviteUser from "../components/InviteUser";
 import FiltersSection from "../components/FiltersSection";
+import CollectionHeader from "../components/CollectionHeader";
 
 import { getVisibleCards } from "../utils/cardSelectors.js";
 
@@ -307,9 +308,11 @@ export default function CollectionPage() {
 
   return (
     <div>
-      <h2 className="text-2xl p-4">
-        {collectionName || "Collection"}
-      </h2>
+      <CollectionHeader
+        collection={collection}
+        collectionName={collectionName}
+        cards={cards}
+      />
       
 
       <FiltersSection
