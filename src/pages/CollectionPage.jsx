@@ -307,7 +307,7 @@ export default function CollectionPage() {
   }
 
   return (
-    <div>
+    <div className="bg-black">
       <CollectionHeader
         collection={collection}
         collectionName={collectionName}
