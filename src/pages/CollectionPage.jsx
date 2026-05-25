@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 
 import CardGrid from "../components/CardGrid";
+
+import CompletionSummary from "../components/CompletionSummary";
 import InviteUser from "../components/InviteUser";
 import FiltersSection from "../components/FiltersSection";
 
@@ -308,6 +310,7 @@ export default function CollectionPage() {
       <h2 className="text-2xl p-4">
         {collectionName || "Collection"}
       </h2>
+      
 
       <FiltersSection
         collection={collection}
@@ -342,6 +345,18 @@ export default function CollectionPage() {
           </div>
         </details>
       )}
+
+      <CompletionSummary 
+        cards={cards}
+        userCards={userCards}
+        allUserCards={allUserCards}
+        collectionUsers={collectionUsers}
+        selectedOwnerEmails={selectedOwnerEmails}
+        currentUserEmail={user.email}
+        isCollab={collection?.is_collab}
+        setFilter={setFilter}
+        collection={collection}
+      />
 
       <CardGrid
         cards={visibleCards}
