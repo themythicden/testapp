@@ -47,7 +47,7 @@ export default function Header({ user }) {
 
   return (
     <header className="flex justify-between items-center p-4 bg-gray-900 text-white z-50">
-      <div className="bg-red-500">
+      <div className="">
         <h1
           className="cursor-pointer font-bold"
           onClick={() => navigate("/")}
