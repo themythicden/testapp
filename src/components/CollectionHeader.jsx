@@ -28,8 +28,8 @@ export default function CollectionHeader({
       : null;
 
   return (
-    <div className="p-4 flex justify-center">
-      <div className="bg-gray-800 p-4 my-4 w-full flex justify-center items-center">
+    <div className="flex justify-center">
+      <div className="bg-gray-800 p-4 w-full flex justify-center items-center">
         {isSetCollection && !logoFailed ? (
           <img
             src={setLogoUrl}
