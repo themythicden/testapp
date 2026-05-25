@@ -11,7 +11,8 @@ export default function CardGrid({
   onAdd,
   onRemove,
   isCollab,
-  myRole
+  myRole,
+  showMineOnly
 }) { // The opening brace must come immediately after the arguments
   
   //console.log("CARDGRID USERS:", collectionUsers);
@@ -32,6 +33,7 @@ export default function CardGrid({
           onAdd={onAdd}
           onRemove={onRemove}
           isCollab={isCollab}
+            showMineOnly={showMineOnly}
         />
       ))}
     </div>
