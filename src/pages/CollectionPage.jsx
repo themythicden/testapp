@@ -26,6 +26,7 @@ export default function CollectionPage() {
   const [typeFilter, setTypeFilter] = useState([]);
   const [supertypeFilter, setSupertypeFilter] = useState([]);
   const [legalOnly, setLegalOnly] = useState(false);
+  const [showMineOnly, setShowMineOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("number");
 
@@ -425,6 +426,7 @@ export default function CollectionPage() {
         setSearchQuery={setSearchQuery}
         sortBy={sortBy}
         setSortBy={setSortBy}
+        setShowMineOnly={setShowMineOnly}
       />
 
       {collection && myRole === "owner" && (
