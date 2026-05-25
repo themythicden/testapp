@@ -74,7 +74,7 @@ export default function FiltersSection({
   };
 
   return (
-    <div className="sticky top-0 z-20 bg-gray-950 border-b border-gray-800 shadow-lg">
+    <div className="sticky top-0 z-20 bg-gray-800 border-b border-gray-800 shadow-lg">
       {/* Search + sort */}
       <div className="p-3 space-y-3">
         <input
@@ -82,7 +82,7 @@ export default function FiltersSection({
           placeholder="Search name or #..."
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2 rounded-xl bg-gray-800 border border-gray-700 text-white placeholder-gray-400 outline-none focus:border-blue-500"
+          className="w-full px-4 py-2 rounded-xl bg-gray-500 border border-gray-700 text-white placeholder-gray-400 outline-none focus:border-blue-500"
         />
 
         <div className="flex gap-2 overflow-x-auto pb-1">
@@ -128,7 +128,7 @@ export default function FiltersSection({
             <button
               type="button"
               onClick={clearFilters}
-              className="text-sm text-white px-4 py-2 bg-red-600 rounded-full font-semibold"
+              className="text-sm text-white px-4 py-2 bg-red-500 rounded-full font-semibold"
             >
               Clear Filters
             </button>
