@@ -19,6 +19,7 @@ export default function FiltersSection({
   searchQuery,
   setSearchQuery,
   sortBy,
+  showMineOnly,
   setSortBy
 }) {
   const [open, setOpen] = useState(false);
@@ -144,6 +145,16 @@ export default function FiltersSection({
               Legal Only
             </button>
           </div>
+
+          <label className="flex items-center gap-2 text-white bg-gray-800 p-3 rounded-lg cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showMineOnly}
+              onChange={(e) => setShowMineOnly(e.target.checked)}
+              className="w-4 h-4"
+            />
+            <span>Show only cards I collected</span>
+          </label>
 
         </div>
       )}
