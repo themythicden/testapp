@@ -97,6 +97,29 @@ export function getVisibleCards({
       if (mark < "G") return false;
     }
 
+    const getActiveUsers = () => {
+      if (!isCollab) return [];
+    
+      if (selectedOwnerEmails.length > 0) {
+        return collectionUsers.filter(user =>
+          selectedOwnerEmails.includes(user.email)
+        );
+      }
+    
+      return collectionUsers;
+    };
+    
+    const getOwnedCount = (cardId, variant) => {
+      if (!isCollab) {
+        return userCards[`${cardId}_${variant}`] || 0;
+      }
+    
+      return getActiveUsers().reduce((sum, collectionUser) => {
+        const key = `${collectionUser.email}_${cardId}_${variant}`;
+        return sum + (allUserCards[key] || 0);
+      }, 0);
+    };
+
     /*
       Important:
       - When showMineOnly is false:
