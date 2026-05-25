@@ -75,6 +75,12 @@ export default function CollectionPage() {
   }, [collectionId]);
 
   useEffect(() => {
+  if (collectionUsers.length === 0) return;
+
+  setSelectedOwnerEmails(collectionUsers.map(u => u.email));
+}, [collectionUsers]);
+
+  useEffect(() => {
     async function loadCollection() {
       if (!collectionId || !user) return;
 
@@ -342,7 +348,7 @@ export default function CollectionPage() {
         userCards={userCards}
         allUserCards={allUserCards}
         collectionUsers={collectionUsers}
-        selectedOwnerEmails={selectedOwnerEmails}
+        
         setFilter={setFilter}
         statusFilter={statusFilter}
         onAdd={handleAdd}
@@ -350,6 +356,7 @@ export default function CollectionPage() {
         currentUserEmail={user.email}
         isCollab={collection?.is_collab}
         myRole={myRole}
+        selectedOwnerEmails={selectedOwnerEmails}
         setSelectedOwnerEmails={setSelectedOwnerEmails}
       />
     </div>
