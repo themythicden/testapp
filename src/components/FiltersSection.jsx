@@ -21,10 +21,13 @@ export default function FiltersSection({
   searchQuery,
   setSearchQuery,
   sortBy,
-  showMineOnly,
-  setShowMineOnly,
   setSortBy,
-  selectedOwnerEmails={selectedOwnerEmails}
+  //showMineOnly,
+  //setShowMineOnly,
+  collectionUsers,
+  currentUserEmail,
+  selectedOwnerEmails,
+  setSelectedOwnerEmails
 }) {
   const [open, setOpen] = useState(false);
 
@@ -152,11 +155,11 @@ export default function FiltersSection({
 
            {/* SUPERTYPE */}
           <OwnerFilters
-  collectionUsers={collectionUsers}
-  currentUserEmail={currentUserEmail}
-  selectedOwnerEmails={selectedOwnerEmails}
-  setSelectedOwnerEmails={setSelectedOwnerEmails}
-/>
+            collectionUsers={collectionUsers}
+            currentUserEmail={currentUserEmail}
+            selectedOwnerEmails={selectedOwnerEmails}
+            setSelectedOwnerEmails={setSelectedOwnerEmails}
+          />
 
           <label className="flex items-center gap-2 text-white bg-gray-800 p-3 rounded-lg cursor-pointer">
             <input
