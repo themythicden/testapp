@@ -20,6 +20,7 @@ export default function FiltersSection({
   setSearchQuery,
   sortBy,
   showMineOnly,
+  setShowMineOnly,
   setSortBy
 }) {
   const [open, setOpen] = useState(false);
