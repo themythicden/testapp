@@ -24,7 +24,7 @@ export default function CompletionSummary({
   });
 
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 text-white">
+    <div className="bg-gray-800 p-4 text-white">
       <div className="flex justify-between items-center mb-2">
         <div>
           <h3 className="font-bold text-lg">{completion.title}</h3>
