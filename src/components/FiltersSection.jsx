@@ -22,7 +22,8 @@ export default function FiltersSection({
   sortBy,
   showMineOnly,
   setShowMineOnly,
-  setSortBy
+  setSortBy,
+  selectedOwnerEmails={selectedOwnerEmails}
 }) {
   const [open, setOpen] = useState(false);
 
