@@ -30,6 +30,8 @@ export default function CollectionPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("number");
 
+  const [selectedOwnerEmails, setSelectedOwnerEmails] = useState([]);
+
   const myRole = collectionUsers.find(
     u => u.email === user?.email
   )?.role;
@@ -428,6 +430,10 @@ export default function CollectionPage() {
         setSortBy={setSortBy}
         showMineOnly={showMineOnly}
         setShowMineOnly={setShowMineOnly}
+        selectedOwnerEmails={selectedOwnerEmails}
+        setSelectedOwnerEmails={setSelectedOwnerEmails}
+        collectionUsers={collectionUsers}
+        currentUserEmail={user?.email}
       />
 
       {collection && myRole === "owner" && (
