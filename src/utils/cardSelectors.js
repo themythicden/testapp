@@ -15,7 +15,8 @@ export function getVisibleCards({
   sortBy,
   typeFilter = [],
   supertypeFilter = [],
-  legalOnly = false
+  legalOnly = false,
+  selectedOwnerEmails
 }) {
   if (!collection) return [];
 
