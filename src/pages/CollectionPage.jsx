@@ -284,6 +284,7 @@ export default function CollectionPage() {
         sortBy,
         typeFilter,
         supertypeFilter,
+      selectedOwnerEmails,
         legalOnly
       })
     : [];
