@@ -14,6 +14,7 @@ export function getVisibleCards({
   sortBy,
   typeFilter = [],
   supertypeFilter = [],
+  showMineOnly,
   legalOnly = false
 }) {
   if (!collection) return [];
