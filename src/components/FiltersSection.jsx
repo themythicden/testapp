@@ -5,7 +5,29 @@ import TypeFilters from "./TypeFilters";
 import SupertypeFilters from "./SupertypeFilters";
 import OwnerFilters from "./OwnerFilters";
 
-import Ownerilters from "./OwnerFilters";
+function FilterGroup({ title, children, defaultOpen = false }) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <div className="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen(prev => !prev)}
+        className="w-full flex justify-between items-center px-4 py-3 text-white"
+      >
+        <span className="font-semibold">{title}</span>
+        <span className="text-sm">{open ? "▲" : "▼"}</span>
+      </button>
+
+      {open && (
+        <div className="p-3 border-t border-gray-700">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function FiltersSection({
   collection,
   setFilter,
@@ -22,8 +44,6 @@ export default function FiltersSection({
   setSearchQuery,
   sortBy,
   setSortBy,
-  //showMineOnly,
-  //setShowMineOnly,
   collectionUsers,
   currentUserEmail,
   selectedOwnerEmails,
@@ -31,11 +51,10 @@ export default function FiltersSection({
 }) {
   const [open, setOpen] = useState(false);
 
-  // ✅ ACTIVE FILTER COUNT
   const activeCount = useMemo(() => {
     let count = 0;
 
-    if (setFilter !== "master") count++; // default
+    if (setFilter !== "master") count++;
     if (statusFilter !== "all") count++;
     if (typeFilter.length > 0) count++;
     if (supertypeFilter.length > 0) count++;
@@ -44,37 +63,38 @@ export default function FiltersSection({
     return count;
   }, [setFilter, statusFilter, typeFilter, supertypeFilter, legalOnly]);
 
-  // ✅ CLEAR ALL
   const clearFilters = () => {
     setSetFilter("master");
     setStatusFilter("all");
     setTypeFilter([]);
     setSupertypeFilter([]);
     setLegalOnly(false);
+    setSearchQuery("");
+    setSortBy("number");
   };
 
   return (
-    <div className="sticky top-0 z-20 bg-gray-800 border-b border-gray-700">
-      <div id='searchbar' className='w-full flex p-2'>
-        {/* SEARCH BAR */}
+    <div className="sticky top-0 z-20 bg-gray-950 border-b border-gray-800 shadow-lg">
+      {/* Search + sort */}
+      <div className="p-3 space-y-3">
         <input
           type="text"
           placeholder="Search name or #..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full m-2 ml-0 p-2 pl-0 rounded-lg bg-gray-100 border border-gray-200 text-white"
+          onChange={e => setSearchQuery(e.target.value)}
+          className="w-full px-4 py-2 rounded-xl bg-gray-800 border border-gray-700 text-white placeholder-gray-400 outline-none focus:border-blue-500"
         />
-        
-        {/* SORTING */}
-        <div className="flex gap-2">
+
+        <div className="flex gap-2 overflow-x-auto pb-1">
           {["number", "name", "owned"].map(option => (
             <button
+              type="button"
               key={option}
               onClick={() => setSortBy(option)}
-              className={`px-3 py-1 rounded ${
+              className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap ${
                 sortBy === option
                   ? "bg-blue-600 text-white"
-                  : "bg-gray-700 text-gray-300"
+                  : "bg-gray-800 text-gray-300 border border-gray-700"
               }`}
             >
               {option.toUpperCase()}
@@ -82,85 +102,89 @@ export default function FiltersSection({
           ))}
         </div>
       </div>
-      {/* HEADER */}
-      <div
+
+      {/* Main filter toggle */}
+      <button
+        type="button"
         onClick={() => setOpen(prev => !prev)}
-        className="cursor-pointer p-3 flex justify-between items-center bg-gray-800"
+        className="w-full relative px-4 py-3 bg-gray-900 border-t border-gray-800 text-white"
       >
-        <div className="flex items-center gap-2 text-white">
+        <div className="flex justify-center items-center gap-2">
           <span className="font-bold">Filters</span>
 
-          {/* ACTIVE COUNT BADGE */}
           {activeCount > 0 && (
             <span className="bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full">
               {activeCount}
             </span>
           )}
+
+          <span>{open ? "▲" : "▼"}</span>
         </div>
+      </button>
 
-        <span className="text-white">{open ? "▲" : "▼"}</span>
-      </div>
-
-      {/* CONTENT */}
       {open && (
-        <div className="space-y-1">
-
-          {/* CLEAR BUTTON */}
-          <div className="flex justify-between items-center">
-
+        <div className="p-3 space-y-3 bg-gray-950">
+          <div className="flex justify-end">
             <button
+              type="button"
               onClick={clearFilters}
-              className="text-sm text-white px-3 py-1 bg-red-600 rounded"
+              className="text-sm text-white px-4 py-2 bg-red-600 rounded-full font-semibold"
             >
               Clear Filters
             </button>
           </div>
 
-          {/* SET FILTER */}
-          <Filters
-            setCode={collection?.rule}
-            current={setFilter}
-            onChange={setSetFilter}
-          />
+          <FilterGroup title="Set View" defaultOpen>
+            <Filters
+              setCode={collection?.rule}
+              current={setFilter}
+              onChange={setSetFilter}
+            />
+          </FilterGroup>
 
-          {/* STATUS */}
-          <StatusFilters
-            statusFilter={statusFilter}
-            setStatusFilter={setStatusFilter}
-          />
+          <FilterGroup title="Status">
+            <StatusFilters
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+            />
+          </FilterGroup>
 
-          {/* TYPES */}
-          <TypeFilters
-            selected={typeFilter}
-            onChange={setTypeFilter}
-          />
+          <FilterGroup title="Owners">
+            <OwnerFilters
+              collectionUsers={collectionUsers}
+              currentUserEmail={currentUserEmail}
+              selectedOwnerEmails={selectedOwnerEmails}
+              setSelectedOwnerEmails={setSelectedOwnerEmails}
+            />
+          </FilterGroup>
 
-          {/* SUPERTYPE */}
-          <SupertypeFilters
-            selected={supertypeFilter}
-            onChange={setSupertypeFilter}
-          />
+          <FilterGroup title="Types">
+            <TypeFilters
+              selected={typeFilter}
+              onChange={setTypeFilter}
+            />
+          </FilterGroup>
 
-          {/* LEGAL */}
-          <div className="w-full bg-cyan-700">
+          <FilterGroup title="Supertype">
+            <SupertypeFilters
+              selected={supertypeFilter}
+              onChange={setSupertypeFilter}
+            />
+          </FilterGroup>
+
+          <FilterGroup title="Legality">
             <button
+              type="button"
               onClick={() => setLegalOnly(prev => !prev)}
-              className={`px-3 py-1 rounded ${
-                legalOnly ? "bg-yellow-500 text-white" : "bg-gray-600"
+              className={`px-4 py-2 rounded-full font-semibold ${
+                legalOnly
+                  ? "bg-yellow-500 text-white"
+                  : "bg-gray-700 text-gray-300"
               }`}
             >
               Legal Only
             </button>
-          </div>
-
-           {/* SUPERTYPE */}
-          <OwnerFilters
-            collectionUsers={collectionUsers}
-            currentUserEmail={currentUserEmail}
-            selectedOwnerEmails={selectedOwnerEmails}
-            setSelectedOwnerEmails={setSelectedOwnerEmails}
-          />
-
+          </FilterGroup>
         </div>
       )}
     </div>
