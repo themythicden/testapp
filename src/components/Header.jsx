@@ -47,14 +47,14 @@ export default function Header({ user }) {
 
   return (
     <header className="flex justify-between items-center p-4 bg-gray-900 text-white z-50">
-      <div />
-
-      <h1
-        className="cursor-pointer font-bold"
-        onClick={() => navigate("/")}
-      >
-        TradeMatcher v2
-      </h1>
+      <div className="bg-red-500">
+        <h1
+          className="cursor-pointer font-bold"
+          onClick={() => navigate("/")}
+        >
+          TradeMatcher v2
+        </h1>
+      </div>
 
       {!user ? (
         <button onClick={() => navigate("/login")}>
