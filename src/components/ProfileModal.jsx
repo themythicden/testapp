@@ -13,7 +13,12 @@ const cityMap = {
   "Northern Cape": ["Kimberley"]
 };
 
-export default function ProfileModal({ open, onClose, user }) {
+export default function ProfileModal({
+  open,
+  onClose,
+  user,
+  onProfileSaved
+}) {
   const [preferredName, setPreferredName] = useState("");
   const [province, setProvince] = useState("");
   const [city, setCity] = useState("");
@@ -21,36 +26,62 @@ export default function ProfileModal({ open, onClose, user }) {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (open && user) {
+    if (open && user?.email) {
       loadProfile();
     }
   }, [open, user]);
 
   async function loadProfile() {
-    const { data } = await supabase
-      .from("users")
+    const { data, error } = await supabase
+      .from("profiles")
       .select("*")
       .eq("email", user.email)
       .maybeSingle();
+
+    if (error) {
+      console.error("Error loading profile:", error);
+      return;
+    }
 
     if (data) {
       setPreferredName(data.preferred_name || "");
       setProvince(data.province || "");
       setCity(data.city || "");
+    } else {
+      setPreferredName("");
+      setProvince("");
+      setCity("");
     }
   }
 
   async function handleSave() {
+    if (!user?.email) return;
+
     setSaving(true);
 
-    await supabase.from("profiles").upsert({
+    const profilePayload = {
       email: user.email,
       preferred_name: preferredName.trim(),
       province,
       city
-    });
+    };
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .upsert(profilePayload, {
+        onConflict: "email"
+      })
+      .select()
+      .single();
 
     setSaving(false);
+
+    if (error) {
+      console.error("Error saving profile:", error);
+      return;
+    }
+
+    onProfileSaved?.(data);
     onClose();
   }
 
@@ -60,31 +91,23 @@ export default function ProfileModal({ open, onClose, user }) {
     if (!city) return list.slice(0, 6);
 
     return list
-      .filter(c =>
-        c.toLowerCase().includes(city.toLowerCase())
-      )
+      .filter(c => c.toLowerCase().includes(city.toLowerCase()))
       .slice(0, 6);
   }, [province, city]);
 
   if (!open) return null;
 
   return (
-    <div id="profileModal" className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center p-4 z-48">
+    <div className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center p-4">
       <div className="bg-zinc-900 text-white w-full max-w-md rounded-2xl p-5 space-y-4">
-
-        {/* Header */}
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold">👤 Profile</h2>
 
-          <button
-            onClick={onClose}
-            className="text-xl"
-          >
+          <button onClick={onClose} className="text-xl">
             ✖
           </button>
         </div>
 
-        {/* Preferred Name */}
         <div>
           <label className="text-sm text-zinc-400">
             Preferred Name
@@ -93,9 +116,7 @@ export default function ProfileModal({ open, onClose, user }) {
           <input
             maxLength={15}
             value={preferredName}
-            onChange={(e) =>
-              setPreferredName(e.target.value)
-            }
+            onChange={e => setPreferredName(e.target.value)}
             placeholder="Max 15 characters"
             className="w-full mt-1 bg-zinc-800 rounded-xl px-3 py-2 outline-none"
           />
@@ -105,7 +126,6 @@ export default function ProfileModal({ open, onClose, user }) {
           </p>
         </div>
 
-        {/* Province */}
         <div>
           <label className="text-sm text-zinc-400">
             Province
@@ -113,7 +133,7 @@ export default function ProfileModal({ open, onClose, user }) {
 
           <select
             value={province}
-            onChange={(e) => {
+            onChange={e => {
               setProvince(e.target.value);
               setCity("");
             }}
@@ -122,12 +142,13 @@ export default function ProfileModal({ open, onClose, user }) {
             <option value="">Select Province</option>
 
             {Object.keys(cityMap).map(p => (
-              <option key={p}>{p}</option>
+              <option key={p} value={p}>
+                {p}
+              </option>
             ))}
           </select>
         </div>
 
-        {/* City */}
         <div className="relative">
           <label className="text-sm text-zinc-400">
             City / Town
@@ -137,14 +158,12 @@ export default function ProfileModal({ open, onClose, user }) {
             value={city}
             disabled={!province}
             onFocus={() => setShowSug(true)}
-            onChange={(e) => {
+            onChange={e => {
               setCity(e.target.value);
               setShowSug(true);
             }}
             placeholder={
-              province
-                ? "Start typing city..."
-                : "Select province first"
+              province ? "Start typing city..." : "Select province first"
             }
             className="w-full mt-1 bg-zinc-800 rounded-xl px-3 py-2 outline-none disabled:opacity-50"
           />
@@ -153,6 +172,7 @@ export default function ProfileModal({ open, onClose, user }) {
             <div className="absolute w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-xl overflow-hidden z-50">
               {suggestions.map(s => (
                 <button
+                  type="button"
                   key={s}
                   onClick={() => {
                     setCity(s);
@@ -167,7 +187,6 @@ export default function ProfileModal({ open, onClose, user }) {
           )}
         </div>
 
-        {/* Buttons */}
         <div className="flex gap-2 pt-2">
           <button
             onClick={onClose}
@@ -179,12 +198,11 @@ export default function ProfileModal({ open, onClose, user }) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex-1 bg-emerald-600 rounded-xl py-2 font-semibold"
+            className="flex-1 bg-emerald-600 rounded-xl py-2 font-semibold disabled:opacity-60"
           >
             {saving ? "Saving..." : "Save Profile"}
           </button>
         </div>
-
       </div>
     </div>
   );
