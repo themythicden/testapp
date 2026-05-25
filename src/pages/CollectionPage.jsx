@@ -350,6 +350,7 @@ export default function CollectionPage() {
         currentUserEmail={user.email}
         isCollab={collection?.is_collab}
         myRole={myRole}
+        setSelectedOwnerEmails={setSelectedOwnerEmails}
       />
     </div>
   );
