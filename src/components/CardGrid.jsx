@@ -13,7 +13,7 @@ export default function CardGrid({
   isCollab,
   myRole,
   showMineOnly,
-  selectedOwnerEmails={selectedOwnerEmails}
+  selectedOwnerEmails
 }) { // The opening brace must come immediately after the arguments
   
   //console.log("CARDGRID USERS:", collectionUsers);
@@ -35,6 +35,7 @@ export default function CardGrid({
           onRemove={onRemove}
           isCollab={isCollab}
             showMineOnly={showMineOnly}
+          selectedOwnerEmails={selectedOwnerEmails}
         />
       ))}
     </div>
