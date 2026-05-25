@@ -1,103 +1,202 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useNavigate } from "react-router-dom";
+import { SET_CONFIG } from "../utils/setConfig";
+
+function CollectionCard({ collection, onClick }) {
+  const isSet = collection.type === "set_code";
+  const isPokemon = collection.type === "pokemon";
+
+  const setConfig = SET_CONFIG[collection.rule];
+
+  const logoUrl = isSet
+    ? `https://images.scrydex.com/pokemon/${collection.rule}-logo/logo`
+    : null;
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full bg-gray-800 border border-gray-700 rounded-2xl p-4 text-left hover:bg-gray-700 transition"
+    >
+      <div className="flex items-center gap-4">
+        <div className="w-24 h-16 bg-gray-900 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
+          {isSet ? (
+            <img
+              src={logoUrl}
+              alt={collection.name}
+              className="max-w-full max-h-full object-contain"
+              onError={e => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          ) : isPokemon ? (
+            <span className="text-3xl">⭐</span>
+          ) : (
+            <span className="text-3xl">📁</span>
+          )}
+        </div>
+
+        <div className="min-w-0">
+          <h3 className="text-white font-bold text-lg truncate">
+            {collection.name}
+          </h3>
+
+          <p className="text-gray-400 text-sm">
+            {isSet
+              ? setConfig?.name || collection.rule
+              : isPokemon
+                ? `Pokémon: ${collection.rule}`
+                : collection.type || "Collection"}
+          </p>
+
+          {isSet && setConfig?.releaseDate && (
+            <p className="text-gray-500 text-xs mt-1">
+              Released: {setConfig.releaseDate}
+            </p>
+          )}
+        </div>
+      </div>
+    </button>
+  );
+}
 
 export default function CollectionsPage({ user }) {
   const [collections, setCollections] = useState([]);
-  const [newName, setNewName] = useState("");
   const navigate = useNavigate();
 
-  // 🚫 protect page
-  if (!user) return <div>Please log in</div>;
-
-  // 📦 LOAD COLLECTIONS
   useEffect(() => {
-  console.log("LOADING COLLECTIONS...");
-  console.log("AUTH USER:", user);
-  if (!user?.email) return;
+    if (!user?.email) return;
 
-  async function loadCollections() {
-    // STEP 1
-    const { data: userCollections, error } = await supabase
-      .from("user_collections")
-      .select("collection_id")
-      .eq("email", user.email);
+    async function loadCollections() {
+      const { data: userCollections, error } = await supabase
+        .from("user_collections")
+        .select("collection_id")
+        .eq("email", user.email);
 
-      
-  console.log("USER OBJECT:", user);
-  console.log("EMAIL:", user?.email);
+      if (error) {
+        console.error("Error loading user collections:", error);
+        return;
+      }
 
-    if (error) {
-      console.error(error);
-      return;
+      const ids = (userCollections || []).map(row => row.collection_id);
+
+      if (!ids.length) {
+        setCollections([]);
+        return;
+      }
+
+      const { data: collectionsData, error: collectionsError } = await supabase
+        .from("collections")
+        .select("*")
+        .in("id", ids);
+
+      if (collectionsError) {
+        console.error("Error loading collections:", collectionsError);
+        return;
+      }
+
+      setCollections(collectionsData || []);
     }
 
-    const ids = userCollections.map(row => row.collection_id);
+    loadCollections();
+  }, [user?.email]);
 
-    if (!ids.length) {
-      setCollections([]);
-      return;
-    }
+  const setCollections = useMemo(() => {
+    return collections
+      .filter(c => c.type === "set_code")
+      .sort((a, b) => {
+        const dateA = SET_CONFIG[a.rule]?.releaseDate || "1900-01-01";
+        const dateB = SET_CONFIG[b.rule]?.releaseDate || "1900-01-01";
 
-    // STEP 2
-    const { data: collectionsData, error: collectionsError } = await supabase
-      .from("collections")
-      .select("*")
-      .in("id", ids);
+        return new Date(dateB) - new Date(dateA);
+      });
+  }, [collections]);
 
-    if (collectionsError) {
-      console.error(collectionsError);
-      return;
-    }
+  const pokemonCollections = useMemo(() => {
+    return collections
+      .filter(c => c.type === "pokemon")
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [collections]);
 
+  const otherCollections = useMemo(() => {
+    return collections.filter(
+      c => c.type !== "set_code" && c.type !== "pokemon"
+    );
+  }, [collections]);
 
-    setCollections(collectionsData || []);
+  if (!user) {
+    return <div className="p-4 text-white">Please log in</div>;
   }
 
-  loadCollections();
-}, [user?.email]);
-
-  // ➕ CREATE COLLECTION
-  const createCollection = async () => {
-    if (!newName) return;
-
-    const { data, error } = await supabase
-      .from("collections")
-      .insert({
-        name: newName,
-        user_id: user.id
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    setCollections(prev => [...prev, data]);
-    setNewName("");
+  const openCollection = collection => {
+    navigate(`/collection?id=${collection.id}&name=${collection.name}`);
   };
 
-  console.log("COLLECTIONS STATE:", collections);
+  return (
+    <div className="min-h-screen bg-gray-950 text-white p-4 space-y-6">
+      <div>
+        <h2 className="text-3xl font-bold">My Collections</h2>
+        <p className="text-gray-400 text-sm mt-1">
+          Select a collection to view your progress.
+        </p>
+      </div>
 
-return (
-  <div>
-    <h2>My Collections</h2>
+      {collections.length === 0 ? (
+        <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6 text-center">
+          <p className="text-gray-300">No collections found</p>
+        </div>
+      ) : (
+        <>
+          {setCollections.length > 0 && (
+            <section className="space-y-3">
+              <h3 className="text-xl font-bold">Sets</h3>
 
-    {collections.length === 0 ? (
-      <p>No collections found</p>
-    ) : (
-      collections.map((c) => (
-          <div
-            key={c.id}
-            onClick={() => navigate(`/collection?id=${c.id}&name=${c.name}`)}
-            className="cursor-pointer p-4 border hover:bg-gray-100"
-          >
-            {c.name}
-          </div>
-      ))
-    )}
-  </div>
-);
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                {setCollections.map(collection => (
+                  <CollectionCard
+                    key={collection.id}
+                    collection={collection}
+                    onClick={() => openCollection(collection)}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {pokemonCollections.length > 0 && (
+            <section className="space-y-3">
+              <h3 className="text-xl font-bold">Pokémon Collections</h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                {pokemonCollections.map(collection => (
+                  <CollectionCard
+                    key={collection.id}
+                    collection={collection}
+                    onClick={() => openCollection(collection)}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {otherCollections.length > 0 && (
+            <section className="space-y-3">
+              <h3 className="text-xl font-bold">Other Collections</h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                {otherCollections.map(collection => (
+                  <CollectionCard
+                    key={collection.id}
+                    collection={collection}
+                    onClick={() => openCollection(collection)}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+        </>
+      )}
+    </div>
+  );
 }
