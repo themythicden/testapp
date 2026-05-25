@@ -114,10 +114,7 @@ function Card({
                     if (count === 0) return null;
 
                     return (
-                      <div
-                        key={user.email}
-                        className="flex justify-between text-gray-300"
-                      >
+                      <div key={user.email} className="flex justify-between text-gray-300" >
                         <span>
                           {user.email === currentUserEmail
                             ? "You"
