@@ -428,8 +428,16 @@ export default function CollectionPage() {
       />
 
       {collection && myRole === "owner" && (
-        <InviteUser collectionId={collection.id} myRole={myRole} />
-      )}
+  <details className="mx-4 mb-4 bg-gray-800 rounded-lg border border-gray-700">
+    <summary className="cursor-pointer p-3 text-white font-bold">
+      Invite user to collection
+    </summary>
+
+    <div className="p-3 border-t border-gray-700">
+      <InviteUser collectionId={collection.id} myRole={myRole} />
+    </div>
+  </details>
+)}
 
       <CardGrid
         cards={visibleCards}
