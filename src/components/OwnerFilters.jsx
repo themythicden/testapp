@@ -1,7 +1,7 @@
 export default function OwnerFilters({
   collectionUsers = [],
   currentUserEmail,
-  selectedOwnerEmails,
+  selectedOwnerEmails = [],
   setSelectedOwnerEmails
 }) {
   const toggleUser = email => {
@@ -17,6 +17,7 @@ export default function OwnerFilters({
   };
 
   const showMineOnly = () => {
+    if (!currentUserEmail) return;
     setSelectedOwnerEmails([currentUserEmail]);
   };
 
@@ -24,17 +25,17 @@ export default function OwnerFilters({
     <div className="bg-gray-800 rounded-lg p-3 text-white space-y-3">
       <div className="flex gap-2 flex-wrap">
         <button
+          type="button"
           onClick={showAll}
           className={`px-3 py-1 rounded ${
-            selectedOwnerEmails.length === 0
-              ? "bg-green-600"
-              : "bg-gray-700"
+            selectedOwnerEmails.length === 0 ? "bg-green-600" : "bg-gray-700"
           }`}
         >
           Full collection
         </button>
 
         <button
+          type="button"
           onClick={showMineOnly}
           className={`px-3 py-1 rounded ${
             selectedOwnerEmails.length === 1 &&
