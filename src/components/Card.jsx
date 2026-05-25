@@ -93,7 +93,7 @@ const getTotalOwnedForVariant = variant => {
                 onRemove={handleRemove}
               />
 
-              { isCollab && !showMineOnly && ( (
+              { isCollab && !showMineOnly && (
                 <div className="mt-2 text-xs space-y-1">
                   {collectionUsers.map(user => {
                     const key = `${user.email}_${card.id}_${v}`;
