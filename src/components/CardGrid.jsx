@@ -20,7 +20,7 @@ export default function CardGrid({
   //console.log("CARDGRID ALLUSERCARDS:", allUserCards);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 px-2 pb-2">
       {cards.map(card => (
         <Card
           key={card.id}
