@@ -29,7 +29,7 @@ export default function CollectionHeader({
 
   return (
     <div className="p-4 flex justify-center">
-      <div className="bg-gray-800 border border-gray-700 rounded-2xl p-4 w-full max-w-xl flex justify-center items-center">
+      <div className="bg-gray-800 p-4 my-4 w-full flex justify-center items-center">
         {isSetCollection && !logoFailed ? (
           <img
             src={setLogoUrl}
