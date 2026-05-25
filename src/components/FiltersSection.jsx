@@ -62,7 +62,7 @@ export default function FiltersSection({
           placeholder="Search name or #..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
+          className="w-full m-2 p-2 rounded-lg bg-gray-100 border border-gray-200 text-white"
         />
         
         {/* SORTING */}
