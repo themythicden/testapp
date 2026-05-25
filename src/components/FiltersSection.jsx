@@ -54,15 +54,15 @@ export default function FiltersSection({
   };
 
   return (
-    <div className="sticky top-0 z-20 bg-gray-900 border-b border-gray-700">
-      <div id='searchbar' className='w-full flex'>
+    <div className="sticky top-0 z-20 bg-gray-800 border-b border-gray-700">
+      <div id='searchbar' className='w-full flex p-2'>
         {/* SEARCH BAR */}
         <input
           type="text"
           placeholder="Search name or #..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full m-2 p-2 rounded-lg bg-gray-100 border border-gray-200 text-white"
+          className="w-full m-2 ml-0 p-2 pl-0 rounded-lg bg-gray-100 border border-gray-200 text-white"
         />
         
         {/* SORTING */}
