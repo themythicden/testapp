@@ -454,6 +454,7 @@ export default function CollectionPage() {
         currentUserEmail={user.email}
         isCollab={collection?.is_collab}
         myRole={myRole}
+          showMineOnly={showMineOnly}
       />
     </div>
   );
