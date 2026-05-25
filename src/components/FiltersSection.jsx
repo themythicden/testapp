@@ -3,6 +3,7 @@ import Filters from "./Filters";
 import StatusFilters from "./StatusFilters";
 import TypeFilters from "./TypeFilters";
 import SupertypeFilters from "./SupertypeFilters";
+import OwnerFilters from "./OwnerFilters";
 
 import Ownerilters from "./OwnerFilters";
 export default function FiltersSection({
