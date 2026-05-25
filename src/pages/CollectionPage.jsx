@@ -461,6 +461,7 @@ export default function CollectionPage() {
         isCollab={collection?.is_collab}
         myRole={myRole}
           showMineOnly={showMineOnly}
+        selectedOwnerEmails={selectedOwnerEmails}
       />
     </div>
   );
