@@ -14,7 +14,7 @@ export function getVisibleCards({
   sortBy,
   typeFilter = [],
   supertypeFilter = [],
-  showMineOnly,
+  showMineOnly = false,
   legalOnly = false
 }) {
   if (!collection) return [];
@@ -110,6 +110,15 @@ export function getVisibleCards({
       regulation_mark: card.regulation_mark,
       isSecret
     });
+
+    if (showMineOnly) {
+      const mineOwned = getVariants(card, setFilter).some(v => {
+        const key = `${card.id}_${v}`;
+        return (userCards[key] || 0) > 0;
+      });
+    
+      if (!mineOwned) return false;
+    }
 
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
