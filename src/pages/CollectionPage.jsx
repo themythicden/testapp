@@ -314,6 +314,17 @@ export default function CollectionPage() {
         cards={cards}
       />
       
+      <CompletionSummary 
+        cards={cards}
+        userCards={userCards}
+        allUserCards={allUserCards}
+        collectionUsers={collectionUsers}
+        selectedOwnerEmails={selectedOwnerEmails}
+        currentUserEmail={user.email}
+        isCollab={collection?.is_collab}
+        setFilter={setFilter}
+        collection={collection}
+      />
 
       <FiltersSection
         collection={collection}
@@ -338,7 +349,7 @@ export default function CollectionPage() {
       />
 
       {collection && myRole === "owner" && (
-        <details className="mx-4 mb-4 bg-gray-800 rounded-lg border border-gray-700">
+        <details className="m-2 bg-gray-800 rounded-lg border border-gray-700">
           <summary className="cursor-pointer p-3 text-white font-bold">
             Invite user to collection
           </summary>
@@ -348,18 +359,6 @@ export default function CollectionPage() {
           </div>
         </details>
       )}
-
-      <CompletionSummary 
-        cards={cards}
-        userCards={userCards}
-        allUserCards={allUserCards}
-        collectionUsers={collectionUsers}
-        selectedOwnerEmails={selectedOwnerEmails}
-        currentUserEmail={user.email}
-        isCollab={collection?.is_collab}
-        setFilter={setFilter}
-        collection={collection}
-      />
 
       <CardGrid
         cards={visibleCards}
