@@ -13,7 +13,7 @@ function Card({
   onRemove,
   currentUserEmail,
   isCollab,
-  showMineOnly
+  selectedOwnerEmails = [],
 }) {
   const allVariants = getVariants(card, setFilter);
 
