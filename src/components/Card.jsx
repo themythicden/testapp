@@ -17,25 +17,19 @@ function Card({
 }) {
   const allVariants = getVariants(card, setFilter);
 
-  const getActiveUsers = () => {
-    if (!isCollab) return [];
-
-    if (selectedOwnerEmails.length > 0) {
-      return collectionUsers.filter(user =>
+  const selectedUsers = isCollab
+    ? collectionUsers.filter(user =>
         selectedOwnerEmails.includes(user.email)
-      );
-    }
-
-    return collectionUsers;
-  };
+      )
+    : [];
 
   const getTotalOwnedForVariant = variant => {
     if (!isCollab) {
       return userCards[`${card.id}_${variant}`] || 0;
     }
 
-    return getActiveUsers().reduce((sum, user) => {
-      const key = `${user.email}_${card.id}_${variant}`;
+    return selectedOwnerEmails.reduce((sum, email) => {
+      const key = `${email}_${card.id}_${variant}`;
       return sum + (allUserCards[key] || 0);
     }, 0);
   };
@@ -105,16 +99,19 @@ function Card({
                 onRemove={handleRemove}
               />
 
-              {isCollab && selectedOwnerEmails.length === 0 && (
+              {isCollab && (
                 <div className="mt-2 text-xs space-y-1">
-                  {collectionUsers.map(user => {
+                  {selectedUsers.map(user => {
                     const key = `${user.email}_${card.id}_${v}`;
                     const count = allUserCards[key] || 0;
 
-                    if (count === 0) return null;
-
                     return (
-                      <div key={user.email} className="flex justify-between text-gray-300" >
+                      <div
+                        key={user.email}
+                        className={`flex justify-between ${
+                          count > 0 ? "text-gray-300" : "text-gray-500"
+                        }`}
+                      >
                         <span>
                           {user.email === currentUserEmail
                             ? "You"
@@ -126,7 +123,7 @@ function Card({
                   })}
 
                   <div className="flex justify-between text-yellow-400 font-bold border-t border-gray-600 pt-1">
-                    <span>Total</span>
+                    <span>Total selected</span>
                     <span>{total}</span>
                   </div>
                 </div>
