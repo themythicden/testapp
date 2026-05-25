@@ -1,61 +1,90 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import ProfileModal from "../components/ProfileModal";
 
 export default function Header({ user }) {
   const [open, setOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [profile, setProfile] = useState(null);
+
   const navigate = useNavigate();
-  const [showProfile, setShowProfile] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false); 
-  //const userEmail = user.email;
-  //console.log("Usserrr: ", user.user_metadata.email);
-  //const userName = user.name;
-  //const username = userName ? userEmail.split('@')[0] : "";
-  //
+
+  useEffect(() => {
+    async function loadProfile() {
+      if (!user?.email) {
+        setProfile(null);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("email", user.email)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Error loading header profile:", error);
+        return;
+      }
+
+      setProfile(data);
+    }
+
+    loadProfile();
+  }, [user]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setOpen(false);
+    setProfileOpen(false);
   };
+
+  const displayName =
+    profile?.preferred_name ||
+    user?.user_metadata?.name ||
+    user?.email?.split("@")[0];
 
   return (
     <header className="flex justify-between items-center p-4 bg-gray-900 text-white z-50">
-      <p className="text-white"></p>
-      <h1 className="cursor-pointer" onClick={() => navigate("/")}>
+      <div />
+
+      <h1
+        className="cursor-pointer font-bold"
+        onClick={() => navigate("/")}
+      >
         TradeMatcher v2
       </h1>
 
       {!user ? (
         <button onClick={() => navigate("/login")}>
-        Login
+          Login
         </button>
       ) : (
         <div className="relative">
-          <div
-            className="cursor-pointer"
-            onClick={() => setOpen(!open)}
+          <button
+            type="button"
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => setOpen(prev => !prev)}
           >
-            👤
-          </div>
+            <span>👤</span>
+            <span className="text-sm font-semibold">{displayName}</span>
+          </button>
 
           {open && (
-            <div className="absolute right-0 mt-4 bg-white text-black p-2 shadow w-[100px] text-center">
+            <div className="absolute right-0 mt-4 bg-white text-black p-2 shadow rounded w-[140px] text-center z-50">
               <div
-                className="cursor-pointer p-2"
+                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
                 onClick={() => {
-                  
-                  console.log("OPEN PROFILE CLICKED");
-                  setShowProfile(true);
                   setProfileOpen(true);
-                  console.log("SHOW PROFILE", showProfile);
-                  //setOpen(false);
+                  setOpen(false);
                 }}
               >
                 Profile
               </div>
+
               <div
-                className="cursor-pointer p-2"
+                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
                 onClick={() => {
                   navigate("/collections");
                   setOpen(false);
@@ -65,13 +94,17 @@ export default function Header({ user }) {
               </div>
 
               <div
-                className="cursor-pointer p-2"
-                onClick={() => navigate("#")}>
+                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                onClick={() => {
+                  navigate("#");
+                  setOpen(false);
+                }}
+              >
                 ISO
               </div>
 
               <div
-                className="cursor-pointer mt-2 p-2 bg-red-600 text-white"
+                className="cursor-pointer mt-2 p-2 bg-red-600 text-white rounded"
                 onClick={handleLogout}
               >
                 Logout
@@ -80,13 +113,13 @@ export default function Header({ user }) {
           )}
         </div>
       )}
-      {showProfile && (
-        <ProfileModal
-          open={profileOpen}
-          onClose={() => setProfileOpen(false)}
-          user={user}
-        />
-      )}
+
+      <ProfileModal
+        open={profileOpen}
+        onClose={() => setProfileOpen(false)}
+        user={user}
+        onProfileSaved={setProfile}
+      />
     </header>
   );
 }
