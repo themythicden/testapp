@@ -4,6 +4,7 @@ import StatusFilters from "./StatusFilters";
 import TypeFilters from "./TypeFilters";
 import SupertypeFilters from "./SupertypeFilters";
 
+import Ownerilters from "./OwnerFilters";
 export default function FiltersSection({
   collection,
   setFilter,
@@ -146,6 +147,9 @@ export default function FiltersSection({
               Legal Only
             </button>
           </div>
+
+           {/* SUPERTYPE */}
+          <OwnerFilters />
 
           <label className="flex items-center gap-2 text-white bg-gray-800 p-3 rounded-lg cursor-pointer">
             <input
