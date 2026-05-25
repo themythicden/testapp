@@ -426,6 +426,7 @@ export default function CollectionPage() {
         setSearchQuery={setSearchQuery}
         sortBy={sortBy}
         setSortBy={setSortBy}
+        showMineOnly={showMineOnly}
         setShowMineOnly={setShowMineOnly}
       />
 
