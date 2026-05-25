@@ -7,26 +7,38 @@ function Card({
   userCards,
   allUserCards = {},
   collectionUsers = [],
+  selectedOwnerEmails = [],
   setFilter,
   statusFilter,
   onAdd,
   onRemove,
   currentUserEmail,
-  isCollab,
-  selectedOwnerEmails = [],
+  isCollab
 }) {
   const allVariants = getVariants(card, setFilter);
 
-const getTotalOwnedForVariant = variant => {
-  if (!isCollab || showMineOnly) {
-    return userCards[`${card.id}_${variant}`] || 0;
-  }
+  const getActiveUsers = () => {
+    if (!isCollab) return [];
 
-  return collectionUsers.reduce((sum, user) => {
-    const key = `${user.email}_${card.id}_${variant}`;
-    return sum + (allUserCards[key] || 0);
-  }, 0);
-};
+    if (selectedOwnerEmails.length > 0) {
+      return collectionUsers.filter(user =>
+        selectedOwnerEmails.includes(user.email)
+      );
+    }
+
+    return collectionUsers;
+  };
+
+  const getTotalOwnedForVariant = variant => {
+    if (!isCollab) {
+      return userCards[`${card.id}_${variant}`] || 0;
+    }
+
+    return getActiveUsers().reduce((sum, user) => {
+      const key = `${user.email}_${card.id}_${variant}`;
+      return sum + (allUserCards[key] || 0);
+    }, 0);
+  };
 
   const getMyOwnedForVariant = variant => {
     const key = `${card.id}_${variant}`;
@@ -93,7 +105,7 @@ const getTotalOwnedForVariant = variant => {
                 onRemove={handleRemove}
               />
 
-              { isCollab && !showMineOnly && (
+              {isCollab && selectedOwnerEmails.length === 0 && (
                 <div className="mt-2 text-xs space-y-1">
                   {collectionUsers.map(user => {
                     const key = `${user.email}_${card.id}_${v}`;
