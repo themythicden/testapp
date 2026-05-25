@@ -12,7 +12,7 @@ export default function OwnerFilters({
     }
   };
 
-  const showAll = () => {
+  const showFullCollection = () => {
     setSelectedOwnerEmails([]);
   };
 
@@ -26,9 +26,11 @@ export default function OwnerFilters({
       <div className="flex gap-2 flex-wrap">
         <button
           type="button"
-          onClick={showAll}
+          onClick={showFullCollection}
           className={`px-3 py-1 rounded ${
-            selectedOwnerEmails.length === 0 ? "bg-green-600" : "bg-gray-700"
+            selectedOwnerEmails.length === 0
+              ? "bg-green-600"
+              : "bg-gray-700"
           }`}
         >
           Full collection
