@@ -151,7 +151,12 @@ export default function FiltersSection({
           </div>
 
            {/* SUPERTYPE */}
-          <OwnerFilters />
+          <OwnerFilters
+  collectionUsers={collectionUsers}
+  currentUserEmail={currentUserEmail}
+  selectedOwnerEmails={selectedOwnerEmails}
+  setSelectedOwnerEmails={setSelectedOwnerEmails}
+/>
 
           <label className="flex items-center gap-2 text-white bg-gray-800 p-3 rounded-lg cursor-pointer">
             <input
