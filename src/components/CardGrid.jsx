@@ -12,7 +12,8 @@ export default function CardGrid({
   onRemove,
   isCollab,
   myRole,
-  showMineOnly
+  showMineOnly,
+  selectedOwnerEmails={selectedOwnerEmails}
 }) { // The opening brace must come immediately after the arguments
   
   //console.log("CARDGRID USERS:", collectionUsers);
