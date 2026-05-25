@@ -17,29 +17,33 @@ export default function CompletionSummary({
     allUserCards,
     collectionUsers,
     selectedOwnerEmails,
+    currentUserEmail,
     isCollab,
     setFilter,
     collection
   });
 
-  const getTitle = () => {
-    if (!isCollab) return "My Completion";
-
-    if (
-      selectedOwnerEmails.length === 1 &&
-      selectedOwnerEmails[0] === currentUserEmail
-    ) {
-      return "My Completion";
-    }
-
-    if (selectedOwnerEmails.length === collectionUsers.length) {
-      return "Full Collection Completion";
-    }
-
-    return "Selected Users Completion";
-  };
-
   return (
     <div className="mx-4 mb-4 bg-gray-800 border border-gray-700 rounded-lg p-4 text-white">
       <div className="flex justify-between items-center mb-2">
-        <h3 className="
+        <div>
+          <h3 className="font-bold text-lg">{completion.title}</h3>
+          <p className="text-sm text-gray-400">
+            {completion.owned} / {completion.total} collected
+          </p>
+        </div>
+
+        <div className="text-2xl font-bold text-green-400">
+          {completion.percentage}%
+        </div>
+      </div>
+
+      <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+        <div
+          className="bg-green-500 h-3 rounded-full transition-all"
+          style={{ width: `${completion.percentage}%` }}
+        />
+      </div>
+    </div>
+  );
+}
