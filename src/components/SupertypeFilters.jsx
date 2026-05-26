@@ -23,7 +23,7 @@ export default function SupertypeFilters({
   };
 
   return (
-    <div className="flex justify-center items-center flex-wrap gap-3 w-full m-1">
+    <div className="flex justify-center items-center flex-wrap gap-3 w-full m-2">
       {SUPERTYPES.map(({ name, icon }) => {
         const active = selected.includes(name);
 
