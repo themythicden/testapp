@@ -2,6 +2,7 @@ export const SET_CONFIG = {
 
     me4: {
     name: "Chaos Rising",
+    series: "Mega Evolution",
     releaseDate: "2026-05-22",
     standard: 86,
     extra: 36,
@@ -24,6 +25,7 @@ export const SET_CONFIG = {
   },
     me3: {
     name: "Perfect Order",
+    series: "Mega Evolution",
     releaseDate: "2026-03-27",
     standard: 88,
     extra: 36,
@@ -46,6 +48,7 @@ export const SET_CONFIG = {
   },
     me2pt5: {
         name: "Ascended Heroes",
+        series: "Mega Evolution",
         releaseDate: "2026-01-30",
         standard: 217,
         extra: 78,
@@ -69,6 +72,7 @@ export const SET_CONFIG = {
     
     me2: {
     name: "Phantasmal Flames",
+    series: "Mega Evolution",
     releaseDate: "2025-11-14",
     standard: 94,
     extra:36,
@@ -91,6 +95,7 @@ export const SET_CONFIG = {
   },
      me1: {
     name: "Mega Evolution",
+    series: "Mega Evolution",
     releaseDate: "2025-09-26",
     standard: 132,
     extra: 56,
@@ -113,6 +118,7 @@ export const SET_CONFIG = {
   },
     sv10: {
     name: "Destined Rivals",
+    series: "Scarlet & Violet",
     releaseDate: "2025-05-30",
     standard: 182,
     extra:62,
@@ -136,6 +142,7 @@ export const SET_CONFIG = {
   
   sv9: {
     name: "Journey Together",
+    series: "Scarlet & Violet",
     releaseDate: "2025-03-28",
     standard: 159,
     extra:31,
@@ -159,6 +166,7 @@ export const SET_CONFIG = {
 
   sv8pt5: {
     name: "Prismatic Evolutions",
+    series: "Scarlet & Violet",
     releaseDate: "2025-01-17",
     standard: 131,
     extra: 49,
@@ -185,6 +193,7 @@ export const SET_CONFIG = {
 
    sv8: {
     name: "Surging Sparks",
+    series: "Scarlet & Violet",
     releaseDate: "2024-11-08",
     standard: 159,
     extra:31,
@@ -204,10 +213,11 @@ export const SET_CONFIG = {
       ace_spec: ["holo"],
       default: ["holo"]
     }
-  }, // <-- Fixed here by closing sv8 properly
+  }, 
     
    sv6: {
     name: "Twilight Masquerade",
+    series: "Scarlet & Violet",
     releaseDate: "2024-05-24",
     standard: 167,
     extra:59,
@@ -231,6 +241,7 @@ export const SET_CONFIG = {
 
   sv4pt5: {
       name: "Paldean Fates",
+      series: "Scarlet & Violet",
       releaseDate: "2024-01-26",
       standard: 91,
       extra: 154,
@@ -254,6 +265,7 @@ export const SET_CONFIG = {
     
   sv1: {
       name: "Scarlet & Violet",
+      series: "Scarlet & Violet",
       releaseDate: "2023-03-31",
       standard: 198,
       extra: 60,
