@@ -205,6 +205,29 @@ export const SET_CONFIG = {
       default: ["holo"]
     }
   }, // <-- Fixed here by closing sv8 properly
+    
+   sv6: {
+    name: "Twilight Masquerade",
+    releaseDate: "2024-05-24",
+    standard: 167,
+    extra:59,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  }, // <-- Fixed here by closing sv8 properly
 
   sv4pt5: {
       name: "Paldean Fates",
@@ -227,6 +250,30 @@ export const SET_CONFIG = {
         ace_spec: ["holo"],
         default: ["holo"]
       }
+    },
+    
+  sv1: {
+      name: "Scarlet & Violet",
+      releaseDate: "2023-03-31",
+      standard: 198,
+      extra: 60,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
     }
+    
 
 };
