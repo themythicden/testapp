@@ -155,7 +155,7 @@ export default function FiltersSection({
               selected={supertypeFilter}
               onChange={setSupertypeFilter}
             />
-            <div className="flex justify-center items-center flex-wrap gap-3 w-full">
+            <div className="flex justify-center items-center flex-wrap gap-3 w-full m-1 mb-2">
               <button
                 type="button"
                 onClick={() => setLegalOnly(prev => !prev)}
