@@ -8,7 +8,7 @@ export default function Filters({ setCode, current, onChange }) {
   const views = Object.keys(config.views);
 
   return (
-    <div className="flex gap-2 flex-wrap bg-pink-600">
+    <div className="flex gap-2 flex-wrap bg-transparent">
       {views.map(view => (
         <button
           key={view}
