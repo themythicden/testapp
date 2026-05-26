@@ -171,7 +171,7 @@ export default function FiltersSection({
             <p
               type="button"
               onClick={clearFilters}
-              className="text-md text-white px-4 py-2 bg-tranparent rounded-full font-semibold"
+              className="text-md text-white px-4 py-2 bg-tranparent rounded-full font-semibold cursor-pointer"
             >
               Clear Filters
             </p>
