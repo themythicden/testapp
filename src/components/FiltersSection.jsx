@@ -62,11 +62,12 @@ export default function FiltersSection({
     if (typeFilter.length > 0) count++;
     if (supertypeFilter.length > 0) count++;
     if (legalOnly) count++;
+    if (exFilter !== "all") count++;
 
     return count;
   }, [setFilter, statusFilter, typeFilter, supertypeFilter, legalOnly]);
 
-  if (exFilter !== "all") count++;
+ 
 
   
 
