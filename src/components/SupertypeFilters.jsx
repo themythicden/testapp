@@ -10,7 +10,7 @@ export default function SupertypeFilters({ selected, onChange }) {
   };
 
   return (
-    <div className="flex gap-2 bg-pink-600 w-full">
+    <div className="flex gap-2 bg-transparent w-full">
       {SUPERTYPES.map(type => (
         <button
           key={type}
