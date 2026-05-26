@@ -203,7 +203,30 @@ export const SET_CONFIG = {
       fa_trainer: ["holo"],
       ace_spec: ["holo"],
       default: ["holo"]
-    }
+    },
+
+    sv4pt5: {
+        name: "Paldean Fates",
+        releaseDate: "2024-01-26",
+        standard: 91,
+        extra: 154,
+    
+        views: {
+          standard: ["normal", "holo"],
+          parallel: ["normal", "holo", "reverse"],
+          master: "all"
+        },
+    
+        variants: {
+          common: ["normal", "reverse"],
+          uncommon: ["normal", "reverse"],
+          rare: ["holo", "reverse"],
+          trainer: ["normal", "reverse"],
+          fa_trainer: ["holo"],
+          ace_spec: ["holo"],
+          default: ["holo"]
+        }
+      },
   }
 
 };
