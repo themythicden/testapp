@@ -33,7 +33,7 @@ export default function OwnerFilters({
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
         {collectionUsers.map(user => {
           const checked = selectedOwnerEmails.includes(user.email);
 
