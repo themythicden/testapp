@@ -8,7 +8,7 @@ export default function Filters({ setCode, current, onChange }) {
   const views = Object.keys(config.views);
 
   return (
-    <div className="flex justify-center items-center gap-2 flex-wrap bg-transparent">
+    <div className="flex justify-center items-center gap-2 flex-wrap bg-transparent m-1">
       {views.map(view => (
         <button
           key={view}
