@@ -134,15 +134,12 @@ export default function FiltersSection({
             </button>
           </div>
 
-          <FilterGroup title="Set View" defaultOpen>
+          <FilterGroup title="Main" defaultOpen>
             <Filters
               setCode={collection?.rule}
               current={setFilter}
               onChange={setSetFilter}
             />
-          </FilterGroup>
-
-          <FilterGroup title="Status" defaultOpen>
             <StatusFilters
               statusFilter={statusFilter}
               setStatusFilter={setStatusFilter}
@@ -158,21 +155,15 @@ export default function FiltersSection({
             />
           </FilterGroup>
 
-          <FilterGroup title="Types">
+          <FilterGroup title="Additional">
             <TypeFilters
               selected={typeFilter}
               onChange={setTypeFilter}
             />
-          </FilterGroup>
-
-          <FilterGroup title="Supertype">
             <SupertypeFilters
               selected={supertypeFilter}
               onChange={setSupertypeFilter}
             />
-          </FilterGroup>
-
-          <FilterGroup title="Legality">
             <button
               type="button"
               onClick={() => setLegalOnly(prev => !prev)}
