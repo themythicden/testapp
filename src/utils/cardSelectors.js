@@ -15,7 +15,8 @@ export function getVisibleCards({
   sortBy,
   typeFilter = [],
   supertypeFilter = [],
-  legalOnly = false
+  legalOnly = false,
+  exFilter = "all"
 }) {
   if (!collection) return [];
 
@@ -68,6 +69,16 @@ export function getVisibleCards({
     if (legalOnly) {
       const mark = card.regulation_mark || "";
       if (mark < "G") return false;
+    }
+
+    const isEX = card.subtypes?.includes("ex");
+
+    if (exFilter === "only" && !isEX) {
+      return false;
+    }
+    
+    if (exFilter === "hide" && isEX) {
+      return false;
     }
 
     switch (statusFilter) {
