@@ -20,7 +20,7 @@ function CollectionCard({ collection, onClick }) {
       className="w-full bg-gray-800 border border-gray-700 rounded-2xl p-4 text-left hover:bg-gray-700 transition"
     >
       <div className="flex items-center gap-4">
-        <div className="w-24 h-16 bg-gray-900 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
+        <div className="w-24 h-16 bg-transparent rounded-xl flex items-center justify-center overflow-hidden shrink-0">
           {isSet ? (
             <img
               src={logoUrl}
