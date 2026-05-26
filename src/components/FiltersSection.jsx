@@ -4,6 +4,7 @@ import StatusFilters from "./StatusFilters";
 import TypeFilters from "./TypeFilters";
 import SupertypeFilters from "./SupertypeFilters";
 import OwnerFilters from "./OwnerFilters";
+import ExFilters from "./ExFilters";
 
 function FilterGroup({ title, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -47,7 +48,9 @@ export default function FiltersSection({
   collectionUsers,
   currentUserEmail,
   selectedOwnerEmails,
-  setSelectedOwnerEmails
+  setSelectedOwnerEmails,
+  exFilter,
+  setExFilter
 }) {
   const [open, setOpen] = useState(false);
 
@@ -63,6 +66,10 @@ export default function FiltersSection({
     return count;
   }, [setFilter, statusFilter, typeFilter, supertypeFilter, legalOnly]);
 
+  if (exFilter !== "all") count++;
+
+  
+
   const clearFilters = () => {
     setSetFilter("master");
     setStatusFilter("all");
@@ -71,6 +78,7 @@ export default function FiltersSection({
     setLegalOnly(false);
     setSearchQuery("");
     setSortBy("number");
+    setExFilter("all");
   };
 
   return (
@@ -155,6 +163,11 @@ export default function FiltersSection({
               selected={supertypeFilter}
               onChange={setSupertypeFilter}
             />
+            <ExFilters
+              exFilter={exFilter}
+              setExFilter={setExFilter}
+            />
+
             <div className="flex justify-center items-center flex-wrap gap-3 w-full m-2">
               <button
                 type="button"
