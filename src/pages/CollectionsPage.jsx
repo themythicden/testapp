@@ -14,7 +14,7 @@ function ProgressBar({ percentage }) {
 
       <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
         <div
-          className="h-full bg-green-500 rounded-full"
+          className="h-full bg-green-500 rounded-full transition-all"
           style={{ width: `${percentage}%` }}
         />
       </div>
@@ -25,6 +25,7 @@ function ProgressBar({ percentage }) {
 function CollectionCard({ collection, onClick, completion }) {
   const isSet = collection.type === "set_code";
   const isPokemon = collection.type === "pokemon";
+
   const setConfig = SET_CONFIG[collection.rule];
 
   const logoUrl = isSet
@@ -92,7 +93,8 @@ function CollectionCard({ collection, onClick, completion }) {
 export default function CollectionsPage({ user }) {
   const [collections, setCollections] = useState([]);
   const [cardsBySet, setCardsBySet] = useState({});
-  const [userCards, setUserCards] = useState({});
+  const [completionMap, setCompletionMap] = useState({});
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -113,6 +115,8 @@ export default function CollectionsPage({ user }) {
 
       if (!ids.length) {
         setCollections([]);
+        setCardsBySet({});
+        setCompletionMap({});
         return;
       }
 
@@ -146,7 +150,8 @@ export default function CollectionsPage({ user }) {
       const { data, error } = await supabase
         .from("cards")
         .select("*")
-        .in("set_code", setCodes);
+        .in("set_code", setCodes)
+        .range(0, 10000);
 
       if (error) {
         console.error("Error loading collection cards:", error);
@@ -170,59 +175,57 @@ export default function CollectionsPage({ user }) {
   }, [collections]);
 
   useEffect(() => {
-    async function loadUserCards() {
+    async function loadCompletions() {
       if (!user?.email) return;
-
-      const allCards = Object.values(cardsBySet).flat();
-      const cardIds = allCards.map(card => card.id);
-
-      if (cardIds.length === 0) {
-        setUserCards({});
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("user_cards")
-        .select("*")
-        .eq("email", user.email)
-        .in("card_id", cardIds)
-        .range(0, 10000);
-
-      if (error) {
-        console.error("Error loading user cards:", error);
-        return;
-      }
 
       const map = {};
 
-      (data || []).forEach(item => {
-        const key = `${item.card_id}_${item.variant}`;
-        map[key] = Number(item.owned || 0);
-      });
+      for (const collection of collections) {
+        if (collection.type !== "set_code") continue;
 
-      setUserCards(map);
+        const cards = cardsBySet[collection.rule] || [];
+
+        if (cards.length === 0) continue;
+
+        const cardIds = cards.map(card => card.id);
+
+        const { data, error } = await supabase
+          .from("user_cards")
+          .select("*")
+          .eq("email", user.email)
+          .in("card_id", cardIds)
+          .range(0, 10000);
+
+        if (error) {
+          console.error("Completion load error:", collection.rule, error);
+          continue;
+        }
+
+        const localUserCards = {};
+
+        (data || []).forEach(item => {
+          const key = `${item.card_id}_${item.variant}`;
+          localUserCards[key] = Number(item.owned || 0);
+        });
+
+        map[collection.id] = getCollectionCompletion({
+          cards,
+          userCards: localUserCards,
+          allUserCards: {},
+          collectionUsers: [],
+          selectedOwnerEmails: [],
+          currentUserEmail: user.email,
+          isCollab: false,
+          setFilter: "master",
+          collection
+        });
+      }
+
+      setCompletionMap(map);
     }
 
-    loadUserCards();
-  }, [user?.email, cardsBySet]);
-
-  const getCompletionForCollection = collection => {
-    if (collection.type !== "set_code") return null;
-
-    const cards = cardsBySet[collection.rule] || [];
-
-    return getCollectionCompletion({
-      cards,
-      userCards,
-      allUserCards: {},
-      collectionUsers: [],
-      selectedOwnerEmails: [],
-      currentUserEmail: user.email,
-      isCollab: false,
-      setFilter: "master",
-      collection
-    });
-  };
+    loadCompletions();
+  }, [collections, cardsBySet, user?.email]);
 
   const setCollectionsList = useMemo(() => {
     return collections
@@ -313,7 +316,7 @@ export default function CollectionsPage({ user }) {
                   <CollectionCard
                     key={collection.id}
                     collection={collection}
-                    completion={getCompletionForCollection(collection)}
+                    completion={completionMap[collection.id]}
                     onClick={() => openCollection(collection)}
                   />
                 ))}
