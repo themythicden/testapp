@@ -2,11 +2,29 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { SET_CONFIG } from "../utils/setConfig";
+import { getCollectionCompletion } from "../utils/completionUtils";
 
-function CollectionCard({ collection, onClick }) {
+function ProgressBar({ percentage }) {
+  return (
+    <div className="mt-3">
+      <div className="flex justify-between text-xs text-gray-400 mb-1">
+        <span>My Progress</span>
+        <span>{percentage}%</span>
+      </div>
+
+      <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+        <div
+          className="h-full bg-green-500 rounded-full"
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function CollectionCard({ collection, onClick, completion }) {
   const isSet = collection.type === "set_code";
   const isPokemon = collection.type === "pokemon";
-
   const setConfig = SET_CONFIG[collection.rule];
 
   const logoUrl = isSet
@@ -37,7 +55,7 @@ function CollectionCard({ collection, onClick }) {
           )}
         </div>
 
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <h3 className="text-white font-bold text-lg truncate">
             {collection.name}
           </h3>
@@ -57,12 +75,24 @@ function CollectionCard({ collection, onClick }) {
           )}
         </div>
       </div>
+
+      {completion && (
+        <>
+          <ProgressBar percentage={completion.percentage} />
+
+          <p className="text-xs text-gray-400 mt-2">
+            {completion.owned} / {completion.total} collected
+          </p>
+        </>
+      )}
     </button>
   );
 }
 
 export default function CollectionsPage({ user }) {
   const [collections, setCollections] = useState([]);
+  const [cardsBySet, setCardsBySet] = useState({});
+  const [userCards, setUserCards] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,6 +131,98 @@ export default function CollectionsPage({ user }) {
 
     loadCollections();
   }, [user?.email]);
+
+  useEffect(() => {
+    async function loadCardsForCollections() {
+      const setCodes = collections
+        .filter(c => c.type === "set_code")
+        .map(c => c.rule);
+
+      if (setCodes.length === 0) {
+        setCardsBySet({});
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("cards")
+        .select("*")
+        .in("set_code", setCodes);
+
+      if (error) {
+        console.error("Error loading collection cards:", error);
+        return;
+      }
+
+      const grouped = {};
+
+      (data || []).forEach(card => {
+        if (!grouped[card.set_code]) {
+          grouped[card.set_code] = [];
+        }
+
+        grouped[card.set_code].push(card);
+      });
+
+      setCardsBySet(grouped);
+    }
+
+    loadCardsForCollections();
+  }, [collections]);
+
+  useEffect(() => {
+    async function loadUserCards() {
+      if (!user?.email) return;
+
+      const allCards = Object.values(cardsBySet).flat();
+      const cardIds = allCards.map(card => card.id);
+
+      if (cardIds.length === 0) {
+        setUserCards({});
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("user_cards")
+        .select("*")
+        .eq("email", user.email)
+        .in("card_id", cardIds)
+        .range(0, 10000);
+
+      if (error) {
+        console.error("Error loading user cards:", error);
+        return;
+      }
+
+      const map = {};
+
+      (data || []).forEach(item => {
+        const key = `${item.card_id}_${item.variant}`;
+        map[key] = Number(item.owned || 0);
+      });
+
+      setUserCards(map);
+    }
+
+    loadUserCards();
+  }, [user?.email, cardsBySet]);
+
+  const getCompletionForCollection = collection => {
+    if (collection.type !== "set_code") return null;
+
+    const cards = cardsBySet[collection.rule] || [];
+
+    return getCollectionCompletion({
+      cards,
+      userCards,
+      allUserCards: {},
+      collectionUsers: [],
+      selectedOwnerEmails: [],
+      currentUserEmail: user.email,
+      isCollab: false,
+      setFilter: "master",
+      collection
+    });
+  };
 
   const setCollectionsList = useMemo(() => {
     return collections
@@ -191,6 +313,7 @@ export default function CollectionsPage({ user }) {
                   <CollectionCard
                     key={collection.id}
                     collection={collection}
+                    completion={getCompletionForCollection(collection)}
                     onClick={() => openCollection(collection)}
                   />
                 ))}
