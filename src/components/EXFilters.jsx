@@ -18,7 +18,7 @@ export default function ExFilters({
   ];
 
   return (
-    <div className="flex justify-center items-center flex-wrap gap-3 w-full">
+    <div className="flex justify-center items-center flex-wrap gap-3 w-full m-2">
       {options.map(option => {
         const active = exFilter === option.value;
 
