@@ -155,17 +155,19 @@ export default function FiltersSection({
               selected={supertypeFilter}
               onChange={setSupertypeFilter}
             />
-            <button
-              type="button"
-              onClick={() => setLegalOnly(prev => !prev)}
-              className={`px-4 py-2 rounded-full font-semibold ${
-                legalOnly
-                  ? "bg-yellow-500 text-white"
-                  : "bg-gray-700 text-gray-300"
-              }`}
-            >
-              Legal Only
-            </button>
+            <div className="flex justify-center items-center flex-wrap gap-3 w-full">
+              <button
+                type="button"
+                onClick={() => setLegalOnly(prev => !prev)}
+                className={`px-4 py-2 rounded-full font-semibold ${
+                  legalOnly
+                    ? "bg-yellow-500 text-white"
+                    : "bg-gray-700 text-gray-300"
+                }`}
+              >
+                Legal Only
+              </button>
+            </div>
           </FilterGroup>
           <div className="flex justify-end w-full">
             <p
