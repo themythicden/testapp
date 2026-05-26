@@ -20,7 +20,7 @@ function CollectionCard({ collection, onClick }) {
       className="w-full bg-gray-800 border border-gray-700 rounded-2xl p-4 text-left hover:bg-gray-700 transition"
     >
       <div className="flex items-center gap-4">
-        <div className="w-24 h-16 bg-transparent rounded-xl flex items-center justify-center overflow-hidden shrink-0">
+        <div className="w-24 h-16 bg-gray-900 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
           {isSet ? (
             <img
               src={logoUrl}
@@ -113,6 +113,34 @@ export default function CollectionsPage({ user }) {
       });
   }, [collections]);
 
+  const groupedSetCollections = useMemo(() => {
+    const groups = {};
+
+    setCollectionsList.forEach(collection => {
+      const series = SET_CONFIG[collection.rule]?.series || "Other Series";
+
+      if (!groups[series]) {
+        groups[series] = [];
+      }
+
+      groups[series].push(collection);
+    });
+
+    return Object.entries(groups).sort(([, collectionsA], [, collectionsB]) => {
+      const newestA = collectionsA.reduce((newest, collection) => {
+        const date = SET_CONFIG[collection.rule]?.releaseDate || "1900-01-01";
+        return new Date(date) > new Date(newest) ? date : newest;
+      }, "1900-01-01");
+
+      const newestB = collectionsB.reduce((newest, collection) => {
+        const date = SET_CONFIG[collection.rule]?.releaseDate || "1900-01-01";
+        return new Date(date) > new Date(newest) ? date : newest;
+      }, "1900-01-01");
+
+      return new Date(newestB) - new Date(newestA);
+    });
+  }, [setCollectionsList]);
+
   const pokemonCollections = useMemo(() => {
     return collections
       .filter(c => c.type === "pokemon")
@@ -134,7 +162,7 @@ export default function CollectionsPage({ user }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-4 space-y-6">
+    <div className="min-h-screen bg-gray-950 text-white p-4 space-y-8">
       <div>
         <h2 className="text-3xl font-bold">My Collections</h2>
         <p className="text-gray-400 text-sm mt-1">
@@ -148,12 +176,18 @@ export default function CollectionsPage({ user }) {
         </div>
       ) : (
         <>
-          {setCollectionsList.length > 0 && (
-            <section className="space-y-3">
-              <h3 className="text-xl font-bold">Sets</h3>
+          {groupedSetCollections.map(([series, seriesCollections]) => (
+            <section key={series} className="space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold">{series}</h3>
+                <span className="text-xs text-gray-400">
+                  {seriesCollections.length} collection
+                  {seriesCollections.length === 1 ? "" : "s"}
+                </span>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                {setCollectionsList.map(collection => (
+                {seriesCollections.map(collection => (
                   <CollectionCard
                     key={collection.id}
                     collection={collection}
@@ -162,7 +196,7 @@ export default function CollectionsPage({ user }) {
                 ))}
               </div>
             </section>
-          )}
+          ))}
 
           {pokemonCollections.length > 0 && (
             <section className="space-y-3">
