@@ -2,6 +2,7 @@ export const SET_CONFIG = {
 
     me3: {
     name: "Perfect Order",
+    releaseDate: "2026-03-27",
     standard: 88,
     extra: 36,
 
@@ -23,7 +24,7 @@ export const SET_CONFIG = {
   },
     me2pt5: {
         name: "Ascended Heroes",
-        
+        releaseDate: "2026-01-30",
         standard: 217,
         extra: 78,
         
@@ -46,6 +47,7 @@ export const SET_CONFIG = {
     
     me2: {
     name: "Phantasmal Flames",
+    releaseDate: "2025-11-14",
     standard: 94,
     extra:36,
 
@@ -67,6 +69,7 @@ export const SET_CONFIG = {
   },
      me1: {
     name: "Mega Evolution",
+    releaseDate: "2025-09-26",
     standard: 132,
     extra: 56,
 
@@ -88,6 +91,7 @@ export const SET_CONFIG = {
   },
     sv10: {
     name: "Destined Rivals",
+    releaseDate: "2025-05-30",
     standard: 182,
     extra:62,
 
@@ -110,6 +114,7 @@ export const SET_CONFIG = {
   
   sv9: {
     name: "Journey Together",
+    releaseDate: "2025-03-28",
     standard: 159,
     extra:31,
 
@@ -132,6 +137,7 @@ export const SET_CONFIG = {
 
   sv8pt5: {
     name: "Prismatic Evolutions",
+    releaseDate: "2025-01-17",
     standard: 131,
     extra: 49,
 
@@ -157,6 +163,7 @@ export const SET_CONFIG = {
 
    sv8: {
     name: "Surging Sparks",
+    releaseDate: "2024-11-08",
     standard: 159,
     extra:31,
 
