@@ -9,7 +9,7 @@ function FilterGroup({ title, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden space-y-2">
+    <div className="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden space-y-2" id="fs">
       <button
         type="button"
         onClick={() => setOpen(prev => !prev)}
