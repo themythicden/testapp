@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { CURRENCY_OPTIONS } from "../utils/priceUtils";
 
 const cityMap = {
   "Western Cape": ["Cape Town", "Stellenbosch", "Paarl", "George"],
-  "Gauteng": ["Johannesburg", "Pretoria", "Centurion", "Sandton"],
+  Gauteng: ["Johannesburg", "Pretoria", "Centurion", "Sandton"],
   "KwaZulu-Natal": ["Durban", "Pietermaritzburg", "Umhlanga"],
   "Eastern Cape": ["Gqeberha", "East London"],
   "Free State": ["Bloemfontein"],
-  "Limpopo": ["Polokwane"],
-  "Mpumalanga": ["Mbombela"],
+  Limpopo: ["Polokwane"],
+  Mpumalanga: ["Mbombela"],
   "North West": ["Rustenburg"],
   "Northern Cape": ["Kimberley"]
 };
@@ -22,6 +23,7 @@ export default function ProfileModal({
   const [preferredName, setPreferredName] = useState("");
   const [province, setProvince] = useState("");
   const [city, setCity] = useState("");
+  const [preferredCurrency, setPreferredCurrency] = useState("USD");
   const [showSug, setShowSug] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -47,10 +49,12 @@ export default function ProfileModal({
       setPreferredName(data.preferred_name || "");
       setProvince(data.province || "");
       setCity(data.city || "");
+      setPreferredCurrency(data.preferred_currency || "USD");
     } else {
       setPreferredName("");
       setProvince("");
       setCity("");
+      setPreferredCurrency("USD");
     }
   }
 
@@ -63,7 +67,8 @@ export default function ProfileModal({
       email: user.email,
       preferred_name: preferredName.trim(),
       province,
-      city
+      city,
+      preferred_currency: preferredCurrency || "USD"
     };
 
     const { data, error } = await supabase
@@ -124,6 +129,24 @@ export default function ProfileModal({
           <p className="text-xs text-zinc-500 mt-1">
             {preferredName.length}/15
           </p>
+        </div>
+
+        <div>
+          <label className="text-sm text-zinc-400">
+            Preferred Currency
+          </label>
+
+          <select
+            value={preferredCurrency}
+            onChange={e => setPreferredCurrency(e.target.value)}
+            className="w-full mt-1 bg-zinc-800 rounded-xl px-3 py-2 outline-none"
+          >
+            {CURRENCY_OPTIONS.map(currency => (
+              <option key={currency.code} value={currency.code}>
+                {currency.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
