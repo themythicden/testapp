@@ -1,20 +1,8 @@
-export default function ExFilters({
-  exFilter,
-  setExFilter
-}) {
+export default function ExFilters({ exFilter, setExFilter }) {
   const options = [
-    {
-      value: "all",
-      label: "All"
-    },
-    {
-      value: "only",
-      label: "EX Only"
-    },
-    {
-      value: "hide",
-      label: "Hide EX"
-    }
+    { value: "all", label: "All" },
+    { value: "only", label: "EX Only" },
+    { value: "hide", label: "Hide EX" }
   ];
 
   return (
