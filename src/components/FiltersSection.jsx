@@ -9,7 +9,7 @@ function FilterGroup({ title, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden">
+    <div className="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden space-y-2">
       <button
         type="button"
         onClick={() => setOpen(prev => !prev)}
@@ -124,15 +124,6 @@ export default function FiltersSection({
 
       {open && (
         <div className="p-3 space-y-3 bg-gray-950">
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={clearFilters}
-              className="text-sm text-white px-4 py-2 bg-red-500 rounded-full font-semibold"
-            >
-              Clear Filters
-            </button>
-          </div>
 
           <FilterGroup title="Main" defaultOpen>
             <Filters
@@ -176,6 +167,15 @@ export default function FiltersSection({
               Legal Only
             </button>
           </FilterGroup>
+          <div className="flex justify-end w-full">
+            <p
+              type="button"
+              onClick={clearFilters}
+              className="text-md text-white px-4 py-2 bg-tranparent rounded-full font-semibold"
+            >
+              Clear Filters
+            </p>
+          </div>
         </div>
       )}
     </div>
