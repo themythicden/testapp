@@ -23,7 +23,7 @@ export default function TypeFilters({ selected, onChange }) {
   };
 
   return (
-    <div className="flex justify-center items-center flex-wrap gap-3 w-full">
+    <div className="flex justify-center items-center flex-wrap gap-3 w-full m-1">
       {TYPES.map(({ name, icon }) => {
         const active = selected.includes(name);
 
