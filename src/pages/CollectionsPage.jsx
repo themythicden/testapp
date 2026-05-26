@@ -25,7 +25,6 @@ function ProgressBar({ percentage }) {
 function CollectionCard({ collection, onClick, completion }) {
   const isSet = collection.type === "set_code";
   const isPokemon = collection.type === "pokemon";
-
   const setConfig = SET_CONFIG[collection.rule];
 
   const logoUrl = isSet
@@ -136,37 +135,38 @@ export default function CollectionsPage({ user }) {
     loadCollections();
   }, [user?.email]);
 
+  // Load cards PER SET instead of one large .in("set_code") query
   useEffect(() => {
     async function loadCardsForCollections() {
-      const setCodes = collections
-        .filter(c => c.type === "set_code")
-        .map(c => c.rule);
+      const setCollections = collections.filter(c => c.type === "set_code");
 
-      if (setCodes.length === 0) {
+      if (setCollections.length === 0) {
         setCardsBySet({});
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("cards")
-        .select("*")
-        .in("set_code", setCodes)
-        .range(0, 10000);
-
-      if (error) {
-        console.error("Error loading collection cards:", error);
         return;
       }
 
       const grouped = {};
 
-      (data || []).forEach(card => {
-        if (!grouped[card.set_code]) {
-          grouped[card.set_code] = [];
+      for (const collection of setCollections) {
+        const { data, error } = await supabase
+          .from("cards")
+          .select("*")
+          .eq("set_code", collection.rule)
+          .order("number", { ascending: true })
+          .range(0, 10000);
+
+        if (error) {
+          console.error("Error loading cards for set:", collection.rule, error);
+          continue;
         }
 
-        grouped[card.set_code].push(card);
-      });
+        grouped[collection.rule] = data || [];
+
+        console.log("CARDS LOADED FOR SET:", {
+          set: collection.rule,
+          count: data?.length || 0
+        });
+      }
 
       setCardsBySet(grouped);
     }
@@ -174,6 +174,7 @@ export default function CollectionsPage({ user }) {
     loadCardsForCollections();
   }, [collections]);
 
+  // Build completion PER COLLECTION using only that collection's cards
   useEffect(() => {
     async function loadCompletions() {
       if (!user?.email) return;
@@ -184,6 +185,12 @@ export default function CollectionsPage({ user }) {
         if (collection.type !== "set_code") continue;
 
         const cards = cardsBySet[collection.rule] || [];
+
+        console.log("COMPLETION BUILD:", {
+          collection: collection.name,
+          rule: collection.rule,
+          cardsFound: cards.length
+        });
 
         if (cards.length === 0) continue;
 
