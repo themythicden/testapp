@@ -142,7 +142,7 @@ export default function FiltersSection({
             />
           </FilterGroup>
 
-          <FilterGroup title="Status">
+          <FilterGroup title="Status" defaultOpen>
             <StatusFilters
               statusFilter={statusFilter}
               setStatusFilter={setStatusFilter}
