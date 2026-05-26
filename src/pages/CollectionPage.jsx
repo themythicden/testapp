@@ -34,6 +34,8 @@ export default function CollectionPage() {
 
   const [selectedOwnerEmails, setSelectedOwnerEmails] = useState([]);
 
+  const [exFilter, setExFilter] = useState("all");
+
   const myRole = collectionUsers.find(
     u => u.email === user?.email
   )?.role;
@@ -224,6 +226,7 @@ export default function CollectionPage() {
         sortBy,
         typeFilter,
         supertypeFilter,
+        exFilter,
         legalOnly
       })
     : [];
@@ -346,6 +349,8 @@ export default function CollectionPage() {
         currentUserEmail={user.email}
         selectedOwnerEmails={selectedOwnerEmails}
         setSelectedOwnerEmails={setSelectedOwnerEmails}
+        exFilter={exFilter}
+        setExFilter={setExFilter}
       />
 
       {collection && myRole === "owner" && (
