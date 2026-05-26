@@ -22,7 +22,7 @@ export default function OwnerFilters({
   };
 
   return (
-    <div className="bg-transparent rounded-lg text-white space-y-3 ">
+    <div className="flex justify-center items-center flex-wrap gap-3 w-full">
       <div className="flex gap-2 flex-wrap">
         <button type="button" onClick={selectAll} className="bg-gray-700 px-3 py-1 rounded">
           All Users
