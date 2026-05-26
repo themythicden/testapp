@@ -5,7 +5,7 @@ export default function StatusFilters({
   const filters = ["all", "owned", "needed", "duplicates"];
 
   return (
-    <div className="flex justify-center items-center gap-2 flex-wrap bg-transparent">
+    <div className="flex justify-center items-center gap-2 flex-wrap bg-transparent m-1">
       {filters.map(f => (
         <button
           key={f}
