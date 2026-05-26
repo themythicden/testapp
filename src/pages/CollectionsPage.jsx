@@ -102,7 +102,7 @@ export default function CollectionsPage({ user }) {
     loadCollections();
   }, [user?.email]);
 
-  const setCollections = useMemo(() => {
+  const setCollectionsList = useMemo(() => {
     return collections
       .filter(c => c.type === "set_code")
       .sort((a, b) => {
@@ -148,12 +148,12 @@ export default function CollectionsPage({ user }) {
         </div>
       ) : (
         <>
-          {setCollections.length > 0 && (
+          {setCollectionsList.length > 0 && (
             <section className="space-y-3">
               <h3 className="text-xl font-bold">Sets</h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                {setCollections.map(collection => (
+                {setCollectionsList.map(collection => (
                   <CollectionCard
                     key={collection.id}
                     collection={collection}
