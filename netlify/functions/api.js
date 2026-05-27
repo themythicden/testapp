@@ -11,7 +11,7 @@ const VARIANT_PRICE_MAP = {
 const POKEMON_TCG_API_KEY = process.env.POKEMON_TCG_API_KEY;
 
 const supabase = createClient(
-  process.env.SUPABASE_URL,
+  process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
