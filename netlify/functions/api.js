@@ -35,6 +35,16 @@ export async function handler(event) {
       return response(data);
     }
 
+    if (action === "health") {
+      return response({
+        success: true,
+        message: "Function is working",
+        hasSupabaseUrl: !!process.env.SUPABASE_URL,
+        hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+        hasPokemonKey: !!process.env.POKEMON_TCG_API_KEY
+      });
+    }
+
     if (action === "getUserCards") {
       const { collectionId } = event.queryStringParameters;
 
