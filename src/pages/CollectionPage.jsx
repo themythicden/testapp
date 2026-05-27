@@ -11,6 +11,8 @@ import CollectionHeader from "../components/CollectionHeader";
 
 import { getVisibleCards } from "../utils/cardSelectors.js";
 
+import PriceRefreshButton from "../components/PriceRefreshButton";
+
 export default function CollectionPage() {
   const [searchParams] = useSearchParams();
   const collectionId = searchParams.get("id");
@@ -328,6 +330,14 @@ export default function CollectionPage() {
         setFilter={setFilter}
         collection={collection}
       />
+
+      {collection?.type === "set_code" && (
+        <PriceRefreshButton
+          setCode={collection.rule}
+          userEmail={user.email}
+          myRole={myRole}
+        />
+      )}
 
       <FiltersSection
         collection={collection}
