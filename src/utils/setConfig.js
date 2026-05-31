@@ -262,6 +262,80 @@ export const SET_CONFIG = {
         default: ["holo"]
       }
     },
+
+
+  sv4: {
+      name: "Paradox Rift",
+      series: "Scarlet & Violet",
+      releaseDate: "2023/11/03",
+      standard: 182,
+      extra: 84,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+
+  sv3: {
+      name: "Obsidian Flames",
+      series: "Scarlet & Violet",
+      releaseDate: "2023/08/11",
+      standard: 197,
+      extra: 37,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+    
+  sv2: {
+      name: "Paldea Evovled",
+      series: "Scarlet & Violet",
+      releaseDate: "2023/06/09",
+      standard: 193,
+      extra: 86,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
     
   sv1: {
       name: "Scarlet & Violet",
