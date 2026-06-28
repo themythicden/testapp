@@ -270,7 +270,30 @@ export const SET_CONFIG = {
       default: ["holo"]
     }
   }, 
-    
+      
+  sv7: {
+    name: "Stellar Crown",
+    series: "Scarlet & Violet",
+    releaseDate: "2024-09-13",
+    standard: 142,
+    extra:33,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
    sv6: {
     name: "Twilight Masquerade",
     series: "Scarlet & Violet",
@@ -295,6 +318,31 @@ export const SET_CONFIG = {
     }
   }, // <-- Fixed here by closing sv8 properly
 
+   sv5: {
+    name: "Temporal Forces",
+    series: "Scarlet & Violet",
+    releaseDate: "2024-03-22",
+    standard: 162,
+    extra: 56,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+    
+    
   sv4pt5: {
       name: "Paldean Fates",
       series: "Scarlet & Violet",
