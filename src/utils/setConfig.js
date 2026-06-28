@@ -116,6 +116,61 @@ export const SET_CONFIG = {
       default: ["holo"]
     }
   },
+
+    
+  zsv10pt5: {
+    name: "White Flare",
+    series: "Scarlet & Violet",
+    releaseDate: "2025-07-18",
+    standard: 86,
+    extra: 87,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal","holo","reverse"],
+      pokeball: ["normal", "holo", "reverse", "pokeball"],
+      masterball: ["normal", "holo", "reverse", "pokeball", "masterball"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse", "pokeball", "masterball"],
+      uncommon: ["normal", "reverse", "pokeball", "masterball"],
+      rare: ["holo", "reverse", "pokeball", "masterball"],
+      trainer: ["normal", "reverse", "pokeball"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+
+      default: ["holo"]
+    }
+  },    
+  zsv10pt5: {
+    name: "Black Bolt",
+    series: "Scarlet & Violet",
+    releaseDate: "2025-07-18",
+    standard: 86,
+    extra: 86,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal","holo","reverse"],
+      pokeball: ["normal", "holo", "reverse", "pokeball"],
+      masterball: ["normal", "holo", "reverse", "pokeball", "masterball"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse", "pokeball", "masterball"],
+      uncommon: ["normal", "reverse", "pokeball", "masterball"],
+      rare: ["holo", "reverse", "pokeball", "masterball"],
+      trainer: ["normal", "reverse", "pokeball"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+
+      default: ["holo"]
+    }
+  },
+
     sv10: {
     name: "Destined Rivals",
     series: "Scarlet & Violet",
@@ -343,6 +398,182 @@ export const SET_CONFIG = {
       releaseDate: "2023-03-31",
       standard: 198,
       extra: 60,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+
+        
+  swsh12pt5: {
+      name: "Crown Zenith",
+      series: "Sword & Shield",
+      releaseDate: "2023-01-20",
+      standard: 159,
+      extra: 1,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+        
+  swsh12pt5gg: {
+      name: "Crown Zenith Galarian Gallery",
+      series: "Sword & Shield",
+      releaseDate: "2023-01-20",
+      standard: 70,
+      extra: 0,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+        
+  swsh12: {
+      name: "Silver Tempest",
+      series: "Sword & Shield",
+      releaseDate: "2022-11-11",
+      standard: 195,
+      extra: 20,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+        
+  sv1: {
+      name: "Silver Tempest Trainer Gallery",
+      series: "Sword & Shield",
+      releaseDate: "2022-11-11",
+      standard: 70,
+      extra: 0,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+        
+  swsh9: {
+      name: "Brilliant Star",
+      series: "Sword & Shield",
+      releaseDate: "2022-02-25",
+      standard: 172,
+      extra: 14,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+        
+  sv1: {
+      name: "Lost Origin",
+      series: "Sword & Shield",
+      releaseDate: "2022-09-09",
+      standard: 196,
+      extra: 21,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+        
+  sv1: {
+      name: "Astral Radiance",
+      series: "Scarlet & Violet",
+      releaseDate: "2022-05-27",
+      standard: 189,
+      extra: 27,
   
       views: {
         standard: ["normal", "holo"],
