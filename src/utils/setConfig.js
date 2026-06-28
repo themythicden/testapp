@@ -118,7 +118,7 @@ export const SET_CONFIG = {
   },
 
     
-  zsv10pt5: {
+  rsv10pt5: {
     name: "White Flare",
     series: "Scarlet & Violet",
     releaseDate: "2025-07-18",
@@ -143,7 +143,8 @@ export const SET_CONFIG = {
 
       default: ["holo"]
     }
-  },    
+  },
+    
   zsv10pt5: {
     name: "Black Bolt",
     series: "Scarlet & Violet",
