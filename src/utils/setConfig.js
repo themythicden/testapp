@@ -516,6 +516,30 @@ export const SET_CONFIG = {
     },
 
     
+    sve: {
+    name: "Scarlet & Violet Energies",
+    series: "Scarlet & Violet",
+    releaseDate: "2023-01-02",
+    standard: 12,
+    extra: 0,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["normal", "reverse"]
+    }
+  },
+    
     svp: {
     name: "Scarlet & Violet Black Star Promos",
     series: "Scarlet & Violet",
@@ -539,6 +563,7 @@ export const SET_CONFIG = {
       default: ["holo"]
     }
   },
+    
         
   swsh12pt5gg: {
       name: "Crown Zenith Galarian Gallery",
