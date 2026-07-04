@@ -520,7 +520,7 @@ export const SET_CONFIG = {
     name: "Scarlet & Violet Energies",
     series: "Scarlet & Violet",
     releaseDate: "2023-01-02",
-    standard: 12,
+    standard: 24,
     extra: 0,
 
     views: {
