@@ -525,8 +525,8 @@ export const SET_CONFIG = {
       extra: 0,
   
       views: {
-        standard: ["normal", "holo"],
-        parallel: ["normal", "holo", "reverse"],
+        standard: ["holo"],
+        parallel: ["holo"],
         master: "all"
       },
   
