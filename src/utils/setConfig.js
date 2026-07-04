@@ -172,31 +172,6 @@ export const SET_CONFIG = {
     }
   },
 
-    
-    svp: {
-    name: "Scarlet & Violet Black Star Promos",
-    series: "Scarlet & Violet",
-    releaseDate: "2023-01-01",
-    standard: 225,
-    extra:0,
-
-    views: {
-      standard: ["normal", "holo"],
-      parallel: ["normal", "holo", "reverse"],
-      master: "all"
-    },
-
-    variants: {
-      common: ["normal", "reverse"],
-      uncommon: ["normal", "reverse"],
-      rare: ["holo", "reverse"],
-      trainer: ["normal", "reverse"],
-      fa_trainer: ["holo"],
-      ace_spec: ["holo"],
-      default: ["holo"]
-    }
-  },
-
     sv10: {
     name: "Destined Rivals",
     series: "Scarlet & Violet",
@@ -540,6 +515,30 @@ export const SET_CONFIG = {
       }
     },
 
+    
+    svp: {
+    name: "Scarlet & Violet Black Star Promos",
+    series: "Scarlet & Violet",
+    releaseDate: "2023-01-01",
+    standard: 225,
+    extra:0,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
         
   swsh12pt5gg: {
       name: "Crown Zenith Galarian Gallery",
