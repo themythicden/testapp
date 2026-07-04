@@ -540,32 +540,6 @@ export const SET_CONFIG = {
       }
     },
 
-
-        
-  swsh12pt5: {
-      name: "Crown Zenith",
-      series: "Sword & Shield",
-      releaseDate: "2023-01-20",
-      standard: 159,
-      extra: 1,
-  
-      views: {
-        standard: ["normal", "holo"],
-        parallel: ["normal", "holo", "reverse"],
-        master: "all"
-      },
-  
-      variants: {
-        common: ["normal", "reverse"],
-        uncommon: ["normal", "reverse"],
-        rare: ["holo", "reverse"],
-        trainer: ["normal", "reverse"],
-        fa_trainer: ["holo"],
-        ace_spec: ["holo"],
-        default: ["holo"]
-      }
-    },
-
         
   swsh12pt5gg: {
       name: "Crown Zenith Galarian Gallery",
@@ -591,6 +565,56 @@ export const SET_CONFIG = {
       }
     },
 
+    
+        
+  swsh12pt5: {
+      name: "Crown Zenith",
+      series: "Sword & Shield",
+      releaseDate: "2023-01-20",
+      standard: 159,
+      extra: 1,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+    
+  swsh12gg: {
+      name: "Silver Tempest Trainer Gallery",
+      series: "Sword & Shield",
+      releaseDate: "2022-11-11",
+      standard: 70,
+      extra: 0,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
         
   swsh12: {
       name: "Silver Tempest",
@@ -617,57 +641,7 @@ export const SET_CONFIG = {
     },
 
         
-  sv1: {
-      name: "Silver Tempest Trainer Gallery",
-      series: "Sword & Shield",
-      releaseDate: "2022-11-11",
-      standard: 70,
-      extra: 0,
-  
-      views: {
-        standard: ["normal", "holo"],
-        parallel: ["normal", "holo", "reverse"],
-        master: "all"
-      },
-  
-      variants: {
-        common: ["normal", "reverse"],
-        uncommon: ["normal", "reverse"],
-        rare: ["holo", "reverse"],
-        trainer: ["normal", "reverse"],
-        fa_trainer: ["holo"],
-        ace_spec: ["holo"],
-        default: ["holo"]
-      }
-    },
-
-        
-  swsh9: {
-      name: "Brilliant Star",
-      series: "Sword & Shield",
-      releaseDate: "2022-02-25",
-      standard: 172,
-      extra: 14,
-  
-      views: {
-        standard: ["normal", "holo"],
-        parallel: ["normal", "holo", "reverse"],
-        master: "all"
-      },
-  
-      variants: {
-        common: ["normal", "reverse"],
-        uncommon: ["normal", "reverse"],
-        rare: ["holo", "reverse"],
-        trainer: ["normal", "reverse"],
-        fa_trainer: ["holo"],
-        ace_spec: ["holo"],
-        default: ["holo"]
-      }
-    },
-
-        
-  sv1: {
+  swsh11: {
       name: "Lost Origin",
       series: "Sword & Shield",
       releaseDate: "2022-09-09",
@@ -692,7 +666,7 @@ export const SET_CONFIG = {
     },
 
         
-  sv1: {
+  swsh10: {
       name: "Astral Radiance",
       series: "Scarlet & Violet",
       releaseDate: "2022-05-27",
@@ -714,7 +688,30 @@ export const SET_CONFIG = {
         ace_spec: ["holo"],
         default: ["holo"]
       }
-    }
-    
+    },
+        
+  swsh9: {
+      name: "Brilliant Stars",
+      series: "Sword & Shield",
+      releaseDate: "2022-02-25",
+      standard: 172,
+      extra: 14,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    } 
 
 };
