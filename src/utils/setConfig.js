@@ -531,10 +531,10 @@ export const SET_CONFIG = {
       },
   
       variants: {
-        common: ["normal", "reverse"],
-        uncommon: ["normal", "reverse"],
-        rare: ["holo", "reverse"],
-        trainer: ["normal", "reverse"],
+        common: ["normal"],
+        uncommon: ["normal"],
+        rare: ["holo"],
+        trainer: ["normal"],
         fa_trainer: ["holo"],
         ace_spec: ["holo"],
         default: ["holo"]
