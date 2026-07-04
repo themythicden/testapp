@@ -319,6 +319,33 @@ export const SET_CONFIG = {
       default: ["holo"]
     }
   },
+
+    
+   sv6pt5: {
+    name: "Shrouded Fable",
+    series: "Scarlet & Violet",
+    releaseDate: "2024-08-02",
+    standard: 64,
+    extra: 35,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  }, // <-- Fixed here by closing sv8 properly
+
+    
    sv6: {
     name: "Twilight Masquerade",
     series: "Scarlet & Violet",
