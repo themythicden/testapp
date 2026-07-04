@@ -417,6 +417,29 @@ export const SET_CONFIG = {
       }
     },
 
+  sv3pt5: {
+      name: "151",
+      series: "Scarlet & Violet",
+      releaseDate: "2023/09/22",
+      standard: 165,
+      extra: 44,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
 
   sv3: {
       name: "Obsidian Flames",
