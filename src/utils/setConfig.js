@@ -251,8 +251,8 @@ export const SET_CONFIG = {
     name: "Surging Sparks",
     series: "Scarlet & Violet",
     releaseDate: "2024-11-08",
-    standard: 159,
-    extra:31,
+    standard: 191,
+    extra: 61,
 
     views: {
       standard: ["normal", "holo"],
