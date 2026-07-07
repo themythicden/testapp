@@ -690,6 +690,30 @@ export const SET_CONFIG = {
     },
 
         
+  swsh10tg: {
+      name: "Astral Radiance Trainer Gallery",
+      series: "Sword & Shield",
+      releaseDate: "2022-02-25",
+      standard: 30,
+      extra: 0,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+        
   swsh10: {
       name: "Astral Radiance",
       series: "Scarlet & Violet",
@@ -713,13 +737,111 @@ export const SET_CONFIG = {
         default: ["holo"]
       }
     },
-        
+
+
+  swsh9tg: {
+      name: "Brilliant Stars Trainer Gallery",
+      series: "Sword & Shield",
+      releaseDate: "2022-02-25",
+      standard: 30,
+      extra: 0,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    }, 
+
+    
   swsh9: {
       name: "Brilliant Stars",
       series: "Sword & Shield",
       releaseDate: "2022-02-25",
       standard: 172,
       extra: 14,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },   
+    
+  swsh8: {
+      name: "Fusion Strike",
+      series: "Sword & Shield",
+      releaseDate: "2021-11-12",
+      standard: 264,
+      extra: 20,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    }, 
+        
+  swsh6: {
+      name: "Chilling Reign",
+      series: "Sword & Shield",
+      releaseDate: "2021-06-18",
+      standard: 198,
+      extra: 35,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    }, 
+            
+  swsh5: {
+      name: "Battle Styles",
+      series: "Sword & Shield",
+      releaseDate: "2021-03-19",
+      standard: 163,
+      extra: 20,
   
       views: {
         standard: ["normal", "holo"],
