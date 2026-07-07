@@ -716,7 +716,7 @@ export const SET_CONFIG = {
         
   swsh10: {
       name: "Astral Radiance",
-      series: "Scarlet & Violet",
+      series: "Sword & SHield",
       releaseDate: "2022-05-27",
       standard: 189,
       extra: 27,
