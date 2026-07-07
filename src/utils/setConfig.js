@@ -693,7 +693,7 @@ export const SET_CONFIG = {
   swsh10tg: {
       name: "Astral Radiance Trainer Gallery",
       series: "Sword & Shield",
-      releaseDate: "2022-02-25",
+      releaseDate: "2022-05-27",
       standard: 30,
       extra: 0,
   
