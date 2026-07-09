@@ -616,7 +616,7 @@ export const SET_CONFIG = {
     },
 
     
-  swsh12gg: {
+  swsh12tg: {
       name: "Silver Tempest Trainer Gallery",
       series: "Sword & Shield",
       releaseDate: "2022-11-11",
