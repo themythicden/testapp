@@ -665,12 +665,60 @@ export const SET_CONFIG = {
     },
 
         
+  swsh11tg: {
+      name: "Lost Origin Trainer Gallery",
+      series: "Sword & Shield",
+      releaseDate: "2022-09-09",
+      standard: 20,
+      extra: 0,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+        
   swsh11: {
       name: "Lost Origin",
       series: "Sword & Shield",
       releaseDate: "2022-09-09",
       standard: 196,
       extra: 21,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },        
+    
+  pgo: {
+      name: "Pokemon Go",
+      series: "Sword & Shield",
+      releaseDate: "2022-07-01",
+      standard: 78,
+      extra: 10,
   
       views: {
         standard: ["normal", "holo"],
@@ -794,6 +842,50 @@ export const SET_CONFIG = {
       releaseDate: "2021-11-12",
       standard: 264,
       extra: 20,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    }, 
+
+        
+  cel25c: {
+      name: "Celebrations: Classic Collection",
+      series: "Sword & Shield",
+      releaseDate: "2021-10-08",
+      standard: 25,
+      extra: 0,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        default: ["holo"]
+      }
+    }, 
+
+        
+  cel25: {
+      name: "Celebrations",
+      series: "Sword & Shield",
+      releaseDate: "2021-10-08",
+      standard: 25,
+      extra: 0,
   
       views: {
         standard: ["normal", "holo"],
