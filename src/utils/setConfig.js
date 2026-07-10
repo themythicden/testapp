@@ -950,6 +950,198 @@ export const SET_CONFIG = {
         ace_spec: ["holo"],
         default: ["holo"]
       }
+    }, 
+                
+  swsh45sv: {
+      name: "Shining Fates Shining Vault",
+      series: "Sword & Shield",
+      releaseDate: "2021-02-19",
+      standard: 122,
+      extra: 0,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    } , 
+                
+  swsh45: {
+      name: "Shining Fates",
+      series: "Sword & Shield",
+      releaseDate: "2021-02-19",
+      standard: 72,
+      extra: 1,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    } , 
+                
+  swsh4: {
+      name: "Vivid Voltage",
+      series: "Sword & Shield",
+      releaseDate: "2020-11-13",
+      standard: 185,
+      extra: 18,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    } , 
+                
+  swsh35: {
+      name: "Champion's Path",
+      series: "Sword & Shield",
+      releaseDate: "2020-09-25",
+      standard: 73,
+      extra: 7,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    } , 
+                
+  swsh3: {
+      name: "Darkness Ablaze",
+      series: "Sword & Shield",
+      releaseDate: "2020-08-14",
+      standard: 189,
+      extra: 12,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    } , 
+                
+  swsh2: {
+      name: "Rebel Clash",
+      series: "Sword & Shield",
+      releaseDate: "2020-05-01",
+      standard: 192,
+      extra: 17,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    } , 
+                
+  swsh1: {
+      name: "Sword & Shield",
+      series: "Sword & Shield",
+      releaseDate: "2020-02-07",
+      standard: 202,
+      extra: 14,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    }  , 
+                
+  swshp: {
+      name: "SWSH Black Star Promos",
+      series: "Sword & Shield",
+      releaseDate: "2019-11-15",
+      standard: 307,
+      extra: 0,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
     } 
 
 };
