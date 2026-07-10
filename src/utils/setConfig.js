@@ -904,6 +904,30 @@ export const SET_CONFIG = {
       }
     }, 
         
+  swsh7: {
+      name: "Evolving Skies",
+      series: "Sword & Shield",
+      releaseDate: "2021-08-27",
+      standard: 203,
+      extra: 34,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+        
   swsh6: {
       name: "Chilling Reign",
       series: "Sword & Shield",
