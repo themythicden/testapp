@@ -1,5 +1,28 @@
 export const SET_CONFIG = {
 
+    me5: {
+    name: "Pitch Black",
+    series: "Mega Evolution",
+    releaseDate: "2026-07-17",
+    standard: 84,
+    extra: 36,
+
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
     me4: {
     name: "Chaos Rising",
     series: "Mega Evolution",
