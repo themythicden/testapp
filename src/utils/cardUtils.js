@@ -26,7 +26,10 @@ export function getVariants(card, setView = "master") {
     group = "uncommon";
   } else if (rarity === "rare") {
     group = "rare";
+  } else if (rarity === "rare holo") {
+    group = "rare_holo";
   }
+  
 
   const variants =
     config.variants[group] ||
