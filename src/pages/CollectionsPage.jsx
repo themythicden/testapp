@@ -31,13 +31,29 @@ function CollectionCard({ collection, onClick, completion }) {
     ? `https://images.scrydex.com/pokemon/${collection.rule}-logo/logo`
     : null;
 
+  const symbolUrl = isSet
+    ? `https://images.scrydex.com/pokemon/${collection.rule}-symbol/symbol`
+    : null;
+
   return (
     <button
       type="button"
       onClick={onClick}
-      className="w-full bg-gray-800 border border-gray-700 rounded-2xl p-4 text-left hover:bg-gray-700 transition"
+      className="relative w-full bg-gray-800 border border-gray-700 rounded-2xl p-4 text-left hover:bg-gray-700 transition"
     >
-      <div className="flex items-center gap-4">
+      {isSet && (
+        <img
+          src={symbolUrl}
+          alt={`${setConfig?.name || collection.name} set symbol`}
+          className="absolute top-3 right-3 w-8 h-8 object-contain"
+          loading="lazy"
+          onError={e => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
+      )}
+
+      <div className="flex items-center gap-4 pr-10">
         <div className="w-24 h-16 bg-gray-900 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
           {isSet ? (
             <img
