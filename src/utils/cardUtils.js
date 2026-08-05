@@ -17,7 +17,11 @@ export function getVariants(card, setView = "master") {
       group = "ace_spec";
     } else if (number > base) {
       group = "fa_trainer";
-    } else {
+    } else if (number =< base && subtypes = 'item'){
+      group = "item";
+    }
+    
+    else {
       group = "trainer";
     }
   } else if (rarity === "common") {
