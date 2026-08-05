@@ -1193,10 +1193,10 @@ export const SET_CONFIG = {
       }
     },
 
-sm11: {
+sm12: {
       name: "Cosmic Eclipse",
       series: "Sun & Moon",
-      releaseDate: "2019/11/01",
+      releaseDate: "2019-11-01",
       standard: 236,
       extra: 36,
     
@@ -1280,7 +1280,7 @@ sm115: {
 sm11: {
       name: "Unified Minds",
       series: "Sun & Moon",
-      releaseDate: "2019/08/02",
+      releaseDate: "2019-08-02",
       standard: 236,
       extra: 24,
     
@@ -1305,7 +1305,7 @@ sm11: {
 sm10: {
   name: "Unbroken Bonds",
   series: "Sun & Moon",
-  releaseDate: "2019/05/03",
+  releaseDate: "2019-05-03",
   standard: 214,
   extra: 20,
 
@@ -1319,11 +1319,11 @@ sm10: {
     common: ["normal", "reverse"],
     uncommon: ["normal", "reverse"],
     rare: ["holo", "reverse"],
-    rare_holo: ["holo", ""reverse""],
-    trainer: [""normal"", ""reverse""],
-    fa_trainer: [""holo""],
-    ace_spec: [""holo""],
-    default: [""holo""]
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
   }
 },
 
