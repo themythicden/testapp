@@ -1665,7 +1665,7 @@ sm35: {
   smp: {
       name: "SM Black Star Promos",
       series: "Sun & Moon",
-      releaseDate: "2017-02-03",
+      releaseDate: "2017-02-02",
       standard: 251,
       extra: 0,
   
