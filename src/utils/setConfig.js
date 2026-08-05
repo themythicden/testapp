@@ -421,7 +421,7 @@ export const SET_CONFIG = {
   sv4: {
       name: "Paradox Rift",
       series: "Scarlet & Violet",
-      releaseDate: "2023/11/03",
+      releaseDate: "2023-11-03",
       standard: 182,
       extra: 84,
   
@@ -445,7 +445,7 @@ export const SET_CONFIG = {
   sv3pt5: {
       name: "151",
       series: "Scarlet & Violet",
-      releaseDate: "2023/09/22",
+      releaseDate: "2023-09-22",
       standard: 165,
       extra: 44,
   
@@ -469,7 +469,7 @@ export const SET_CONFIG = {
   sv3: {
       name: "Obsidian Flames",
       series: "Scarlet & Violet",
-      releaseDate: "2023/08/11",
+      releaseDate: "2023-08-11",
       standard: 197,
       extra: 37,
   
@@ -493,7 +493,7 @@ export const SET_CONFIG = {
   sv2: {
       name: "Paldea Evovled",
       series: "Scarlet & Violet",
-      releaseDate: "2023/06/09",
+      releaseDate: "2023-06-09",
       standard: 193,
       extra: 86,
   
