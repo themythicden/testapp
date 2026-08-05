@@ -1311,7 +1311,7 @@ sm10: {
 
   views: {
     standard: ["normal", "holo"],
-    parallel: ["normal"", "holo", "reverse"],
+    parallel: ["normal", "holo", "reverse"],
     master: "all"
   },
 
