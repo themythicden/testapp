@@ -7,7 +7,7 @@ export function getVariants(card, setView = "master") {
 
   const base = config.standard;
   const rarity = (card.rarity || "").toLowerCase();
-  const subtypes = (card.supertype || "").toLowerCase();  
+  const subtypes = (card.subtype || "").toLowerCase();  
   const supertype = (card.supertype || "").toLowerCase();
   const number = Number(card.number);
 
@@ -18,11 +18,9 @@ export function getVariants(card, setView = "master") {
       group = "ace_spec";
     } else if (number > base) {
       group = "fa_trainer";
-    } else if (number =< base && subtypes === 'item'){
+    } else if (subtypes === 'item'){
       group = "item";
-    }
-    
-    else {
+    } else {
       group = "trainer";
     }
   } else if (rarity === "common") {
