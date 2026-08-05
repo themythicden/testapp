@@ -29,6 +29,8 @@ if (supertype === "trainer") {
     group = "fa_trainer";
   } else if (subtypes.includes("item")) {
     group = "item";
+  }  else if (subtypes.includes("special")) {
+    group = "special";
   } else {
     group = "trainer";
   }
