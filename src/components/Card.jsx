@@ -1,6 +1,7 @@
 import React from "react";
 import { getCardStats, getVariants } from "../utils/cardUtils";
 import VariantRow from "./VariantRow";
+import { getDisplayCardNumber } from "../utils/getDisplayCardNumber";
 
 function Card({
   card,
@@ -70,7 +71,8 @@ function Card({
 
         <div className="w-full flex">
           <p className="text-sm text-white font-bold bg-black p-2 w-full">
-            #{card.number}
+          
+           #{getDisplayCardNumber(card)}
           </p>
 
           <div className="mt-2 text-center w-full">
