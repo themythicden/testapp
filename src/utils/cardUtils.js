@@ -29,12 +29,18 @@ if (supertype === "trainer") {
     group = "fa_trainer";
   } else if (subtypes.includes("item")) {
     group = "item";
-  }  else if (subtypes.includes("special")) {
-    group = "special";
   } else {
     group = "trainer";
   }
-} else if (rarity === "common") {
+} 
+
+else if (supertype === "energy") {
+   if (subtypes.includes("special")) {
+    group = "special";
+  }
+} 
+
+else if (rarity === "common") {
   group = "common";
 } else if (rarity === "uncommon") {
   group = "uncommon";
