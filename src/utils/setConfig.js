@@ -160,6 +160,7 @@ export const SET_CONFIG = {
       common: ["normal", "reverse", "pokeball", "masterball"],
       uncommon: ["normal", "reverse", "pokeball", "masterball"],
       rare: ["holo", "reverse", "pokeball", "masterball"],
+      item: ["normal", "reverse", "pokeball"],
       trainer: ["normal", "reverse", "pokeball"],
       fa_trainer: ["holo"],
       ace_spec: ["holo"],
@@ -188,6 +189,7 @@ export const SET_CONFIG = {
       uncommon: ["normal", "reverse", "pokeball", "masterball"],
       rare: ["holo", "reverse", "pokeball", "masterball"],
       trainer: ["normal", "reverse", "pokeball"],
+      item: ["normal", "reverse", "pokeball"],
       fa_trainer: ["holo"],
       ace_spec: ["holo"],
 
