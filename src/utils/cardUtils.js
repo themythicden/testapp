@@ -5,33 +5,42 @@ export function getVariants(card, setView = "master") {
 
   if (!config) return ["normal"];
 
-  const base = config.standard;
-  const rarity = (card.rarity || "").toLowerCase();
-  const subtypes = (card.subtype || "").toLowerCase();  
-  const supertype = (card.supertype || "").toLowerCase();
-  const number = Number(card.number);
+const base = Number(config.standard || 0);
+const rarity = String(card.rarity || "").trim().toLowerCase();
+const supertype = String(card.supertype || "").trim().toLowerCase();
 
-  let group = "default";
+const subtypes = Array.isArray(card.subtypes)
+  ? card.subtypes.map(subtype =>
+      String(subtype || "").trim().toLowerCase()
+    )
+  : String(card.subtypes || "")
+      .split(",")
+      .map(subtype => subtype.trim().toLowerCase())
+      .filter(Boolean);
 
-  if (supertype === "trainer") {
-    if (rarity === "ace spec rare") {
-      group = "ace_spec";
-    } else if (number > base) {
-      group = "fa_trainer";
-    } else if (subtypes === 'item'){
-      group = "item";
-    } else {
-      group = "trainer";
-    }
-  } else if (rarity === "common") {
-    group = "common";
-  } else if (rarity === "uncommon") {
-    group = "uncommon";
-  } else if (rarity === "rare") {
-    group = "rare";
-  } else if (rarity === "rare holo") {
-    group = "rare_holo";
+const number = Number(card.number);
+
+let group = "default";
+
+if (supertype === "trainer") {
+  if (rarity === "ace spec rare") {
+    group = "ace_spec";
+  } else if (number > base) {
+    group = "fa_trainer";
+  } else if (subtypes.includes("item")) {
+    group = "item";
+  } else {
+    group = "trainer";
   }
+} else if (rarity === "common") {
+  group = "common";
+} else if (rarity === "uncommon") {
+  group = "uncommon";
+} else if (rarity === "rare") {
+  group = "rare";
+} else if (rarity === "rare holo") {
+  group = "rare_holo";
+}
   
 
   const variants =
