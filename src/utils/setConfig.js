@@ -1659,5 +1659,31 @@ sm35: {
     ace_spec: ["holo"],
     default: ["holo"]
   }
-}
+},
+
+              
+  smp: {
+      name: "SM Black Star Promos",
+      series: "Sun & Moon",
+      releaseDate: "2017-02-03",
+      standard: 251,
+      extra: 0,
+  
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+  
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+    
 };
