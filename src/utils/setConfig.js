@@ -1191,6 +1191,475 @@ export const SET_CONFIG = {
         ace_spec: ["holo"],
         default: ["holo"]
       }
-    } 
+    },
+
+sm11: {
+      name: "Cosmic Eclipse",
+      series: "Sun & Moon",
+      releaseDate: "2019/11/01",
+      standard: 236,
+      extra: 36,
+    
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+    
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        rare_holo: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+// BEGIN GENERATED SET: sma
+// Hidden Fates Shiny Vault
+sma: {
+  name: "Hidden Fates Shiny Vault",
+  series: "Sun & Moon",
+  releaseDate: "2019-08-23",
+  standard: 94,
+  extra: 0,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sma    
+
+
+// BEGIN GENERATED SET: sm115
+// Hidden Fates
+sm115: {
+  name: "Hidden Fates",
+  series: "Sun & Moon",
+  releaseDate: "2019-08-23",
+  standard: 68,
+  extra: 1,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm115
+
+    
+
+sm11: {
+      name: "Unified Minds",
+      series: "Sun & Moon",
+      releaseDate: "2019/08/02",
+      standard: 236,
+      extra: 24,
+    
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+    
+      variants: {
+        common: ["normal", "reverse"],
+        uncommon: ["normal", "reverse"],
+        rare: ["holo", "reverse"],
+        rare_holo: ["holo", "reverse"],
+        trainer: ["normal", "reverse"],
+        fa_trainer: ["holo"],
+        ace_spec: ["holo"],
+        default: ["holo"]
+      }
+    },
+
+sm10: {
+  name: "Unbroken Bonds",
+  series: "Sun & Moon",
+  releaseDate: "2019/05/03",
+  standard: 214,
+  extra: 20,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal"", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", ""reverse""],
+    trainer: [""normal"", ""reverse""],
+    fa_trainer: [""holo""],
+    ace_spec: [""holo""],
+    default: [""holo""]
+  }
+},
+
+sm9: {
+  name: "Team Up",
+  series: "Sun & Moon",
+  releaseDate: "2019-02-01",
+  standard: 181,
+  extra: 17,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm9
+
+// BEGIN GENERATED SET: sm8
+// Lost Thunder
+sm8: {
+  name: "Lost Thunder",
+  series: "Sun & Moon",
+  releaseDate: "2018-11-02",
+  standard: 214,
+  extra: 26,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm8
+
+// BEGIN GENERATED SET: sm7
+// Celestial Storm
+sm7: {
+  name: "Celestial Storm",
+  series: "Sun & Moon",
+  releaseDate: "2018-08-03",
+  standard: 168,
+  extra: 19,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm7
+
+// BEGIN GENERATED SET: sm6
+// Forbidden Light
+sm6: {
+  name: "Forbidden Light",
+  series: "Sun & Moon",
+  releaseDate: "2018-05-04",
+  standard: 131,
+  extra: 19,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm6
+
+// BEGIN GENERATED SET: sm5
+// Ultra Prism
+sm5: {
+  name: "Ultra Prism",
+  series: "Sun & Moon",
+  releaseDate: "2018-02-02",
+  standard: 156,
+  extra: 22,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm5
+
+// BEGIN GENERATED SET: sm4
+// Crimson Invasion
+sm4: {
+  name: "Crimson Invasion",
+  series: "Sun & Moon",
+  releaseDate: "2017-11-03",
+  standard: 111,
+  extra: 15,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm4
+
+// BEGIN GENERATED SET: sm3
+// Burning Shadows
+sm3: {
+  name: "Burning Shadows",
+  series: "Sun & Moon",
+  releaseDate: "2017-08-05",
+  standard: 147,
+  extra: 30,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm3
+
+// BEGIN GENERATED SET: sm2
+// Guardians Rising
+sm2: {
+  name: "Guardians Rising",
+  series: "Sun & Moon",
+  releaseDate: "2017-05-05",
+  standard: 145,
+  extra: 35,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm2
+
+// BEGIN GENERATED SET: sm1
+// Sun & Moon
+sm1: {
+  name: "Sun & Moon",
+  series: "Sun & Moon",
+  releaseDate: "2017-02-03",
+  standard: 149,
+  extra: 24,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm1
+
+
+// BEGIN GENERATED SET: det1
+// Detective Pikachu
+det1: {
+  name: "Detective Pikachu",
+  series: "Sun & Moon",
+  releaseDate: "2019-04-05",
+  standard: 18,
+  extra: 0,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: det1
+
+// BEGIN GENERATED SET: sm75
+// Dragon Majesty
+sm75: {
+  name: "Dragon Majesty",
+  series: "Sun & Moon",
+  releaseDate: "2018-09-07",
+  standard: 70,
+  extra: 10,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+},
+// END GENERATED SET: sm75
+
+// BEGIN GENERATED SET: sm35
+// Shining Legends
+sm35: {
+  name: "Shining Legends",
+  series: "Sun & Moon",
+  releaseDate: "2017-10-06",
+  standard: 73,
+  extra: 8,
+
+  views: {
+    standard: ["normal", "holo"],
+    parallel: ["normal", "holo", "reverse"],
+    master: "all"
+  },
+
+  variants: {
+    common: ["normal", "reverse"],
+    uncommon: ["normal", "reverse"],
+    rare: ["holo", "reverse"],
+    rare_holo: ["holo", "reverse"],
+    trainer: ["normal", "reverse"],
+    fa_trainer: ["holo"],
+    ace_spec: ["holo"],
+    default: ["holo"]
+  }
+}
+    
 
 };
