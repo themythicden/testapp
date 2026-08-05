@@ -7,6 +7,7 @@ export function getVariants(card, setView = "master") {
 
   const base = config.standard;
   const rarity = (card.rarity || "").toLowerCase();
+  const subtypes = (card.supertype || "").toLowerCase();  
   const supertype = (card.supertype || "").toLowerCase();
   const number = Number(card.number);
 
