@@ -18,7 +18,7 @@ export function getVariants(card, setView = "master") {
       group = "ace_spec";
     } else if (number > base) {
       group = "fa_trainer";
-    } else if (number =< base && subtypes = 'item'){
+    } else if (number =< base && subtypes === 'item'){
       group = "item";
     }
     
