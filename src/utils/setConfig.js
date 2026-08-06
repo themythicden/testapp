@@ -89,7 +89,7 @@ export const SET_CONFIG = {
           rare: ["holo", "reverse", "pokeball"],
           trainer: ["normal", "reverse"],
           fa_trainer: ["holo"],
-         item: ["normal", "reverse", "pokeball"],
+         item: ["normal", "reverse"],
           special: ["normal", "reverse", "pokeball"],
           default: ["holo"]
         }
