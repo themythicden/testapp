@@ -27,35 +27,36 @@ export const SET_CONFIG = {
       default: ["holo"]
     }
   },
-    me4: {
-    name: "Chaos Rising",
-    series: "Mega Evolution",
-    releaseDate: "2026-05-22",
-    standard: 86,
-    extra: 36,
-
-    views: {
-      standard: ["normal", "holo"],
-      parallel: ["normal", "holo", "reverse"],
-      master: "all"
+   me4: {
+      name: "Chaos Rising",
+      series: "Mega Evolution",
+      releaseDate: "2026-05-22",
+      standard: 86,
+      extra: 36,
+    
+      views: {
+        standard: ["normal", "holo"],
+        parallel: ["normal", "holo", "reverse"],
+        master: "all"
+      },
+    
+      variants: {
+        extra: ["holo"],
+    
+        base_common: ["normal", "reverse"],
+        base_uncommon: ["normal", "reverse"],
+        base_rare: ["holo", "reverse"],
+    
+        base_trainer: ["normal", "reverse"],
+        base_item: ["normal", "reverse"],
+        base_stadium: ["normal", "reverse"],
+    
+        base_energy: ["normal", "reverse"],
+        base_energy_rare: ["holo", "reverse"],
+    
+        base_default: ["holo"]
+      }
     },
-
-    variants: {
-      common: ["normal", "reverse"],
-      uncommon: ["normal", "reverse"],
-      rare: ["holo", "reverse"],
-      trainer: ["normal", "reverse"],
-      fa_trainer: ["holo"],
-        
-         item: ["normal", "reverse"],
-        
-        special_nrg_rare: ["holo", "reverse"],
-        speical_nrg_uncommon: ["normal","reverse"],
-          special: ["normal", "reverse", "pokeball"],
-      ace_spec: ["holo"],
-      default: ["holo"]
-    }
-  },
     me3: {
     name: "Perfect Order",
     series: "Mega Evolution",
