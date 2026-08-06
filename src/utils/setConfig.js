@@ -21,6 +21,8 @@ export const SET_CONFIG = {
       fa_trainer: ["holo"],
         
          item: ["normal", "reverse"],
+        special_nrg_rare: ["holo", "reverse"],
+        speical_nrg_uncommon: ["normal","reverse"],
           special: ["normal", "reverse", "pokeball"],
       ace_spec: ["holo"],
       default: ["holo"]
@@ -47,6 +49,9 @@ export const SET_CONFIG = {
       fa_trainer: ["holo"],
         
          item: ["normal", "reverse"],
+        
+        special_nrg_rare: ["holo", "reverse"],
+        speical_nrg_uncommon: ["normal","reverse"],
           special: ["normal", "reverse", "pokeball"],
       ace_spec: ["holo"],
       default: ["holo"]
@@ -74,6 +79,9 @@ export const SET_CONFIG = {
         
          item: ["normal", "reverse"],
           special: ["normal", "reverse", "pokeball"],
+        
+        special_nrg_rare: ["holo", "reverse"],
+        speical_nrg_uncommon: ["normal","reverse"],
       ace_spec: ["holo"],
       default: ["holo"]
     }
@@ -99,6 +107,9 @@ export const SET_CONFIG = {
           trainer: ["normal", "reverse"],
           fa_trainer: ["holo"],
          item: ["normal", "reverse"],
+            
+        special_nrg_rare: ["holo", "reverse"],
+        speical_nrg_uncommon: ["normal","reverse"],
           special: ["normal", "reverse", "pokeball"],
           default: ["holo"]
         }
@@ -123,6 +134,9 @@ export const SET_CONFIG = {
       rare: ["holo", "reverse"],
       trainer: ["normal", "reverse"],
          item: ["normal", "reverse"],
+        
+        special_nrg_rare: ["holo", "reverse"],
+        speical_nrg_uncommon: ["normal","reverse"],
           special: ["normal", "reverse", "pokeball"],
       fa_trainer: ["holo"],
       ace_spec: ["holo"],
@@ -150,6 +164,9 @@ export const SET_CONFIG = {
       fa_trainer: ["holo"],
         
          item: ["normal", "reverse"],
+        
+        special_nrg_rare: ["holo", "reverse"],
+        speical_nrg_uncommon: ["normal","reverse"],
           special: ["normal", "reverse", "pokeball"],
       ace_spec: ["holo"],
       default: ["holo"]
