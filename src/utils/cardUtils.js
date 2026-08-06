@@ -25,14 +25,14 @@ let group = "default";
 if (supertype === "trainer") {
   if (rarity === "ace spec rare") {
     group = "ace_spec";
-  } else if (number > base) {
-    group = "fa_trainer";
   } else if (subtypes.includes("item")) {
     group = "item";
+  } else if (number > base) {
+    group = "fa_trainer";
   } else {
     group = "trainer";
   }
-} 
+}
 
 else if (supertype === "energy") {
    if (subtypes.includes("special")) {
