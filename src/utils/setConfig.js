@@ -19,11 +19,10 @@ export const SET_CONFIG = {
       rare: ["holo", "reverse"],
       trainer: ["normal", "reverse"],
       fa_trainer: ["holo"],
-        
          item: ["normal", "reverse"],
         special_nrg_rare: ["holo", "reverse"],
         speical_nrg_uncommon: ["normal","reverse"],
-          special: ["normal", "reverse", "pokeball"],
+    special: ["normal", "reverse"],
       ace_spec: ["holo"],
       default: ["holo"]
     }
