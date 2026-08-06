@@ -35,10 +35,16 @@ if (supertype === "trainer") {
 }
 
 else if (supertype === "energy") {
-   if (subtypes.includes("special")) {
-    group = "special";
+  if (subtypes.includes("special")) {
+    if (rarity === "rare" || rarity === "rare holo") {
+      group = "special_nrg_rare";
+    } else if (rarity === "uncommon") {
+      group = "special_nrg_uncommon";
+    } else {
+      group = "special";
+    }
   }
-} 
+}
 
 else if (rarity === "common") {
   group = "common";
