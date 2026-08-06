@@ -19,6 +19,9 @@ export const SET_CONFIG = {
       rare: ["holo", "reverse"],
       trainer: ["normal", "reverse"],
       fa_trainer: ["holo"],
+        
+         item: ["normal", "reverse"],
+          special: ["normal", "reverse", "pokeball"],
       ace_spec: ["holo"],
       default: ["holo"]
     }
@@ -42,6 +45,9 @@ export const SET_CONFIG = {
       rare: ["holo", "reverse"],
       trainer: ["normal", "reverse"],
       fa_trainer: ["holo"],
+        
+         item: ["normal", "reverse"],
+          special: ["normal", "reverse", "pokeball"],
       ace_spec: ["holo"],
       default: ["holo"]
     }
@@ -65,6 +71,9 @@ export const SET_CONFIG = {
       rare: ["holo", "reverse"],
       trainer: ["normal", "reverse"],
       fa_trainer: ["holo"],
+        
+         item: ["normal", "reverse"],
+          special: ["normal", "reverse", "pokeball"],
       ace_spec: ["holo"],
       default: ["holo"]
     }
@@ -139,6 +148,9 @@ export const SET_CONFIG = {
       rare: ["holo", "reverse"],
       trainer: ["normal", "reverse"],
       fa_trainer: ["holo"],
+        
+         item: ["normal", "reverse"],
+          special: ["normal", "reverse", "pokeball"],
       ace_spec: ["holo"],
       default: ["holo"]
     }
