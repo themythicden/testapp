@@ -628,7 +628,7 @@ export default function NeededCardsPage({ user }) {
                     {group.rule}
                     {group.releaseDate ? ` • ${group.releaseDate}` : ""}
                   </p>
-                </div>
+                </div> 
 
                 <span className="text-sm text-gray-400 whitespace-nowrap">
                   {group.missingCards.length} cards • {group.totalMissingVariants} variants
