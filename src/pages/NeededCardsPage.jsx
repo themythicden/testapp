@@ -1,7 +1,105 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
-import { getVariants } from "../utils/cardUtils";
 import { SET_CONFIG } from "../utils/setConfig";
+
+
+function normalizeSubtypes(value) {
+  if (Array.isArray(value)) {
+    return value
+      .map(subtype => String(subtype || "").trim().toLowerCase())
+      .filter(Boolean);
+  }
+
+  const text = String(value || "").trim();
+  if (!text) return [];
+
+  if (text.startsWith("[") && text.endsWith("]")) {
+    try {
+      const parsed = JSON.parse(text);
+      if (Array.isArray(parsed)) {
+        return parsed
+          .map(subtype => String(subtype || "").trim().toLowerCase())
+          .filter(Boolean);
+      }
+    } catch {
+      // Fall through to comma-separated parsing.
+    }
+  }
+
+  return text
+    .split(",")
+    .map(subtype => subtype.replace(/[\[\]"]/g, "").trim().toLowerCase())
+    .filter(Boolean);
+}
+
+function getNumericCardNumber(value) {
+  const match = String(value ?? "").trim().match(/\d+/);
+  return match ? Number(match[0]) : 0;
+}
+
+function getDefaultVariantsForGroup(group) {
+  const defaults = {
+    extra: ["holo"],
+    base_common: ["normal", "reverse"],
+    base_uncommon: ["normal", "reverse"],
+    base_rare: ["holo", "reverse"],
+    base_trainer: ["normal", "reverse"],
+    base_item: ["normal", "reverse"],
+    base_stadium: ["normal", "reverse"],
+    base_energy: ["normal", "reverse"],
+    base_energy_rare: ["holo", "reverse"],
+    base_default: ["holo"]
+  };
+
+  return defaults[group] || ["holo"];
+}
+
+function getNeededVariants(card, setView = "master") {
+  const setCode = String(card?.set_code || "").trim().toLowerCase();
+  const config = SET_CONFIG[setCode];
+
+  if (!config) return ["normal"];
+
+  const base = Number(config.standard || 0);
+  const number = getNumericCardNumber(card?.number);
+  const rarity = String(card?.rarity || "").trim().toLowerCase();
+  const supertype = String(card?.supertype || "").trim().toLowerCase();
+  const subtypes = normalizeSubtypes(card?.subtypes);
+
+  let group = "base_default";
+
+  if (number > base) {
+    group = "extra";
+  } else if (supertype === "trainer") {
+    if (subtypes.includes("item")) {
+      group = "base_item";
+    } else if (subtypes.includes("stadium")) {
+      group = "base_stadium";
+    } else {
+      group = "base_trainer";
+    }
+  } else if (supertype === "energy") {
+    group = rarity === "rare" || rarity === "rare holo"
+      ? "base_energy_rare"
+      : "base_energy";
+  } else if (rarity === "common") {
+    group = "base_common";
+  } else if (rarity === "uncommon") {
+    group = "base_uncommon";
+  } else if (rarity === "rare" || rarity === "rare holo") {
+    group = "base_rare";
+  }
+
+  const configured = config.variants?.[group];
+  const variants = Array.isArray(configured)
+    ? configured
+    : getDefaultVariantsForGroup(group);
+
+  const view = config.views?.[setView];
+  if (!Array.isArray(view) || view === "all") return variants;
+
+  return variants.filter(variant => view.includes(variant));
+}
 
 const VARIANT_LABELS = {
   normal: "Normal",
@@ -271,7 +369,7 @@ export default function NeededCardsPage({ user }) {
 
         const missingCards = cards
           .map(card => {
-            const requiredVariants = getVariants(card, "master");
+            const requiredVariants = getNeededVariants(card, "master");
             const missingVariants = requiredVariants.filter(variant => {
               const key = `${card.id}_${variant}`;
               return Number(userCards[key] || 0) <= 0;
@@ -312,7 +410,7 @@ export default function NeededCardsPage({ user }) {
 
     selectedRules.forEach(rule => {
       (cardsBySet[rule] || []).forEach(card => {
-        getVariants(card, "master").forEach(variant => variants.add(variant));
+        getNeededVariants(card, "master").forEach(variant => variants.add(variant));
       });
     });
 
