@@ -234,7 +234,7 @@ export default function NeededCardsPage({ user }) {
 
         if (collectionsError) throw collectionsError;
 
-        const setCollections = (collectionRows || [])
+        const setCollectionRows = (collectionRows || [])
           .filter(collection => collection.type === "set_code")
           .filter((collection, index, list) => {
             const rule = String(collection.rule || "").trim().toLowerCase();
@@ -255,11 +255,11 @@ export default function NeededCardsPage({ user }) {
           });
 
         if (!cancelled) {
-          setCollections(setCollections);
+          setCollections(setCollectionRows);
 
           // Default to the newest linked set only.
-          const newestRule = setCollections[0]
-            ? String(setCollections[0].rule || "").trim().toLowerCase()
+          const newestRule = setCollectionRows[0]
+            ? String(setCollectionRows[0].rule || "").trim().toLowerCase()
             : "";
 
           setSelectedRules(newestRule ? [newestRule] : []);
@@ -628,7 +628,7 @@ export default function NeededCardsPage({ user }) {
                     {group.rule}
                     {group.releaseDate ? ` • ${group.releaseDate}` : ""}
                   </p>
-                </div> 
+                </div>
 
                 <span className="text-sm text-gray-400 whitespace-nowrap">
                   {group.missingCards.length} cards • {group.totalMissingVariants} variants
