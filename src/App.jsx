@@ -7,6 +7,7 @@ import { supabase } from "./lib//supabaseClient";
 import LoginPage from "./pages/LoginPage";
 import CollectionPage from "./pages/CollectionPage";
 import ISOPage from "./pages/ISOPage";
+import NeededCardsPage from "./pages/NeededCardsPage";
 
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/collections" element={<CollectionsPage user={user} />} />
           <Route path="/collection" element={<CollectionPage user={user} />} />
           <Route path="/iso" element={<ISOPage />} />
+          <Route path="/needed-cards" element={<NeededCardsPage user={user} />} />
         </Route>
       </Routes>
     </BrowserRouter>
