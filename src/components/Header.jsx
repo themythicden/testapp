@@ -96,7 +96,17 @@ export default function Header({ user }) {
               <div
                 className="cursor-pointer p-2 hover:bg-gray-100 rounded"
                 onClick={() => {
-                  navigate("#");
+                  navigate("/needed-cards");
+                  setOpen(false);
+                }}
+              >
+                Needed Cards
+              </div>
+
+              <div
+                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                onClick={() => {
+                  navigate("/iso");
                   setOpen(false);
                 }}
               >
