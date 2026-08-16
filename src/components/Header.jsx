@@ -106,6 +106,16 @@ export default function Header({ user }) {
               <div
                 className="cursor-pointer p-2 hover:bg-gray-100 rounded"
                 onClick={() => {
+                  navigate("/deck-builder");
+                  setOpen(false);
+                }}
+              >
+                Deck Builder
+              </div>
+
+              <div
+                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                onClick={() => {
                   navigate("/iso");
                   setOpen(false);
                 }}
