@@ -1,1080 +1,1424 @@
-import { useEffect, useMemo, useState } from "react";
-import { supabase } from "../lib/supabaseClient";
-
-const LIMITLESS_SET_MAP = {
-  SVE: "sve",
-  TEF: "sv5",
-  TWM: "sv6",
-  SFA: "sv6pt5",
-  SCR: "sv7",
-  SSP: "sv8",
-  PRE: "sv8pt5",
-  JTG: "sv9",
-  DRI: "sv10",
-  BLK: "zsv10pt5",
-  WHT: "rsv10pt5",
-  MEE: "mee",
-  MEG: "me1",
-  PFL: "me2",
-  ASC: "me2pt5",
-  POR: "me3",
-  CRI: "me4",
-  PBL: "me5"
+export const SET_CONFIG = {
+  me5: {
+    name: "Pitch Black",
+    series: "Mega Evolution",
+    releaseDate: "2026-07-17",
+    standard: 84,
+    extra: 36,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  me4: {
+    name: "Chaos Rising",
+    series: "Mega Evolution",
+    releaseDate: "2026-05-22",
+    standard: 86,
+    extra: 36,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  me3: {
+    name: "Perfect Order",
+    series: "Mega Evolution",
+    releaseDate: "2026-03-27",
+    standard: 88,
+    extra: 36,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  me2pt5: {
+    name: "Ascended Heroes",
+    series: "Mega Evolution",
+    releaseDate: "2026-01-30",
+    standard: 217,
+    extra: 78,
+    views: {
+      standard: ["normal", "holo"],
+      reverse: ["normal", "holo", "reverse"],
+      pokeball: ["normal", "holo", "reverse", "pokeball"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse", "pokeball"],
+      uncommon: ["normal", "reverse", "pokeball"],
+      rare: ["holo", "reverse", "pokeball"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      default: ["holo"]
+    }
+  },
+  me2: {
+    name: "Phantasmal Flames",
+    series: "Mega Evolution",
+    releaseDate: "2025-11-14",
+    standard: 94,
+    extra: 36,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  me1: {
+    name: "Mega Evolution",
+    series: "Mega Evolution",
+    releaseDate: "2025-09-26",
+    standard: 132,
+    extra: 56,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  mee: {
+    name: "Mega Evolution Energies",
+    series: "Mega Evolution",
+    releaseDate: "2025-09-01",
+    standard: 16,
+    extra: 0,
+    views: {
+      standard: ["normal"],
+      parallel: ["normal", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal"],
+      default: ["reverse"]
+    }
+  },
+  rsv10pt5: {
+    name: "White Flare",
+    series: "Scarlet & Violet",
+    releaseDate: "2025-07-18",
+    standard: 86,
+    extra: 87,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      pokeball: ["normal", "holo", "reverse", "pokeball"],
+      masterball: ["normal", "holo", "reverse", "pokeball", "masterball"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse", "pokeball", "masterball"],
+      uncommon: ["normal", "reverse", "pokeball", "masterball"],
+      rare: ["holo", "reverse", "pokeball", "masterball"],
+      trainer: ["normal", "reverse", "pokeball"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  zsv10pt5: {
+    name: "Black Bolt",
+    series: "Scarlet & Violet",
+    releaseDate: "2025-07-18",
+    standard: 86,
+    extra: 86,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      pokeball: ["normal", "holo", "reverse", "pokeball"],
+      masterball: ["normal", "holo", "reverse", "pokeball", "masterball"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse", "pokeball", "masterball"],
+      uncommon: ["normal", "reverse", "pokeball", "masterball"],
+      rare: ["holo", "reverse", "pokeball", "masterball"],
+      trainer: ["normal", "reverse", "pokeball"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv10: {
+    name: "Destined Rivals",
+    series: "Scarlet & Violet",
+    releaseDate: "2025-05-30",
+    standard: 182,
+    extra: 62,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv9: {
+    name: "Journey Together",
+    series: "Scarlet & Violet",
+    releaseDate: "2025-03-28",
+    standard: 159,
+    extra: 31,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv8pt5: {
+    name: "Prismatic Evolutions",
+    series: "Scarlet & Violet",
+    releaseDate: "2025-01-17",
+    standard: 131,
+    extra: 49,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      pokeball: ["normal", "holo", "reverse", "pokeball"],
+      masterball: ["normal", "holo", "reverse", "pokeball", "masterball"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse", "pokeball", "masterball"],
+      uncommon: ["normal", "reverse", "pokeball", "masterball"],
+      rare: ["holo", "reverse", "pokeball", "masterball"],
+      trainer: ["normal", "reverse", "pokeball"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv8: {
+    name: "Surging Sparks",
+    series: "Scarlet & Violet",
+    releaseDate: "2024-11-08",
+    standard: 191,
+    extra: 61,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv7: {
+    name: "Stellar Crown",
+    series: "Scarlet & Violet",
+    releaseDate: "2024-09-13",
+    standard: 142,
+    extra: 33,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv6pt5: {
+    name: "Shrouded Fable",
+    series: "Scarlet & Violet",
+    releaseDate: "2024-08-02",
+    standard: 64,
+    extra: 35,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv6: {
+    name: "Twilight Masquerade",
+    series: "Scarlet & Violet",
+    releaseDate: "2024-05-24",
+    standard: 167,
+    extra: 59,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv5: {
+    name: "Temporal Forces",
+    series: "Scarlet & Violet",
+    releaseDate: "2024-03-22",
+    standard: 162,
+    extra: 56,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv4pt5: {
+    name: "Paldean Fates",
+    series: "Scarlet & Violet",
+    releaseDate: "2024-01-26",
+    standard: 91,
+    extra: 154,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv4: {
+    name: "Paradox Rift",
+    series: "Scarlet & Violet",
+    releaseDate: "2023-11-03",
+    standard: 182,
+    extra: 84,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv3pt5: {
+    name: "151",
+    series: "Scarlet & Violet",
+    releaseDate: "2023-09-22",
+    standard: 165,
+    extra: 44,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      base_item: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv3: {
+    name: "Obsidian Flames",
+    series: "Scarlet & Violet",
+    releaseDate: "2023-08-11",
+    standard: 197,
+    extra: 37,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv2: {
+    name: "Paldea Evolved",
+    series: "Scarlet & Violet",
+    releaseDate: "2023-06-09",
+    standard: 193,
+    extra: 86,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sv1: {
+    name: "Scarlet & Violet",
+    series: "Scarlet & Violet",
+    releaseDate: "2023-03-31",
+    standard: 198,
+    extra: 60,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sve: {
+    name: "Scarlet & Violet Energies",
+    series: "Scarlet & Violet",
+    releaseDate: "2023-01-02",
+    standard: 24,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["normal", "reverse"]
+    }
+  },
+  svp: {
+    name: "Scarlet & Violet Black Star Promos",
+    series: "Scarlet & Violet",
+    releaseDate: "2023-01-01",
+    standard: 225,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh12pt5gg: {
+    name: "Crown Zenith Galarian Gallery",
+    series: "Sword & Shield",
+    releaseDate: "2023-01-20",
+    standard: 70,
+    extra: 0,
+    views: {
+      standard: ["holo"],
+      parallel: ["holo"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal"],
+      uncommon: ["normal"],
+      rare: ["holo"],
+      trainer: ["normal"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh12pt5: {
+    name: "Crown Zenith",
+    series: "Sword & Shield",
+    releaseDate: "2023-01-20",
+    standard: 159,
+    extra: 1,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh12tg: {
+    name: "Silver Tempest Trainer Gallery",
+    series: "Sword & Shield",
+    releaseDate: "2022-11-11",
+    standard: 70,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh12: {
+    name: "Silver Tempest",
+    series: "Sword & Shield",
+    releaseDate: "2022-11-11",
+    standard: 195,
+    extra: 20,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh11tg: {
+    name: "Lost Origin Trainer Gallery",
+    series: "Sword & Shield",
+    releaseDate: "2022-09-09",
+    standard: 20,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh11: {
+    name: "Lost Origin",
+    series: "Sword & Shield",
+    releaseDate: "2022-09-09",
+    standard: 196,
+    extra: 21,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  pgo: {
+    name: "Pokemon Go",
+    series: "Sword & Shield",
+    releaseDate: "2022-07-01",
+    standard: 78,
+    extra: 10,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh10tg: {
+    name: "Astral Radiance Trainer Gallery",
+    series: "Sword & Shield",
+    releaseDate: "2022-05-27",
+    standard: 30,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh10: {
+    name: "Astral Radiance",
+    series: "Sword & Shield",
+    releaseDate: "2022-05-27",
+    standard: 189,
+    extra: 27,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh9tg: {
+    name: "Brilliant Stars Trainer Gallery",
+    series: "Sword & Shield",
+    releaseDate: "2022-02-25",
+    standard: 30,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh9: {
+    name: "Brilliant Stars",
+    series: "Sword & Shield",
+    releaseDate: "2022-02-25",
+    standard: 172,
+    extra: 14,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh8: {
+    name: "Fusion Strike",
+    series: "Sword & Shield",
+    releaseDate: "2021-11-12",
+    standard: 264,
+    extra: 20,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  cel25c: {
+    name: "Celebrations: Classic Collection",
+    series: "Sword & Shield",
+    releaseDate: "2021-10-08",
+    standard: 25,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      default: ["holo"]
+    }
+  },
+  cel25: {
+    name: "Celebrations",
+    series: "Sword & Shield",
+    releaseDate: "2021-10-08",
+    standard: 25,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh7: {
+    name: "Evolving Skies",
+    series: "Sword & Shield",
+    releaseDate: "2021-08-27",
+    standard: 203,
+    extra: 34,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh6: {
+    name: "Chilling Reign",
+    series: "Sword & Shield",
+    releaseDate: "2021-06-18",
+    standard: 198,
+    extra: 35,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh5: {
+    name: "Battle Styles",
+    series: "Sword & Shield",
+    releaseDate: "2021-03-19",
+    standard: 163,
+    extra: 20,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh45sv: {
+    name: "Shining Fates Shining Vault",
+    series: "Sword & Shield",
+    releaseDate: "2021-02-19",
+    standard: 122,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh45: {
+    name: "Shining Fates",
+    series: "Sword & Shield",
+    releaseDate: "2021-02-19",
+    standard: 72,
+    extra: 1,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh4: {
+    name: "Vivid Voltage",
+    series: "Sword & Shield",
+    releaseDate: "2020-11-13",
+    standard: 185,
+    extra: 18,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh35: {
+    name: "Champion's Path",
+    series: "Sword & Shield",
+    releaseDate: "2020-09-25",
+    standard: 73,
+    extra: 7,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh3: {
+    name: "Darkness Ablaze",
+    series: "Sword & Shield",
+    releaseDate: "2020-08-14",
+    standard: 189,
+    extra: 12,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh2: {
+    name: "Rebel Clash",
+    series: "Sword & Shield",
+    releaseDate: "2020-05-01",
+    standard: 192,
+    extra: 17,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swsh1: {
+    name: "Sword & Shield",
+    series: "Sword & Shield",
+    releaseDate: "2020-02-07",
+    standard: 202,
+    extra: 14,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  swshp: {
+    name: "SWSH Black Star Promos",
+    series: "Sword & Shield",
+    releaseDate: "2019-11-15",
+    standard: 307,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm12: {
+    name: "Cosmic Eclipse",
+    series: "Sun & Moon",
+    releaseDate: "2019-11-01",
+    standard: 236,
+    extra: 36,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sma: {
+    name: "Hidden Fates Shiny Vault",
+    series: "Sun & Moon",
+    releaseDate: "2019-08-23",
+    standard: 94,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm115: {
+    name: "Hidden Fates",
+    series: "Sun & Moon",
+    releaseDate: "2019-08-23",
+    standard: 68,
+    extra: 1,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm11: {
+    name: "Unified Minds",
+    series: "Sun & Moon",
+    releaseDate: "2019-08-02",
+    standard: 236,
+    extra: 24,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm10: {
+    name: "Unbroken Bonds",
+    series: "Sun & Moon",
+    releaseDate: "2019-05-03",
+    standard: 214,
+    extra: 20,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm9: {
+    name: "Team Up",
+    series: "Sun & Moon",
+    releaseDate: "2019-02-01",
+    standard: 181,
+    extra: 17,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm8: {
+    name: "Lost Thunder",
+    series: "Sun & Moon",
+    releaseDate: "2018-11-02",
+    standard: 214,
+    extra: 26,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm7: {
+    name: "Celestial Storm",
+    series: "Sun & Moon",
+    releaseDate: "2018-08-03",
+    standard: 168,
+    extra: 19,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm6: {
+    name: "Forbidden Light",
+    series: "Sun & Moon",
+    releaseDate: "2018-05-04",
+    standard: 131,
+    extra: 19,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm5: {
+    name: "Ultra Prism",
+    series: "Sun & Moon",
+    releaseDate: "2018-02-02",
+    standard: 156,
+    extra: 22,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm4: {
+    name: "Crimson Invasion",
+    series: "Sun & Moon",
+    releaseDate: "2017-11-03",
+    standard: 111,
+    extra: 15,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm3: {
+    name: "Burning Shadows",
+    series: "Sun & Moon",
+    releaseDate: "2017-08-05",
+    standard: 147,
+    extra: 30,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm2: {
+    name: "Guardians Rising",
+    series: "Sun & Moon",
+    releaseDate: "2017-05-05",
+    standard: 145,
+    extra: 35,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm1: {
+    name: "Sun & Moon",
+    series: "Sun & Moon",
+    releaseDate: "2017-02-03",
+    standard: 149,
+    extra: 24,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  det1: {
+    name: "Detective Pikachu",
+    series: "Sun & Moon",
+    releaseDate: "2019-04-05",
+    standard: 18,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm75: {
+    name: "Dragon Majesty",
+    series: "Sun & Moon",
+    releaseDate: "2018-09-07",
+    standard: 70,
+    extra: 10,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+  sm35: {
+    name: "Shining Legends",
+    series: "Sun & Moon",
+    releaseDate: "2017-10-06",
+    standard: 73,
+    extra: 8,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      rare_holo: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  }
 };
-
-const INTERNAL_TO_LIMITLESS = Object.fromEntries(
-  Object.entries(LIMITLESS_SET_MAP).map(([limitless, internal]) => [
-    internal,
-    limitless
-  ])
-);
-
-function isLegalRegulationMark(mark) {
-  const value = String(mark || "").trim().toUpperCase();
-  if (!value) return false;
-
-  const first = value.charAt(0);
-  return first >= "H" && first <= "Z";
-}
-
-function getDisplaySetCode(card) {
-  const internal = String(card?.set_code || "").trim();
-  return INTERNAL_TO_LIMITLESS[internal] || internal.toUpperCase();
-}
-
-function getDisplayCardNumber(card) {
-  const id = String(card?.id || "").trim();
-  const setCode = String(card?.set_code || "").trim();
-
-  if (id && setCode) {
-    const prefix = `${setCode}-`;
-
-    if (id.toLowerCase().startsWith(prefix.toLowerCase())) {
-      return id.slice(prefix.length);
-    }
-  }
-
-  return String(card?.number ?? "");
-}
-
-function getCardLabel(card) {
-  return `${card?.name || "Unknown"} (${getDisplaySetCode(
-    card
-  )}) ${getDisplayCardNumber(card)}`;
-}
-
-function parseDeckLine(line) {
-  const trimmed = line.trim();
-
-  if (!trimmed) {
-    return null;
-  }
-
-  if (/^(Pokémon|Pokemon|Trainer|Energy)\s*:/i.test(trimmed)) {
-    return {
-      type: "section",
-      section: trimmed.split(":")[0]
-    };
-  }
-
-  const match = trimmed.match(
-    /^(\d+)\s+(.+?)\s+([A-Z0-9]+)\s+([A-Za-z0-9-]+)$/
-  );
-
-  if (!match) {
-    return {
-      type: "invalid",
-      raw: trimmed
-    };
-  }
-
-  return {
-    type: "card",
-    quantity: Number(match[1]),
-    name: match[2].trim(),
-    limitlessSetCode: match[3].trim().toUpperCase(),
-    number: match[4].trim()
-  };
-}
-
-async function resolveExactCard(entry) {
-  const internalSetCode = LIMITLESS_SET_MAP[entry.limitlessSetCode];
-
-  if (!internalSetCode) {
-    return {
-      card: null,
-      error: `No set mapping found for ${entry.limitlessSetCode}.`
-    };
-  }
-
-  const numericNumber = Number(
-    String(entry.number).match(/\d+/)?.[0] || 0
-  );
-
-  const { data, error } = await supabase
-    .from("cards")
-    .select("*")
-    .eq("set_code", internalSetCode)
-    .eq("number", numericNumber)
-    .limit(50);
-
-  if (error) {
-    return {
-      card: null,
-      error: error.message
-    };
-  }
-
-  const candidates = data || [];
-
-  const exactName = candidates.find(card => {
-    return (
-      String(card.name || "")
-        .trim()
-        .toLowerCase() ===
-      String(entry.name || "")
-        .trim()
-        .toLowerCase()
-    );
-  });
-
-  if (exactName) {
-    return {
-      card: exactName,
-      error: null
-    };
-  }
-
-  if (candidates.length === 1) {
-    return {
-      card: candidates[0],
-      error: null
-    };
-  }
-
-  return {
-    card: null,
-    error: `Could not uniquely resolve ${entry.name} ${entry.limitlessSetCode} ${entry.number}.`
-  };
-}
-
-async function findLegalAlternatives(cardName, currentCardId) {
-  const search = String(cardName || "").trim();
-
-  if (!search) {
-    return [];
-  }
-
-  const { data, error } = await supabase
-    .from("cards")
-    .select("*")
-    .ilike("name", `%${search}%`)
-    .range(0, 500);
-
-  if (error) {
-    console.error("Alternative printing lookup failed:", error);
-    return [];
-  }
-
-  return (data || [])
-    .filter(card => isLegalRegulationMark(card.regulation_mark))
-    .filter(card => card.id !== currentCardId)
-    .sort((a, b) => {
-      const nameCompare = String(a.name || "").localeCompare(
-        String(b.name || "")
-      );
-
-      if (nameCompare !== 0) {
-        return nameCompare;
-      }
-
-      const setCompare = getDisplaySetCode(a).localeCompare(
-        getDisplaySetCode(b)
-      );
-
-      if (setCompare !== 0) {
-        return setCompare;
-      }
-
-      return Number(a.number || 0) - Number(b.number || 0);
-    });
-}
-
-function PreviewModal({ card, onClose }) {
-  if (!card) {
-    return null;
-  }
-
-  const imageUrl =
-    card.image_large ||
-    card.image_small ||
-    "";
-
-  return (
-    <div
-      className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      <div
-        className="bg-gray-900 border border-gray-700 rounded-2xl p-4 max-w-lg w-full"
-        onClick={event => event.stopPropagation()}
-      >
-        <div className="flex justify-between gap-4 mb-4">
-          <div>
-            <h3 className="font-bold text-xl">
-              {getCardLabel(card)}
-            </h3>
-
-            <p className="text-sm text-gray-400">
-              Regulation mark: {card.regulation_mark || "None"}
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-2xl text-gray-300 hover:text-white"
-          >
-            ×
-          </button>
-        </div>
-
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={card.name}
-            className="max-h-[70vh] mx-auto rounded-xl object-contain"
-          />
-        ) : (
-          <div className="h-96 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400">
-            No card image available
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default function DeckBuilderPage({ user }) {
-  const [deckName, setDeckName] = useState("");
-  const [deckText, setDeckText] = useState("");
-  const [rows, setRows] = useState([]);
-
-  const [savedDecks, setSavedDecks] = useState([]);
-  const [activeDeckId, setActiveDeckId] = useState(null);
-
-  const [includeCollectionCards, setIncludeCollectionCards] =
-    useState(false);
-
-  const [collectionCounts, setCollectionCounts] = useState({});
-
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [previewCard, setPreviewCard] = useState(null);
-
-  useEffect(() => {
-    if (!user?.email) {
-      return;
-    }
-
-    loadSavedDecks();
-  }, [user?.email]);
-
-  useEffect(() => {
-    if (!includeCollectionCards || !user?.email || rows.length === 0) {
-      setCollectionCounts({});
-      return;
-    }
-
-    loadCollectionCounts();
-  }, [includeCollectionCards, rows, user?.email]);
-
-  async function loadSavedDecks() {
-    const { data, error } = await supabase
-      .from("decks")
-      .select("*")
-      .eq("user_email", user.email)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error loading decks:", error);
-      return;
-    }
-
-    setSavedDecks(data || []);
-  }
-
-  async function loadDeck(deck) {
-    setLoading(true);
-
-    try {
-      const { data, error } = await supabase
-        .from("deck_cards")
-        .select(`
-          id,
-          deck_id,
-          card_id,
-          quantity,
-          owned_quantity,
-          section,
-          cards (*)
-        `)
-        .eq("deck_id", deck.id);
-
-      if (error) {
-        console.error("Error loading deck cards:", error);
-        return;
-      }
-
-      const loadedRows = (data || []).map(item => ({
-        id: item.id,
-        quantity: Number(item.quantity || 1),
-        ownedQuantity: Number(item.owned_quantity || 0),
-        section: item.section || "Other",
-        card: item.cards || null,
-        alternatives: [],
-        alternativesLoaded: false,
-        alternativesLoading: false,
-        name: item.cards?.name || "",
-        limitlessSetCode: item.cards
-          ? getDisplaySetCode(item.cards)
-          : "",
-        number: item.cards
-          ? getDisplayCardNumber(item.cards)
-          : ""
-      }));
-
-      setActiveDeckId(deck.id);
-      setDeckName(deck.name || "");
-      setDeckText(deck.raw_decklist || "");
-      setRows(loadedRows);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function parseDeck() {
-    setLoading(true);
-
-    try {
-      const result = [];
-      let section = "Other";
-
-      for (const line of deckText.split(/\r?\n/)) {
-        const parsed = parseDeckLine(line);
-
-        if (!parsed) {
-          continue;
-        }
-
-        if (parsed.type === "section") {
-          section = parsed.section;
-          continue;
-        }
-
-        if (parsed.type === "invalid") {
-          result.push({
-            id: crypto.randomUUID(),
-            raw: parsed.raw,
-            section,
-            card: null,
-            error: "Could not parse this line.",
-            quantity: 1,
-            ownedQuantity: 0,
-            alternatives: [],
-            alternativesLoaded: false,
-            alternativesLoading: false
-          });
-
-          continue;
-        }
-
-        const resolved = await resolveExactCard(parsed);
-
-        result.push({
-          id: crypto.randomUUID(),
-          ...parsed,
-          section,
-          card: resolved.card,
-          error: resolved.error,
-          ownedQuantity: 0,
-          alternatives: [],
-          alternativesLoaded: false,
-          alternativesLoading: false
-        });
-      }
-
-      setRows(result);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function loadAlternatives(rowId) {
-    const target = rows.find(row => row.id === rowId);
-
-    if (!target?.card) {
-      return;
-    }
-
-    setRows(current =>
-      current.map(row =>
-        row.id === rowId
-          ? {
-              ...row,
-              alternativesLoading: true
-            }
-          : row
-      )
-    );
-
-    const alternatives = await findLegalAlternatives(
-      target.card.name,
-      target.card.id
-    );
-
-    setRows(current =>
-      current.map(row =>
-        row.id === rowId
-          ? {
-              ...row,
-              alternatives,
-              alternativesLoaded: true,
-              alternativesLoading: false
-            }
-          : row
-      )
-    );
-  }
-
-  function selectPrinting(rowId, cardId) {
-    setRows(current =>
-      current.map(row => {
-        if (row.id !== rowId) {
-          return row;
-        }
-
-        const selected = row.alternatives.find(
-          card => card.id === cardId
-        );
-
-        if (!selected) {
-          return row;
-        }
-
-        return {
-          ...row,
-          card: selected,
-          name: selected.name,
-          limitlessSetCode: getDisplaySetCode(selected),
-          number: getDisplayCardNumber(selected),
-          error: null
-        };
-      })
-    );
-  }
-
-  function updateQuantity(rowId, quantity) {
-    const value = Math.max(1, Number(quantity) || 1);
-
-    setRows(current =>
-      current.map(row =>
-        row.id === rowId
-          ? {
-              ...row,
-              quantity: value
-            }
-          : row
-      )
-    );
-  }
-
-  function updateOwnedQuantity(rowId, quantity) {
-    const value = Math.max(0, Number(quantity) || 0);
-
-    setRows(current =>
-      current.map(row =>
-        row.id === rowId
-          ? {
-              ...row,
-              ownedQuantity: value
-            }
-          : row
-      )
-    );
-  }
-
-  function removeRow(rowId) {
-    setRows(current =>
-      current.filter(row => row.id !== rowId)
-    );
-  }
-
-  async function loadCollectionCounts() {
-    const validRows = rows.filter(row => row.card?.id);
-
-    if (validRows.length === 0) {
-      setCollectionCounts({});
-      return;
-    }
-
-    const cardIds = [
-      ...new Set(
-        validRows.map(row => row.card.id)
-      )
-    ];
-
-    const { data, error } = await supabase
-      .from("user_cards")
-      .select("card_id, owned")
-      .eq("email", user.email)
-      .in("card_id", cardIds)
-      .range(0, 10000);
-
-    if (error) {
-      console.error("Error loading collection counts:", error);
-      return;
-    }
-
-    const totals = {};
-
-    (data || []).forEach(item => {
-      totals[item.card_id] =
-        Number(totals[item.card_id] || 0) +
-        Number(item.owned || 0);
-    });
-
-    setCollectionCounts(totals);
-  }
-
-  function getCollectionOwned(row) {
-    if (!includeCollectionCards || !row.card?.id) {
-      return 0;
-    }
-
-    return Number(collectionCounts[row.card.id] || 0);
-  }
-
-  function getStillNeeded(row) {
-    const required = Number(row.quantity || 0);
-    const deckOwned = Number(row.ownedQuantity || 0);
-    const collectionOwned = getCollectionOwned(row);
-
-    return Math.max(
-      0,
-      required - deckOwned - collectionOwned
-    );
-  }
-
-  async function saveDeck() {
-    if (!user?.email) {
-      return;
-    }
-
-    if (!deckName.trim()) {
-      alert("Please enter a deck name.");
-      return;
-    }
-
-    const validRows = rows.filter(row => row.card?.id);
-
-    if (validRows.length === 0) {
-      alert("There are no resolved cards to save.");
-      return;
-    }
-
-    setSaving(true);
-
-    try {
-      let deckId = activeDeckId;
-
-      if (!deckId) {
-        const { data, error } = await supabase
-          .from("decks")
-          .insert({
-            user_email: user.email,
-            name: deckName.trim(),
-            raw_decklist: deckText
-          })
-          .select()
-          .single();
-
-        if (error) {
-          throw error;
-        }
-
-        deckId = data.id;
-        setActiveDeckId(deckId);
-      } else {
-        const { error } = await supabase
-          .from("decks")
-          .update({
-            name: deckName.trim(),
-            raw_decklist: deckText
-          })
-          .eq("id", deckId)
-          .eq("user_email", user.email);
-
-        if (error) {
-          throw error;
-        }
-
-        const { error: deleteError } = await supabase
-          .from("deck_cards")
-          .delete()
-          .eq("deck_id", deckId);
-
-        if (deleteError) {
-          throw deleteError;
-        }
-      }
-
-      const inserts = validRows.map(row => ({
-        deck_id: deckId,
-        card_id: row.card.id,
-        quantity: Number(row.quantity || 1),
-        owned_quantity: Number(row.ownedQuantity || 0),
-        section: row.section || "Other"
-      }));
-
-      const { error: cardsError } = await supabase
-        .from("deck_cards")
-        .insert(inserts);
-
-      if (cardsError) {
-        throw cardsError;
-      }
-
-      await loadSavedDecks();
-
-      alert("Deck saved.");
-    } catch (error) {
-      console.error("Error saving deck:", error);
-      alert(`Could not save deck: ${error.message}`);
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  function newDeck() {
-    setActiveDeckId(null);
-    setDeckName("");
-    setDeckText("");
-    setRows([]);
-    setIncludeCollectionCards(false);
-    setCollectionCounts({});
-  }
-
-  const totalNeeded = useMemo(() => {
-    return rows.reduce((sum, row) => {
-      if (!row.card) {
-        return sum;
-      }
-
-      return sum + getStillNeeded(row);
-    }, 0);
-  }, [
-    rows,
-    includeCollectionCards,
-    collectionCounts
-  ]);
-
-  if (!user) {
-    return (
-      <div className="p-4 text-white">
-        Please log in
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-950 text-white p-4 space-y-6">
-      <div className="flex flex-wrap gap-3 justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold">
-            Deck Builder
-          </h1>
-
-          <p className="text-gray-400 mt-1">
-            Paste a Limitless list, resolve the exact printing,
-            optionally switch to another legal H+ printing,
-            and track what is still needed.
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={newDeck}
-          className="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700"
-        >
-          New Deck
-        </button>
-      </div>
-
-      {savedDecks.length > 0 && (
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-4">
-          <h2 className="font-bold mb-3">
-            Saved Decks
-          </h2>
-
-          <div className="flex flex-wrap gap-2">
-            {savedDecks.map(deck => (
-              <button
-                key={deck.id}
-                type="button"
-                onClick={() => loadDeck(deck)}
-                className={`px-3 py-2 rounded-lg ${
-                  activeDeckId === deck.id
-                    ? "bg-blue-600"
-                    : "bg-gray-800 hover:bg-gray-700"
-                }`}
-              >
-                {deck.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-4 space-y-4">
-        <input
-          type="text"
-          value={deckName}
-          onChange={event =>
-            setDeckName(event.target.value)
-          }
-          placeholder="Deck name"
-          className="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2"
-        />
-
-        <textarea
-          value={deckText}
-          onChange={event =>
-            setDeckText(event.target.value)
-          }
-          placeholder="4 Dreepy TWM 128"
-          className="w-full min-h-48 bg-gray-950 border border-gray-700 rounded-xl p-3"
-        />
-
-        <div className="flex flex-wrap gap-3 items-center">
-          <button
-            type="button"
-            onClick={parseDeck}
-            disabled={loading}
-            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50"
-          >
-            {loading
-              ? "Resolving..."
-              : "Parse / Replace Checklist"}
-          </button>
-
-          <button
-            type="button"
-            onClick={saveDeck}
-            disabled={saving}
-            className="px-4 py-2 rounded-xl bg-green-600 hover:bg-green-500 disabled:opacity-50"
-          >
-            {saving
-              ? "Saving..."
-              : activeDeckId
-                ? "Save Changes"
-                : "Save Deck"}
-          </button>
-
-          <label className="flex items-center gap-2 ml-auto text-sm">
-            <input
-              type="checkbox"
-              checked={includeCollectionCards}
-              onChange={event =>
-                setIncludeCollectionCards(
-                  event.target.checked
-                )
-              }
-            />
-
-            Include collection cards
-          </label>
-        </div>
-      </div>
-
-      {rows.length > 0 && (
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-wrap justify-between gap-3">
-          <div>
-            <span className="text-gray-400">
-              Card lines:
-            </span>{" "}
-            {rows.filter(row => row.card).length}
-          </div>
-
-          <div>
-            <span className="text-gray-400">
-              Total cards still needed:
-            </span>{" "}
-            <span className="font-bold text-yellow-400">
-              {totalNeeded}
-            </span>
-          </div>
-        </div>
-      )}
-
-      <div className="space-y-4">
-        {rows.map(row => (
-          <div
-            key={row.id}
-            className="bg-gray-900 border border-gray-800 rounded-2xl p-4"
-          >
-            {!row.card ? (
-              <div className="flex justify-between gap-3">
-                <div>
-                  <p className="text-red-400">
-                    {row.raw ||
-                      `${row.quantity || ""} ${row.name || ""} ${
-                        row.limitlessSetCode || ""
-                      } ${row.number || ""}`}
-                  </p>
-
-                  <p className="text-sm text-gray-400 mt-1">
-                    {row.error ||
-                      "Could not resolve this card."}
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    removeRow(row.id)
-                  }
-                  className="text-red-400"
-                >
-                  Remove
-                </button>
-              </div>
-            ) : (
-              <div className="grid md:grid-cols-[100px_1fr] gap-4">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setPreviewCard(row.card)
-                  }
-                  className="self-start"
-                >
-                  <img
-                    src={
-                      row.card.image_small ||
-                      row.card.image_large
-                    }
-                    alt={row.card.name}
-                    className="w-24 rounded-lg hover:ring-2 hover:ring-blue-500"
-                  />
-                </button>
-
-                <div className="space-y-4">
-                  <div className="flex flex-wrap justify-between gap-4">
-                    <div>
-                      <h3 className="font-bold text-lg">
-                        {getCardLabel(row.card)}
-                      </h3>
-
-                      {row.limitlessSetCode && (
-                        <p className="text-sm text-gray-400">
-                          Imported as: {row.name} (
-                          {row.limitlessSetCode}){" "}
-                          {row.number}
-                        </p>
-                      )}
-
-                      <p className="text-sm text-gray-400">
-                        Regulation:{" "}
-                        {row.card.regulation_mark ||
-                          "None"}
-                      </p>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        removeRow(row.id)
-                      }
-                      className="text-red-400"
-                    >
-                      Remove
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <label className="text-sm text-gray-400">
-                      Required
-                      <input
-                        type="number"
-                        min="1"
-                        value={row.quantity}
-                        onChange={event =>
-                          updateQuantity(
-                            row.id,
-                            event.target.value
-                          )
-                        }
-                        className="block mt-1 w-full bg-gray-950 border border-gray-700 rounded-lg px-2 py-2 text-white"
-                      />
-                    </label>
-
-                    <label className="text-sm text-gray-400">
-                      In Deck
-                      <input
-                        type="number"
-                        min="0"
-                        value={row.ownedQuantity || 0}
-                        onChange={event =>
-                          updateOwnedQuantity(
-                            row.id,
-                            event.target.value
-                          )
-                        }
-                        className="block mt-1 w-full bg-gray-950 border border-gray-700 rounded-lg px-2 py-2 text-white"
-                      />
-                    </label>
-
-                    <div className="text-sm text-gray-400">
-                      Collection
-                      <div className="mt-1 bg-gray-950 border border-gray-700 rounded-lg px-2 py-2 text-white">
-                        {includeCollectionCards
-                          ? getCollectionOwned(row)
-                          : "—"}
-                      </div>
-                    </div>
-
-                    <div className="text-sm text-gray-400">
-                      Still Needed
-                      <div
-                        className={`mt-1 border rounded-lg px-2 py-2 font-bold ${
-                          getStillNeeded(row) === 0
-                            ? "bg-green-950/50 border-green-700 text-green-300"
-                            : "bg-yellow-950/50 border-yellow-700 text-yellow-300"
-                        }`}
-                      >
-                        {getStillNeeded(row)}
-                      </div>
-                    </div>
-                  </div>
-
-                  {!row.alternativesLoaded ? (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        loadAlternatives(row.id)
-                      }
-                      disabled={
-                        row.alternativesLoading
-                      }
-                      className="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 disabled:opacity-50"
-                    >
-                      {row.alternativesLoading
-                        ? "Finding legal printings..."
-                        : "Find other legal printings"}
-                    </button>
-                  ) : (
-                    <div className="space-y-3">
-                      <label className="block text-sm text-gray-400">
-                        Legal printing
-                      </label>
-
-                      <select
-                        value={row.card.id}
-                        onChange={event =>
-                          selectPrinting(
-                            row.id,
-                            event.target.value
-                          )
-                        }
-                        className="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2"
-                      >
-                        <option
-                          value={row.card.id}
-                        >
-                          {getCardLabel(row.card)}
-                        </option>
-
-                        {row.alternatives.map(
-                          card => (
-                            <option
-                              key={card.id}
-                              value={card.id}
-                            >
-                              {getCardLabel(card)}
-                            </option>
-                          )
-                        )}
-                      </select>
-
-                      {row.alternatives.length ===
-                      0 ? (
-                        <p className="text-sm text-gray-500">
-                          No other legal H+
-                          printings found.
-                        </p>
-                      ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3">
-                          {row.alternatives.map(
-                            card => (
-                              <div
-                                key={card.id}
-                                className="bg-gray-950 border border-gray-800 rounded-xl p-2"
-                              >
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setPreviewCard(
-                                      card
-                                    )
-                                  }
-                                  className="w-full"
-                                >
-                                  <img
-                                    src={
-                                      card.image_small ||
-                                      card.image_large
-                                    }
-                                    alt={card.name}
-                                    className="w-full rounded-lg hover:ring-2 hover:ring-blue-500"
-                                  />
-                                </button>
-
-                                <p className="text-xs mt-2 text-center">
-                                  {getCardLabel(
-                                    card
-                                  )}
-                                </p>
-
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    selectPrinting(
-                                      row.id,
-                                      card.id
-                                    )
-                                  }
-                                  className="w-full mt-2 px-2 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs"
-                                >
-                                  Use this printing
-                                </button>
-                              </div>
-                            )
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      <PreviewModal
-        card={previewCard}
-        onClose={() => setPreviewCard(null)}
-      />
-    </div>
-  );
-}
