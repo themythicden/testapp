@@ -131,7 +131,7 @@ export const SET_CONFIG = {
     releaseDate: "2025-09-01",
     standard: 16,
     extra: 0,
-    views {
+    views: {
       standard: ["normal"],
       parallel: ["normal", "reverse"],
       master: "all"
