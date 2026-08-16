@@ -7,15 +7,22 @@ const MIN_LEGAL_REGULATION_MARK = "H";
 // Limitless/PTCGL abbreviation -> set_code used by your cards table.
 // Add new aliases here when a Limitless abbreviation differs from your database set_code.
 const LIMITLESS_SET_MAP = {
-  TWM: "sv6",
-  SCR: "sv7",
   TEF: "sv5",
+  TWM: "sv6",
+  SFA: "sv6pt5",
+  SCR: "sv7",
+  SSP: "sv8",
+  PRE: "sv8pt5",
+  JTG: "sv9",
   DRI: "sv10",
+  BLK: "zsv10pt5",
+  WHT: "rsv10pt5",
   MEG: "me1",
   PFL: "me2",
+  ASC: "me2pt5",
   POR: "me3",
   CRI: "me4",
-  ASC: "me2pt5"
+  PBL: "me5"
 };
 
 const CARD_FIELDS = [
