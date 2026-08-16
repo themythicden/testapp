@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import CollectionPage from "./pages/CollectionPage";
 import ISOPage from "./pages/ISOPage";
 import NeededCardsPage from "./pages/NeededCardsPage";
+import DeckBuilderPage from "./pages/DeckBuilderPage";
 
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/collection" element={<CollectionPage user={user} />} />
           <Route path="/iso" element={<ISOPage />} />
           <Route path="/needed-cards" element={<NeededCardsPage user={user} />} />
+          <Route path="/deck-builder" element={<DeckBuilderPage user={user} />} />
         </Route>
       </Routes>
     </BrowserRouter>
