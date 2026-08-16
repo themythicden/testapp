@@ -2,6 +2,34 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 
 const EMPTY_IMPORT = `Pokémon: 0\n\nTrainer: 0\n\nEnergy: 0`;
+const MIN_LEGAL_REGULATION_MARK = "H";
+
+// Limitless/PTCGL abbreviation -> set_code used by your cards table.
+// Add new aliases here when a Limitless abbreviation differs from your database set_code.
+const LIMITLESS_SET_MAP = {
+  TWM: "sv6",
+  SCR: "sv7",
+  TEF: "sv5",
+  DRI: "sv10",
+  MEG: "me1",
+  PFL: "me2",
+  POR: "me3",
+  CRI: "me4",
+  ASC: "me2pt5"
+};
+
+const CARD_FIELDS = [
+  "id",
+  "name",
+  "set_code",
+  "number",
+  "rarity",
+  "supertype",
+  "subtypes",
+  "image_small",
+  "image_large",
+  "regulation_mark"
+].join(",");
 
 function getDisplayCardNumber(card) {
   const id = String(card?.id || "").trim();
@@ -25,6 +53,16 @@ function numericCardNumber(value) {
 
 function normalizePrintedNumber(value) {
   return String(value ?? "").trim().toLowerCase().replace(/^0+(?=\d)/, "");
+}
+
+function normalizeName(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function isRegulationLegal(mark) {
+  const value = String(mark || "").trim().toUpperCase();
+  if (!/^[A-Z]$/.test(value)) return false;
+  return value.charCodeAt(0) >= MIN_LEGAL_REGULATION_MARK.charCodeAt(0);
 }
 
 function sectionLabel(section) {
@@ -52,15 +90,16 @@ function parseDecklist(text) {
 
     if (/^total\s+cards?\s*:?/i.test(rawLine)) continue;
 
-    // Expected Limitless / PTCGL style:
-    // 4 Charmander OBF 26
-    // 2 Professor's Research SVI 189
+    // Limitless / PTCGL format:
+    // 4 Dreepy TWM 128
+    // 3 Boss's Orders MEG 114
     const match = rawLine.match(/^(\d+)\s+(.+?)\s+([A-Za-z0-9.-]+)\s+([A-Za-z0-9.-]+)$/);
 
     if (!match) {
       parsed.push({
         key: `line-${index}-${Date.now()}`,
         quantity: 1,
+        ownedQuantity: 0,
         section,
         rawLine,
         name: rawLine,
@@ -76,10 +115,11 @@ function parseDecklist(text) {
     parsed.push({
       key: `line-${index}-${Date.now()}`,
       quantity: Number(match[1]),
+      ownedQuantity: 0,
       section,
       rawLine,
       name: match[2].trim(),
-      sourceSetCode: match[3].trim(),
+      sourceSetCode: match[3].trim().toUpperCase(),
       sourceNumber: match[4].trim(),
       card: null,
       candidates: [],
@@ -90,53 +130,108 @@ function parseDecklist(text) {
   return parsed;
 }
 
-async function findCardCandidates(item) {
-  const numeric = numericCardNumber(item.sourceNumber);
-  if (numeric === null) return [];
+function mappedSetCode(sourceSetCode) {
+  const source = String(sourceSetCode || "").trim().toUpperCase();
+  return LIMITLESS_SET_MAP[source] || source.toLowerCase();
+}
 
-  const fields = "id,name,set_code,number,rarity,supertype,subtypes,image_small,image_large";
-  const sourceSet = String(item.sourceSetCode || "").trim().toLowerCase();
-
-  // First try your own set_code + numeric number + name.
-  if (sourceSet) {
-    const { data, error } = await supabase
-      .from("cards")
-      .select(fields)
-      .eq("set_code", sourceSet)
-      .eq("number", numeric)
-      .ilike("name", item.name)
-      .limit(10);
-
-    if (!error && data?.length) {
-      const exactPrinted = data.filter(card =>
-        normalizePrintedNumber(getDisplayCardNumber(card)) ===
-        normalizePrintedNumber(item.sourceNumber)
-      );
-      return exactPrinted.length ? exactPrinted : data;
-    }
-  }
-
-  // Limitless abbreviations do not always match the app's set_code.
-  // Fall back to card name + numeric number across all sets.
+async function fetchLegalPrintingsByName(name) {
   const { data, error } = await supabase
     .from("cards")
-    .select(fields)
-    .eq("number", numeric)
-    .ilike("name", item.name)
-    .limit(50);
+    .select(CARD_FIELDS)
+    .ilike("name", name)
+    .range(0, 250);
 
   if (error) {
-    console.error("Deck card lookup failed:", item.rawLine, error);
+    console.error("Legal printing lookup failed:", name, error);
     return [];
   }
 
-  const rows = data || [];
-  const exactPrinted = rows.filter(card =>
-    normalizePrintedNumber(getDisplayCardNumber(card)) ===
-    normalizePrintedNumber(item.sourceNumber)
-  );
+  return (data || [])
+    .filter(card => normalizeName(card.name) === normalizeName(name))
+    .filter(card => isRegulationLegal(card.regulation_mark))
+    .sort((a, b) => {
+      const markCompare = String(b.regulation_mark || "").localeCompare(String(a.regulation_mark || ""));
+      if (markCompare !== 0) return markCompare;
+      return String(a.set_code || "").localeCompare(String(b.set_code || ""));
+    });
+}
 
-  return exactPrinted.length ? exactPrinted : rows;
+async function resolveImportedCard(item) {
+  const numeric = numericCardNumber(item.sourceNumber);
+  if (numeric === null) {
+    return { card: null, candidates: [], resolution: "unmatched" };
+  }
+
+  const dbSetCode = mappedSetCode(item.sourceSetCode);
+
+  // 1) Best case: exact mapped set + numeric number + exact card name.
+  if (dbSetCode) {
+    const { data, error } = await supabase
+      .from("cards")
+      .select(CARD_FIELDS)
+      .eq("set_code", dbSetCode)
+      .eq("number", numeric)
+      .ilike("name", item.name)
+      .limit(20);
+
+    if (!error && data?.length) {
+      const exactName = data.filter(card => normalizeName(card.name) === normalizeName(item.name));
+      const exactPrinted = exactName.filter(
+        card => normalizePrintedNumber(getDisplayCardNumber(card)) === normalizePrintedNumber(item.sourceNumber)
+      );
+      const best = exactPrinted.length ? exactPrinted : exactName;
+
+      if (best.length === 1 && isRegulationLegal(best[0].regulation_mark)) {
+        return { card: best[0], candidates: [], resolution: "resolved" };
+      }
+
+      if (best.length > 0) {
+        const legal = best.filter(card => isRegulationLegal(card.regulation_mark));
+        if (legal.length === 1) {
+          return { card: legal[0], candidates: [], resolution: "resolved" };
+        }
+        if (legal.length > 1) {
+          return { card: null, candidates: legal, resolution: "ambiguous" };
+        }
+      }
+    }
+  }
+
+  // 2) Fallback: same card name + number across all sets.
+  const { data, error } = await supabase
+    .from("cards")
+    .select(CARD_FIELDS)
+    .eq("number", numeric)
+    .ilike("name", item.name)
+    .limit(100);
+
+  if (!error && data?.length) {
+    const exactName = data.filter(card => normalizeName(card.name) === normalizeName(item.name));
+    const exactPrinted = exactName.filter(
+      card => normalizePrintedNumber(getDisplayCardNumber(card)) === normalizePrintedNumber(item.sourceNumber)
+    );
+    const legal = (exactPrinted.length ? exactPrinted : exactName).filter(card =>
+      isRegulationLegal(card.regulation_mark)
+    );
+
+    if (legal.length === 1) {
+      return { card: legal[0], candidates: [], resolution: "resolved" };
+    }
+    if (legal.length > 1) {
+      return { card: null, candidates: legal, resolution: "ambiguous" };
+    }
+  }
+
+  // 3) If the exact printing is not available in the database, offer every legal
+  // same-name printing so the user can compare and choose deliberately.
+  const legalAlternatives = await fetchLegalPrintingsByName(item.name);
+
+  return {
+    card: null,
+    candidates: legalAlternatives,
+    resolution: legalAlternatives.length ? "ambiguous" : "unmatched"
+  };
 }
 
 function mergeResolvedItems(items) {
@@ -180,6 +275,9 @@ export default function DeckBuilderPage({ user }) {
   const [manualSearch, setManualSearch] = useState("");
   const [manualResults, setManualResults] = useState([]);
   const [searching, setSearching] = useState(false);
+  const [previewCard, setPreviewCard] = useState(null);
+  const [printingPicker, setPrintingPicker] = useState(null);
+  const [loadingAlternatives, setLoadingAlternatives] = useState(false);
 
   useEffect(() => {
     if (!user?.email) {
@@ -201,9 +299,9 @@ export default function DeckBuilderPage({ user }) {
     setLoadingDecks(true);
     const { data, error } = await supabase
       .from("decks")
-      .select("id,name,source,include_collection_cards,created_at,updated_at")
+      .select("id,name,raw_decklist,created_at")
       .eq("user_email", user.email)
-      .order("updated_at", { ascending: false });
+      .order("created_at", { ascending: false });
 
     if (error) {
       console.error("Error loading decks:", error);
@@ -252,31 +350,29 @@ export default function DeckBuilderPage({ user }) {
     setParsing(true);
     const resolved = [];
 
-    for (const item of parsed) {
-      if (item.resolution === "unmatched") {
-        resolved.push(item);
-        continue;
+    try {
+      for (const item of parsed) {
+        if (item.resolution === "unmatched" && !item.sourceNumber) {
+          resolved.push(item);
+          continue;
+        }
+
+        const result = await resolveImportedCard(item);
+        resolved.push({ ...item, ...result });
       }
 
-      const candidates = await findCardCandidates(item);
-      if (candidates.length === 1) {
-        resolved.push({ ...item, card: candidates[0], candidates, resolution: "resolved" });
-      } else if (candidates.length > 1) {
-        resolved.push({ ...item, candidates, resolution: "ambiguous" });
-      } else {
-        resolved.push({ ...item, candidates: [], resolution: "unmatched" });
-      }
+      setItems(mergeResolvedItems(resolved));
+    } finally {
+      setParsing(false);
     }
-
-    setItems(mergeResolvedItems(resolved));
-    setParsing(false);
   }
 
   async function openDeck(id) {
     setMessage("");
+
     const { data: deck, error: deckError } = await supabase
       .from("decks")
-      .select("*")
+      .select("id,user_email,name,raw_decklist,created_at")
       .eq("id", id)
       .eq("user_email", user.email)
       .single();
@@ -288,9 +384,8 @@ export default function DeckBuilderPage({ user }) {
 
     const { data: rows, error: cardsError } = await supabase
       .from("deck_cards")
-      .select("id,deck_id,card_id,quantity,owned_quantity,section,sort_order,cards(*)")
-      .eq("deck_id", id)
-      .order("sort_order", { ascending: true });
+      .select("id,deck_id,card_id,quantity,owned_quantity,section,cards(*)")
+      .eq("deck_id", id);
 
     if (cardsError) {
       setMessage(`Could not load deck cards: ${cardsError.message}`);
@@ -300,7 +395,7 @@ export default function DeckBuilderPage({ user }) {
     setDeckId(deck.id);
     setDeckName(deck.name || "");
     setRawDecklist(deck.raw_decklist || "");
-    setIncludeCollectionCards(Boolean(deck.include_collection_cards));
+    setIncludeCollectionCards(false);
     setItems(
       (rows || []).map((row, index) => ({
         key: row.id || `saved-${index}`,
@@ -347,6 +442,32 @@ export default function DeckBuilderPage({ user }) {
     );
   }
 
+  async function openPrintingPicker(item) {
+    setLoadingAlternatives(true);
+    const alternatives = await fetchLegalPrintingsByName(item.card?.name || item.name);
+    setLoadingAlternatives(false);
+
+    setPrintingPicker({
+      itemKey: item.key,
+      cardName: item.card?.name || item.name,
+      currentCardId: item.card?.id || null,
+      cards: alternatives
+    });
+  }
+
+  function selectPrinting(card) {
+    if (!printingPicker) return;
+    updateItem(printingPicker.itemKey, {
+      card,
+      name: card.name,
+      sourceSetCode: card.set_code,
+      sourceNumber: getDisplayCardNumber(card),
+      resolution: "resolved",
+      candidates: []
+    });
+    setPrintingPicker(null);
+  }
+
   async function searchCards() {
     const term = manualSearch.trim();
     if (!term) return;
@@ -354,15 +475,14 @@ export default function DeckBuilderPage({ user }) {
     setSearching(true);
     const { data, error } = await supabase
       .from("cards")
-      .select("id,name,set_code,number,rarity,supertype,subtypes,image_small,image_large")
+      .select(CARD_FIELDS)
       .ilike("name", `%${term}%`)
-      .order("name", { ascending: true })
-      .limit(30);
+      .limit(80);
 
     if (error) {
       setMessage(`Card search failed: ${error.message}`);
     } else {
-      setManualResults(data || []);
+      setManualResults((data || []).filter(card => isRegulationLegal(card.regulation_mark)));
     }
     setSearching(false);
   }
@@ -428,10 +548,7 @@ export default function DeckBuilderPage({ user }) {
         .from("decks")
         .update({
           name: deckName.trim(),
-          raw_decklist: rawDecklist,
-          include_collection_cards: includeCollectionCards,
-          source: "limitless",
-          updated_at: new Date().toISOString()
+          raw_decklist: rawDecklist
         })
         .eq("id", deckId)
         .eq("user_email", user.email);
@@ -447,9 +564,7 @@ export default function DeckBuilderPage({ user }) {
         .insert({
           user_email: user.email,
           name: deckName.trim(),
-          raw_decklist: rawDecklist,
-          include_collection_cards: includeCollectionCards,
-          source: "limitless"
+          raw_decklist: rawDecklist
         })
         .select("id")
         .single();
@@ -459,11 +574,11 @@ export default function DeckBuilderPage({ user }) {
         setMessage(`Could not create deck: ${error.message}`);
         return;
       }
+
       savedDeckId = data.id;
       setDeckId(savedDeckId);
     }
 
-    // Replace the deck-card rows. This keeps edits simple and deterministic.
     const { error: deleteError } = await supabase
       .from("deck_cards")
       .delete()
@@ -475,13 +590,12 @@ export default function DeckBuilderPage({ user }) {
       return;
     }
 
-    const rows = items.map((item, index) => ({
+    const rows = items.map(item => ({
       deck_id: savedDeckId,
       card_id: item.card.id,
       quantity: Math.max(1, Number(item.quantity || 1)),
       owned_quantity: Math.max(0, Number(item.ownedQuantity || 0)),
-      section: item.section || "other",
-      sort_order: index
+      section: item.section || "other"
     }));
 
     const { error: insertError } = await supabase.from("deck_cards").insert(rows);
@@ -526,7 +640,9 @@ export default function DeckBuilderPage({ user }) {
       const qty = Math.max(0, Number(item.quantity || 0));
       const own = Math.min(qty, Math.max(0, Number(item.ownedQuantity || 0)));
       const collection = item.card?.id ? Number(collectionOwned[item.card.id] || 0) : 0;
-      const usableCollection = includeCollectionCards ? Math.min(collection, Math.max(0, qty - own)) : 0;
+      const usableCollection = includeCollectionCards
+        ? Math.min(collection, Math.max(0, qty - own))
+        : 0;
 
       required += qty;
       deckOwned += own;
@@ -555,9 +671,10 @@ export default function DeckBuilderPage({ user }) {
           <div>
             <h2 className="text-3xl font-bold">Deck Builder</h2>
             <p className="text-sm text-gray-400 mt-1">
-              Paste a Limitless/PTCGL deck list, resolve the cards, then edit and save it as your own checklist.
+              Paste a Limitless/PTCGL deck list, compare legal H+ printings, then edit and save your checklist.
             </p>
           </div>
+
           <div className="flex gap-2">
             <button onClick={newDeck} className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600">
               New Deck
@@ -587,10 +704,12 @@ export default function DeckBuilderPage({ user }) {
               <h3 className="font-bold">My Decks</h3>
               {loadingDecks && <span className="text-xs text-gray-500">Loading…</span>}
             </div>
+
             <div className="space-y-2">
               {savedDecks.length === 0 && !loadingDecks && (
                 <p className="text-sm text-gray-500">No saved decks yet.</p>
               )}
+
               {savedDecks.map(deck => (
                 <button
                   key={deck.id}
@@ -603,7 +722,7 @@ export default function DeckBuilderPage({ user }) {
                 >
                   <div className="font-semibold truncate">{deck.name}</div>
                   <div className="text-xs text-gray-500 mt-1">
-                    {deck.updated_at ? new Date(deck.updated_at).toLocaleDateString() : ""}
+                    {deck.created_at ? new Date(deck.created_at).toLocaleDateString() : ""}
                   </div>
                 </button>
               ))}
@@ -617,7 +736,7 @@ export default function DeckBuilderPage({ user }) {
                 <input
                   value={deckName}
                   onChange={event => setDeckName(event.target.value)}
-                  placeholder="e.g. Charizard ex"
+                  placeholder="e.g. Dragapult ex"
                   className="mt-1 w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 outline-none focus:border-blue-500"
                 />
               </div>
@@ -651,6 +770,10 @@ export default function DeckBuilderPage({ user }) {
                   Include collection cards when calculating what I still need
                 </label>
               </div>
+
+              <p className="text-xs text-gray-500">
+                Standard legality filter: regulation mark {MIN_LEGAL_REGULATION_MARK} or higher. Alternative printings are never selected automatically.
+              </p>
             </section>
 
             <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -661,7 +784,7 @@ export default function DeckBuilderPage({ user }) {
             </section>
 
             <section className="bg-gray-900 border border-gray-800 rounded-2xl p-4">
-              <h3 className="font-bold mb-3">Add a card manually</h3>
+              <h3 className="font-bold mb-3">Add a legal card manually</h3>
               <div className="flex gap-2">
                 <input
                   value={manualSearch}
@@ -676,19 +799,33 @@ export default function DeckBuilderPage({ user }) {
               </div>
 
               {manualResults.length > 0 && (
-                <div className="mt-3 max-h-72 overflow-auto grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div className="mt-3 max-h-80 overflow-auto grid grid-cols-1 md:grid-cols-2 gap-2">
                   {manualResults.map(card => (
-                    <button
+                    <div
                       key={card.id}
-                      onClick={() => addManualCard(card)}
-                      className="flex items-center gap-3 text-left bg-gray-950 border border-gray-800 hover:border-gray-600 rounded-lg p-2"
+                      className="flex items-center gap-3 bg-gray-950 border border-gray-800 rounded-lg p-2"
                     >
-                      <img src={card.image_small || card.image_large} alt="" className="w-10 h-14 object-contain" />
-                      <div className="min-w-0">
+                      <button type="button" onClick={() => setPreviewCard(card)} className="shrink-0">
+                        <img
+                          src={card.image_small || card.image_large}
+                          alt={card.name}
+                          className="w-10 h-14 object-contain hover:opacity-80"
+                        />
+                      </button>
+                      <div className="min-w-0 flex-1">
                         <div className="font-semibold truncate">{card.name}</div>
-                        <div className="text-xs text-gray-400">{card.set_code} #{getDisplayCardNumber(card)}</div>
+                        <div className="text-xs text-gray-400">
+                          {card.set_code} #{getDisplayCardNumber(card)} · Reg {card.regulation_mark || "—"}
+                        </div>
                       </div>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => addManualCard(card)}
+                        className="px-3 py-1.5 rounded bg-blue-700 hover:bg-blue-600 text-sm"
+                      >
+                        Add
+                      </button>
+                    </div>
                   ))}
                 </div>
               )}
@@ -718,6 +855,9 @@ export default function DeckBuilderPage({ user }) {
                         onUpdate={changes => updateItem(item.key, changes)}
                         onRemove={() => removeItem(item.key)}
                         onChooseCandidate={cardId => chooseCandidate(item.key, cardId)}
+                        onPreview={card => setPreviewCard(card)}
+                        onChangePrinting={() => openPrintingPicker(item)}
+                        loadingAlternatives={loadingAlternatives}
                       />
                     ))}
                   </div>
@@ -727,13 +867,30 @@ export default function DeckBuilderPage({ user }) {
           </main>
         </div>
       </div>
+
+      {previewCard && (
+        <CardPreviewModal card={previewCard} onClose={() => setPreviewCard(null)} />
+      )}
+
+      {printingPicker && (
+        <PrintingPickerModal
+          picker={printingPicker}
+          onClose={() => setPrintingPicker(null)}
+          onPreview={card => setPreviewCard(card)}
+          onSelect={selectPrinting}
+        />
+      )}
     </div>
   );
 }
 
 function Stat({ label, value, strong = false }) {
   return (
-    <div className={`rounded-xl border p-3 ${strong ? "border-red-700 bg-red-950/30" : "border-gray-800 bg-gray-900"}`}>
+    <div
+      className={`rounded-xl border p-3 ${
+        strong ? "border-red-700 bg-red-950/30" : "border-gray-800 bg-gray-900"
+      }`}
+    >
       <div className="text-xs text-gray-400">{label}</div>
       <div className="text-2xl font-bold mt-1">{value}</div>
     </div>
@@ -746,7 +903,10 @@ function DeckCardRow({
   includeCollectionCards,
   onUpdate,
   onRemove,
-  onChooseCandidate
+  onChooseCandidate,
+  onPreview,
+  onChangePrinting,
+  loadingAlternatives
 }) {
   const quantity = Math.max(1, Number(item.quantity || 1));
   const deckOwned = Math.min(quantity, Math.max(0, Number(item.ownedQuantity || 0)));
@@ -763,26 +923,40 @@ function DeckCardRow({
             <div className="font-semibold text-red-200">Unresolved: {item.rawLine || item.name}</div>
             <div className="text-xs text-gray-400 mt-1">
               {item.candidates.length
-                ? "More than one matching printing was found. Choose the correct one."
-                : "No matching card was found. You can remove this line and add the card manually."}
+                ? `Choose a legal regulation ${MIN_LEGAL_REGULATION_MARK}+ printing. Click an image to compare it at full size.`
+                : "No legal matching printing was found in the cards table."}
             </div>
           </div>
-          <button onClick={onRemove} className="text-xs px-3 py-1 rounded bg-red-800 hover:bg-red-700">Remove</button>
+          <button onClick={onRemove} className="text-xs px-3 py-1 rounded bg-red-800 hover:bg-red-700">
+            Remove
+          </button>
         </div>
 
         {item.candidates.length > 0 && (
-          <select
-            defaultValue=""
-            onChange={event => onChooseCandidate(event.target.value)}
-            className="mt-3 w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2"
-          >
-            <option value="">Choose a printing…</option>
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3">
             {item.candidates.map(card => (
-              <option key={card.id} value={card.id}>
-                {card.name} — {card.set_code} #{getDisplayCardNumber(card)}
-              </option>
+              <div key={card.id} className="bg-gray-950 border border-gray-800 rounded-lg p-2">
+                <button type="button" onClick={() => onPreview(card)} className="w-full">
+                  <img
+                    src={card.image_small || card.image_large}
+                    alt={card.name}
+                    className="w-full aspect-[2.5/3.5] object-contain"
+                  />
+                </button>
+                <div className="text-xs mt-2">
+                  <div className="font-semibold truncate">{card.set_code} #{getDisplayCardNumber(card)}</div>
+                  <div className="text-gray-500">Reg {card.regulation_mark || "—"}</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onChooseCandidate(card.id)}
+                  className="mt-2 w-full text-xs px-2 py-1.5 rounded bg-blue-700 hover:bg-blue-600"
+                >
+                  Use this printing
+                </button>
+              </div>
             ))}
-          </select>
+          </div>
         )}
       </div>
     );
@@ -791,23 +965,36 @@ function DeckCardRow({
   return (
     <div className="bg-gray-900 border border-gray-800 rounded-xl p-3">
       <div className="flex flex-col md:flex-row gap-4">
-        <img
-          src={item.card.image_small || item.card.image_large}
-          alt={item.card.name}
-          className="w-20 h-28 object-contain self-center md:self-start"
-        />
+        <button type="button" onClick={() => onPreview(item.card)} className="self-center md:self-start shrink-0">
+          <img
+            src={item.card.image_small || item.card.image_large}
+            alt={item.card.name}
+            className="w-20 h-28 object-contain hover:opacity-80"
+          />
+          <span className="block text-[10px] text-gray-500 mt-1">View larger</span>
+        </button>
 
         <div className="flex-1 min-w-0">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
             <div>
               <h4 className="font-bold text-lg">{item.card.name}</h4>
               <p className="text-sm text-gray-400">
-                {item.card.set_code} #{getDisplayCardNumber(item.card)} · {item.card.rarity || "Unknown rarity"}
+                {item.card.set_code} #{getDisplayCardNumber(item.card)} · {item.card.rarity || "Unknown rarity"} · Reg {item.card.regulation_mark || "—"}
               </p>
             </div>
-            <button onClick={onRemove} className="self-start text-xs px-3 py-1 rounded bg-red-800 hover:bg-red-700">
-              Remove
-            </button>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={onChangePrinting}
+                disabled={loadingAlternatives}
+                className="self-start text-xs px-3 py-1 rounded bg-blue-800 hover:bg-blue-700 disabled:opacity-50"
+              >
+                {loadingAlternatives ? "Loading…" : "Other legal printings"}
+              </button>
+              <button onClick={onRemove} className="self-start text-xs px-3 py-1 rounded bg-red-800 hover:bg-red-700">
+                Remove
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
@@ -830,12 +1017,12 @@ function DeckCardRow({
             </div>
           </div>
 
-          <div className={`mt-3 rounded-lg px-3 py-2 text-sm ${needed === 0 ? "bg-green-950/40 text-green-300" : "bg-yellow-950/40 text-yellow-200"}`}>
-            {needed === 0 ? (
-              <strong>Complete</strong>
-            ) : (
-              <strong>Still need {needed}</strong>
-            )}
+          <div
+            className={`mt-3 rounded-lg px-3 py-2 text-sm ${
+              needed === 0 ? "bg-green-950/40 text-green-300" : "bg-yellow-950/40 text-yellow-200"
+            }`}
+          >
+            {needed === 0 ? <strong>Complete</strong> : <strong>Still need {needed}</strong>}
             {includeCollectionCards && usableCollection > 0 && (
               <span className="ml-2 text-gray-300">({usableCollection} counted from collection)</span>
             )}
@@ -846,9 +1033,114 @@ function DeckCardRow({
   );
 }
 
+function CardPreviewModal({ card, onClose }) {
+  return (
+    <div
+      className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4"
+      onMouseDown={event => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div className="relative max-w-xl w-full bg-gray-900 border border-gray-700 rounded-2xl p-4 shadow-2xl">
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-gray-950/90 hover:bg-gray-800 text-xl"
+        >
+          ×
+        </button>
+
+        <img
+          src={card.image_large || card.image_small}
+          alt={card.name}
+          className="max-h-[78vh] w-full object-contain rounded-xl"
+        />
+
+        <div className="mt-3 text-center">
+          <div className="font-bold text-lg">{card.name}</div>
+          <div className="text-sm text-gray-400">
+            {card.set_code} #{getDisplayCardNumber(card)} · {card.rarity || "Unknown rarity"} · Regulation {card.regulation_mark || "—"}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PrintingPickerModal({ picker, onClose, onPreview, onSelect }) {
+  return (
+    <div
+      className="fixed inset-0 z-[90] bg-black/75 flex items-center justify-center p-4"
+      onMouseDown={event => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div className="w-full max-w-5xl max-h-[90vh] overflow-hidden bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl flex flex-col">
+        <div className="p-4 border-b border-gray-800 flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-xl font-bold">Legal printings: {picker.cardName}</h3>
+            <p className="text-xs text-gray-400 mt-1">
+              Showing regulation mark {MIN_LEGAL_REGULATION_MARK} or higher. Preview the cards before replacing the deck printing.
+            </p>
+          </div>
+          <button type="button" onClick={onClose} className="text-2xl text-gray-400 hover:text-white">×</button>
+        </div>
+
+        <div className="p-4 overflow-auto">
+          {picker.cards.length === 0 ? (
+            <div className="text-gray-400">No other legal printings were found.</div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {picker.cards.map(card => {
+                const current = card.id === picker.currentCardId;
+                return (
+                  <div
+                    key={card.id}
+                    className={`rounded-xl border p-2 ${
+                      current ? "border-green-500 bg-green-950/20" : "border-gray-800 bg-gray-950"
+                    }`}
+                  >
+                    <button type="button" onClick={() => onPreview(card)} className="w-full">
+                      <img
+                        src={card.image_small || card.image_large}
+                        alt={card.name}
+                        className="w-full aspect-[2.5/3.5] object-contain"
+                      />
+                    </button>
+                    <div className="mt-2 text-sm font-semibold">
+                      {card.set_code} #{getDisplayCardNumber(card)}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {card.rarity || "Unknown rarity"} · Reg {card.regulation_mark || "—"}
+                    </div>
+                    <button
+                      type="button"
+                      disabled={current}
+                      onClick={() => onSelect(card)}
+                      className={`mt-2 w-full text-xs px-2 py-2 rounded ${
+                        current
+                          ? "bg-green-900/50 text-green-300 cursor-default"
+                          : "bg-blue-700 hover:bg-blue-600"
+                      }`}
+                    >
+                      {current ? "Current printing" : "Use this printing"}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Counter({ label, value, min = 0, max = 99, onChange }) {
   function set(next) {
-    const clamped = Math.max(min, Math.min(max, Number(next)));
+    const numeric = Number(next);
+    const safe = Number.isFinite(numeric) ? numeric : min;
+    const clamped = Math.max(min, Math.min(max, safe));
     onChange(clamped);
   }
 
