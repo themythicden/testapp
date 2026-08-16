@@ -125,6 +125,22 @@ export const SET_CONFIG = {
       default: ["holo"]
     }
   },
+  mee: {
+    name: "Mega Evolution Energies",
+    series: "Mega Evolution",
+    releaseDate: "2025-09-01",
+    standard: 16,
+    extra: 0,
+    views {
+      standard: ["normal"],
+      parallel: ["normal", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal"],
+      default: ["reverse"]
+    }
+  },
   rsv10pt5: {
     name: "White Flare",
     series: "Scarlet & Violet",
