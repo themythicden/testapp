@@ -74,13 +74,19 @@ export const SET_CONFIG = {
       pokeball: ["normal", "holo", "reverse", "pokeball"],
       master: "all"
     },
-    variants: {
-      common: ["normal", "reverse", "pokeball"],
-      uncommon: ["normal", "reverse", "pokeball"],
-      rare: ["holo", "reverse", "pokeball"],
-      trainer: ["normal", "reverse"],
-      fa_trainer: ["holo"],
-      default: ["holo"]
+    variants: {      
+      base_common: ["normal", "reverse", "pokeball"],
+      base_uncommon: ["normal", "reverse", "pokeball"],
+      base_rare: ["holo", "reverse", "pokeball"],
+    
+      base_trainer: ["normal", "reverse"],
+      base_item: ["normal", "reverse"],
+      base_stadium: ["normal", "reverse"],
+    
+      base_energy: ["normal", "reverse"],
+      base_energy_rare: ["holo", "reverse"],
+    
+      base_default: ["holo"]
     }
   },
   me2: {
