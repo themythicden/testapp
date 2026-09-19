@@ -1,4 +1,46 @@
 export const SET_CONFIG = {
+    me55c: {
+    name: "30th Celebration: Classic Collection",
+    series: "Mega Evolution",
+    releaseDate: "2026-09-16",
+    standard: 30,
+    extra: 0,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
+    me55: {
+    name: "30th Celebration",
+    series: "Mega Evolution",
+    releaseDate: "2026-09-16",
+    standard: 128,
+    extra: 33,
+    views: {
+      standard: ["normal", "holo"],
+      parallel: ["normal", "holo", "reverse"],
+      master: "all"
+    },
+    variants: {
+      common: ["normal", "reverse"],
+      uncommon: ["normal", "reverse"],
+      rare: ["holo", "reverse"],
+      trainer: ["normal", "reverse"],
+      fa_trainer: ["holo"],
+      ace_spec: ["holo"],
+      default: ["holo"]
+    }
+  },
   me5: {
     name: "Pitch Black",
     series: "Mega Evolution",
