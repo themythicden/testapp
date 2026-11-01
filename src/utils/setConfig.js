@@ -11,13 +11,7 @@ export const SET_CONFIG = {
       master: "all"
     },
     variants: {
-      common: ["holo"],
-      uncommon: ["holo"],
-      rare: ["holo"],
-      trainer: ["holo"],
-      fa_trainer: ["holo"],
-      ace_spec: ["holo"],
-      default: ["holo"]
+      base_default: ["holo"]
     }
   },
     me55: {
