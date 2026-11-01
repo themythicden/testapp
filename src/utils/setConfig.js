@@ -11,8 +11,21 @@ export const SET_CONFIG = {
       master: "all"
     },
     variants: {
-      base_default: ["holo"]
-    }
+    extra: ["holo"],
+
+    base_common: ["holo"],
+    base_uncommon: ["holo"],
+    base_rare: ["holo"],
+
+    base_trainer: ["holo"],
+    base_item: ["holo"],
+    base_stadium: ["holo"],
+
+    base_energy: ["holo"],
+    base_energy_rare: ["holo"],
+
+    base_default: ["holo"]
+  }
   },
     me55: {
     name: "30th Celebration",
@@ -26,14 +39,21 @@ export const SET_CONFIG = {
       master: "all"
     },
     variants: {
-      common: ["holo"],
-      uncommon: ["holo"],
-      rare: ["holo"],
-      trainer: ["holo"],
-      fa_trainer: ["holo"],
-      ace_spec: ["holo"],
-      default: ["holo"]
-    }
+    extra: ["holo"],
+
+    base_common: ["holo"],
+    base_uncommon: ["holo"],
+    base_rare: ["holo"],
+
+    base_trainer: ["holo"],
+    base_item: ["holo"],
+    base_stadium: ["holo"],
+
+    base_energy: ["holo"],
+    base_energy_rare: ["holo"],
+
+    base_default: ["holo"]
+  }
   },
   me5: {
     name: "Pitch Black",
