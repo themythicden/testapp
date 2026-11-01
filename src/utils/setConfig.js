@@ -27,15 +27,15 @@ export const SET_CONFIG = {
     standard: 128,
     extra: 33,
     views: {
-      standard: ["normal", "holo"],
-      parallel: ["normal", "holo", "reverse"],
+      standard: ["holo"],
+      parallel: ["holo"],
       master: "all"
     },
     variants: {
-      common: ["normal", "reverse"],
-      uncommon: ["normal", "reverse"],
-      rare: ["holo", "reverse"],
-      trainer: ["normal", "reverse"],
+      common: ["holo"],
+      uncommon: ["holo"],
+      rare: ["holo"],
+      trainer: ["holo"],
       fa_trainer: ["holo"],
       ace_spec: ["holo"],
       default: ["holo"]
